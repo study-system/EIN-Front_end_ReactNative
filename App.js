@@ -16,6 +16,18 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
 const axios = require('axios');
 class AuthBoardScreen extends Component {
+  constructor(props) {
+    super(props);
+    console.log('Auth', this.props.data2);
+  }
+
+  componentDidMount() {
+    axios.get('http://myks790.iptime.org:8082/board/major').then((response) => {
+      this.setState({data: response.data});
+      // this.setState({data: '인증게시판'});
+      // console.log('auth', response.data);
+    });
+  }
   render() {
     return (
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
@@ -79,10 +91,18 @@ class PushAlarm extends Component {
 const Tab = createBottomTabNavigator();
 // 하단탭
 class MyTabs extends Component {
+  constructor(props) {
+    super(props);
+    console.log('MyTabs', this.props.data);
+  }
   render() {
     return (
       <Tab.Navigator>
-        <Tab.Screen name="인증게시판" component={AuthBoardScreen} />
+        <Tab.Screen
+          name="인증게시판"
+          component={AuthBoardScreen}
+          data2={this.props.data}
+        />
         <Tab.Screen name="자유게시판" component={BoardScreen} />
         <Tab.Screen name="마이페이지" component={Mypage} />
         <Tab.Screen name="푸쉬알람" component={PushAlarm} />
@@ -99,12 +119,15 @@ export default class App extends Component {
   componentDidMount() {
     axios.get('http://myks790.iptime.org:8082/board/major').then((response) => {
       this.setState({data: response.data});
+      // this.setState({data: '인증게시판'});
+      // console.log(response.data);
     });
   }
   render() {
     return (
       <NavigationContainer>
-        <Text />
+        <Text>{this.state.data[0].name}</Text>
+        {/* <Text>{this.state.data}</Text> */}
         <MyTabs data={this.state.data} />
       </NavigationContainer>
     );
