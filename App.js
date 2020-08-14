@@ -47,34 +47,7 @@ class AuthBoardScreen extends Component {
       this.setState({pickers: tmparr});
     });
   }
-  putPickers() {
-    // if (this.state.pickers) {
-    //   console.log(this.state.pickers[0]);
-    //   return this.state.pickers[0];
-    // }
-    return (
-      <View>
-        <Picker
-          selectedValue={this.states.lang}
-          style={{height: 50, width: 100}}
-          onValueChange={(itemValue, itemIndex) =>
-            this.setState({lang: itemValue})
-          }>
-          <Picker.Item label="Java" value="java" />
-          <Picker.Item label="JavaScript" value="js" />
-        </Picker>
-      </View>
-    );
-  }
-  addP = () => {
-    return (
-      <View>
-        {this.state.data.map((prop, key) => {
-          return <Picker.Item label={prop.id} key={key} value={prop.name} />;
-        })}
-      </View>
-    );
-  };
+
   AddT = () => {
     return (
       <View>
@@ -85,7 +58,7 @@ class AuthBoardScreen extends Component {
 
   render() {
     let pickerItems = this.state.data.map((item, i) => {
-      return <Picker.Item key={i} label={item.name} value={item.id.toString} />;
+      return <Picker.Item key={i} label={item.name} value={item.major_code} />;
     });
 
     return (
@@ -96,9 +69,10 @@ class AuthBoardScreen extends Component {
         <Picker
           selectedValue={this.state.language}
           style={{height: 50, width: 100}}
-          onValueChange={(itemValue, itemIndex) =>
-            this.setState({language: itemValue})
-          }>
+          onValueChange={(itemValue, itemIndex) => {
+            this.setState({language: itemValue});
+            console.log(this.state.language);
+          }}>
           {pickerItems}
           {/* <addP /> */}
         </Picker>
