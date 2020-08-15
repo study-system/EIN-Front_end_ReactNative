@@ -16,6 +16,48 @@ import {Picker} from '@react-native-community/picker';
 //스크린 임포트
 
 const axios = require('axios');
+class MkPicker extends Component {
+  constructor(props) {
+    super(props);
+    this.setState({type: props});
+    console.log('Auth', this.props.type);
+  }
+  state = {
+    default_type: '000',
+    data: [{id: '000', name: '시도'}],
+  };
+  // 변경되는 것을 자동으로 리플래시 되면서 반영함.
+  componentDidMount() {
+    console.log(this.state.default_type);
+    axios.get('http://myks790.iptime.org:8082/board/major').then((response) => {
+      // console.log(this.state.data[0]);
+      //state.data에 response로 받은 json 값을 넣어줌
+      this.setState({data: response.data});
+      console.log('선택', this.state.data[0].name);
+    });
+  }
+  render() {
+    //major_code를 code로 통일하면 함수를 통일할 수 있음
+    let pickerItems = this.state.data.map((item, i) => {
+      return <Picker.Item key={i} label={item.name} value={item.major_code} />;
+    });
+
+    return (
+      <View>
+        <Picker
+          selectedValue={this.state.default_type}
+          style={{height: 50, width: 100}}
+          onValueChange={(itemValue, itemIndex) => {
+            this.setState({default_type: itemValue});
+            console.log(this.state.default_type);
+          }}>
+          <Picker.Item label="시도명" value="000" />
+          {pickerItems}
+        </Picker>
+      </View>
+    );
+  }
+}
 
 class AuthBoardScreen extends Component {
   constructor(props) {
@@ -23,38 +65,29 @@ class AuthBoardScreen extends Component {
     console.log('Auth', this.props.data2);
   }
   state = {
-    language: '001',
-    lang: 'java',
-    pick: [],
-    pickers: [],
-    data: [{id: 1, name: '시도'}],
+    major: '000',
+    sido: '000',
+    target: '000',
+    data: [{id: '000', name: '시도'}],
   };
-
-  // state = {picker: []};
+  // 변경되는 것을 자동으로 리플래시 되면서 반영함.
   componentDidMount() {
-    console.log(this.state.language);
+    console.log(this.state.major);
     axios.get('http://myks790.iptime.org:8082/board/major').then((response) => {
-      console.log(this.state.data[0]);
+      // console.log(this.state.data[0]);
+      //state.data에 response로 받은 json 값을 넣어줌
       this.setState({data: response.data});
-      const tmparr = [];
-      // 화살표함수를 써야 상위를 this로 부를 수 있음
-      console.log(this.state.data[0]);
-      this.state.data.map((item) => {
-        // return <Picker.Item label={item.name} value={item.id} />;
-        console.log(item.id, item.name);
-        tmparr.push(<Picker.Item label={item.id} value={item.name} />);
-      });
-      this.setState({pickers: tmparr});
+      console.log('분야선택', this.state.data[0].name);
     });
   }
-
-  AddT = () => {
-    return (
-      <View>
-        <Text>{this.state.data[0].name}</Text>
-      </View>
-    );
-  };
+  //나중에 쓸 수도 있음  쓰는법   {/* <this.AddT /> */}
+  // AddT = () => {
+  //   return (
+  //     <View>
+  //       <Text>{this.state.data[0].name}</Text>
+  //     </View>
+  //   );
+  // };
 
   render() {
     let pickerItems = this.state.data.map((item, i) => {
@@ -65,16 +98,15 @@ class AuthBoardScreen extends Component {
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
         <Text>인증게시판입니다.</Text>
 
-        <this.AddT />
         <Picker
-          selectedValue={this.state.language}
+          selectedValue={this.state.major}
           style={{height: 50, width: 100}}
           onValueChange={(itemValue, itemIndex) => {
-            this.setState({language: itemValue});
-            console.log(this.state.language);
+            this.setState({major: itemValue});
+            console.log(this.state.major);
           }}>
+          <Picker.Item label="시도명" value="000" />
           {pickerItems}
-          {/* <addP /> */}
         </Picker>
       </View>
     );
