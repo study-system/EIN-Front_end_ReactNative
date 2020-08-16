@@ -16,7 +16,7 @@ import {Picker} from '@react-native-community/picker';
 //스크린 임포트
 
 const axios = require('axios');
-
+const MkPicker = require('./function/Mkpicker');
 //임시데이터
 const DATA = [
   {
@@ -63,115 +63,6 @@ const DATA = [
   },
 ];
 
-//picker 생성클래스
-class MkPicker extends Component {
-  constructor(props) {
-    super(props);
-    // this.setState({type: props});
-  }
-  state = {
-    default_type: '000',
-    data: [{id: '999', name: '임시'}],
-  };
-
-  // 변경되는 것을 자동으로 리플래시 되면서 반영함.
-  componentDidMount() {
-    console.log(this.state.default_type);
-    //분야 필터정보
-    axios.get('http://myks790.iptime.org:8082/board/major').then((response) => {
-      //state.data에 response로 받은 json 값을 넣어줌
-      this.setState({data: response.data});
-      // console.log('선택', this.state.data[0].name);
-      // console.log(this.state.data[0]);
-    });
-    //시도 필터정보
-    axios
-      .get('http://myks790.iptime.org:8082/board/location')
-      .then((response) => {
-        //state.data에 response로 받은 json 값을 넣어줌
-
-        this.setState({data: response.data});
-      });
-  }
-  render() {
-    //major_code를 code로 통일하면 함수를 통일할 수 있음
-    let pickerItems = this.state.data.map((item, i) => {
-      return <Picker.Item key={i} label={item.name} value={item.code} />;
-    });
-
-    return (
-      <View>
-        <Picker
-          selectedValue={this.state.default_type}
-          style={{height: 50, width: 150}}
-          onValueChange={(itemValue, itemIndex) => {
-            this.setState({default_type: itemValue});
-            console.log(this.state.default_type);
-          }}>
-          <Picker.Item label="시도명" value="000" />
-          {pickerItems}
-        </Picker>
-      </View>
-    );
-  }
-}
-
-//picker 생성클래스
-class MkPickerTest extends Component {
-  state = {
-    default_type: '000',
-    sido: [],
-    target: [],
-    major: [],
-    name: '',
-  };
-  nameFor = {
-    sido: '시도명',
-    target: '대상',
-    major: '분야',
-  };
-  constructor(props) {
-    super(props);
-  }
-
-  // 변경되는 것을 자동으로 리플래시 되면서 반영함.
-  componentDidMount() {
-    console.log(this.state.default_type);
-    //시도 필터정보
-    axios.get(this.props.url).then((response) => {
-      //state.data에 response로 받은 json 값을 넣어줌
-      var objForSettingFilter = {};
-      objForSettingFilter[this.props.filterName] = response.data;
-      this.setState(objForSettingFilter);
-      console.log(this.props.filterName);
-
-      this.setState({name: this.nameFor[this.props.filterName]});
-    });
-  }
-  render() {
-    //major_code를 code로 통일하면 함수를 통일할 수 있음
-    let pickerItems = this.state[this.props.filterName].map((item, i) => {
-      return <Picker.Item key={i} label={item.name} value={item.code} />;
-    });
-
-    return (
-      <View>
-        <Picker
-          selectedValue={this.state.default_type}
-          onValueChange={(itemValue, itemIndex) => {
-            this.setState({default_type: itemValue});
-            console.log(this.state.default_type);
-          }}>
-          <Picker.Item label={this.state.name} value="000" />
-          {pickerItems}
-        </Picker>
-      </View>
-    );
-  }
-}
-
-//picker 생성클래스
-
 //인증게시판 스크린 클래스
 class AuthBoardScreen extends Component {
   constructor(props) {
@@ -203,21 +94,22 @@ class AuthBoardScreen extends Component {
     return (
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
         <Text style={styles.title}>인증게시판</Text>
+
         <View style={{flex: 1, flexDirection: 'row'}}>
           <View style={{width: 120, height: 50}}>
-            <MkPickerTest
+            <MkPicker
               filterName={'sido'}
               url={'http://myks790.iptime.org:8082/board/location'}
             />
           </View>
           <View style={{width: 120, height: 50}}>
-            <MkPickerTest
+            <MkPicker
               filterName={'major'}
               url={'http://myks790.iptime.org:8082/board/major'}
             />
           </View>
           <View style={{width: 120, height: 50}}>
-            <MkPickerTest
+            <MkPicker
               filterName={'target'}
               url={'http://myks790.iptime.org:8082/board/target'}
             />
