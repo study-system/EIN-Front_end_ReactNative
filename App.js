@@ -120,11 +120,18 @@ class MkPicker extends Component {
 class MkPickerTest extends Component {
   state = {
     default_type: '000',
-    data: [{id: '999', name: '임시'}],
+    sido: [],
+    target: [],
+    major: [],
+    name: '',
+  };
+  nameFor = {
+    sido: '시도명',
+    target: '대상',
+    major: '분야',
   };
   constructor(props) {
     super(props);
-    // this.setState({type: props});
   }
 
   // 변경되는 것을 자동으로 리플래시 되면서 반영함.
@@ -136,11 +143,14 @@ class MkPickerTest extends Component {
       var objForSettingFilter = {};
       objForSettingFilter[this.props.filterName] = response.data;
       this.setState(objForSettingFilter);
+      console.log(this.props.filterName);
+
+      this.setState({name: this.nameFor[this.props.filterName]});
     });
   }
   render() {
     //major_code를 code로 통일하면 함수를 통일할 수 있음
-    let pickerItems = this.state.data.map((item, i) => {
+    let pickerItems = this.state[this.props.filterName].map((item, i) => {
       return <Picker.Item key={i} label={item.name} value={item.code} />;
     });
 
@@ -148,12 +158,11 @@ class MkPickerTest extends Component {
       <View>
         <Picker
           selectedValue={this.state.default_type}
-          style={{height: 50, width: 150}}
           onValueChange={(itemValue, itemIndex) => {
             this.setState({default_type: itemValue});
             console.log(this.state.default_type);
           }}>
-          <Picker.Item label="시도명" value="000" />
+          <Picker.Item label={this.state.name} value="000" />
           {pickerItems}
         </Picker>
       </View>
@@ -195,16 +204,24 @@ class AuthBoardScreen extends Component {
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
         <Text style={styles.title}>인증게시판</Text>
         <View style={{flex: 1, flexDirection: 'row'}}>
-          <View style={{width: 100, height: 50, backgroundColor: 'powderblue'}}>
-            <MkPicker />
-          </View>
-          <View style={{width: 100, height: 50, backgroundColor: 'skyblue'}}>
+          <View style={{width: 120, height: 50}}>
             <MkPickerTest
-              filterName={'data'}
+              filterName={'sido'}
               url={'http://myks790.iptime.org:8082/board/location'}
             />
           </View>
-          <View style={{width: 100, height: 50}}>{/* <MkPicker /> */}</View>
+          <View style={{width: 120, height: 50}}>
+            <MkPickerTest
+              filterName={'major'}
+              url={'http://myks790.iptime.org:8082/board/major'}
+            />
+          </View>
+          <View style={{width: 120, height: 50}}>
+            <MkPickerTest
+              filterName={'target'}
+              url={'http://myks790.iptime.org:8082/board/target'}
+            />
+          </View>
         </View>
         <View style={styles.tablHheader}>
           <View>
