@@ -62,6 +62,7 @@ const DATA = [
       '고양이고양이고양이고양이고양이고양이고양이고양이고양이고양이고양이고양이고양이고양이고양이고양이고양이고양이고양이고양이고양이고양이고양이고양이고양이',
   },
 ];
+
 //picker 생성클래스
 class MkPicker extends Component {
   constructor(props) {
@@ -76,24 +77,33 @@ class MkPicker extends Component {
   // 변경되는 것을 자동으로 리플래시 되면서 반영함.
   componentDidMount() {
     console.log(this.state.default_type);
+    //분야 필터정보
     axios.get('http://myks790.iptime.org:8082/board/major').then((response) => {
-      // console.log(this.state.data[0]);
       //state.data에 response로 받은 json 값을 넣어줌
       this.setState({data: response.data});
-      console.log('선택', this.state.data[0].name);
+      // console.log('선택', this.state.data[0].name);
+      // console.log(this.state.data[0]);
     });
+    //시도 필터정보
+    axios
+      .get('http://myks790.iptime.org:8082/board/location')
+      .then((response) => {
+        //state.data에 response로 받은 json 값을 넣어줌
+
+        this.setState({data: response.data});
+      });
   }
   render() {
     //major_code를 code로 통일하면 함수를 통일할 수 있음
     let pickerItems = this.state.data.map((item, i) => {
-      return <Picker.Item key={i} label={item.name} value={item.major_code} />;
+      return <Picker.Item key={i} label={item.name} value={item.code} />;
     });
 
     return (
       <View>
         <Picker
           selectedValue={this.state.default_type}
-          style={{height: 50, width: 100}}
+          style={{height: 50, width: 150}}
           onValueChange={(itemValue, itemIndex) => {
             this.setState({default_type: itemValue});
             console.log(this.state.default_type);
@@ -106,47 +116,68 @@ class MkPicker extends Component {
   }
 }
 
+//picker 생성클래스
+class MkPickerTest extends Component {
+  state = {
+    default_type: '000',
+    data: [{id: '999', name: '임시'}],
+  };
+  constructor(props) {
+    super(props);
+    // this.setState({type: props});
+  }
+
+  // 변경되는 것을 자동으로 리플래시 되면서 반영함.
+  componentDidMount() {
+    console.log(this.state.default_type);
+    //시도 필터정보
+    axios.get(this.props.url).then((response) => {
+      //state.data에 response로 받은 json 값을 넣어줌
+      var objForSettingFilter = {};
+      objForSettingFilter[this.props.filterName] = response.data;
+      this.setState(objForSettingFilter);
+    });
+  }
+  render() {
+    //major_code를 code로 통일하면 함수를 통일할 수 있음
+    let pickerItems = this.state.data.map((item, i) => {
+      return <Picker.Item key={i} label={item.name} value={item.code} />;
+    });
+
+    return (
+      <View>
+        <Picker
+          selectedValue={this.state.default_type}
+          style={{height: 50, width: 150}}
+          onValueChange={(itemValue, itemIndex) => {
+            this.setState({default_type: itemValue});
+            console.log(this.state.default_type);
+          }}>
+          <Picker.Item label="시도명" value="000" />
+          {pickerItems}
+        </Picker>
+      </View>
+    );
+  }
+}
+
+//picker 생성클래스
+
 //인증게시판 스크린 클래스
 class AuthBoardScreen extends Component {
   constructor(props) {
     super(props);
-    console.log('Auth', this.props.data2);
+    // console.log('Auth', this.props.data2);
   }
   state = {
     major: '000',
     sido: '000',
     target: '000',
-    data: [{id: '050', name: '임시'}],
   };
   // 변경되는 것을 자동으로 리플래시 되면서 반영함.
   componentDidMount() {
-    console.log(this.state.major);
-    axios
-      .get('http://myks790.iptime.org:8082/board/major')
-      .then((response) => {
-        console.log(response);
-        // console.log(this.state.data[0]);
-        //state.data에 response로 받은 json 값을 넣어줌
-        this.setState({data: response.data});
-        console.log('분야선택', this.state.data[0].name);
-      })
-      .catch(function (error) {
-        // handle error
-        console.log(error);
-        console.log('에러에러');
-      })
-      .then(function () {
-        // always executed
-      });
+    //변경되는 것 실행할 곳
   }
-  //나중에 쓸 수도 있음  쓰는법   {/* <this.AddT /> */}
-  // AddT = () => {
-  //   return (
-  //     <View>
-  //       <Text>{this.state.data[0].name}</Text>
-  //     </View>
-  //   );
-  // };
 
   render() {
     //포스트 하나 만드는 메서드
@@ -160,10 +191,6 @@ class AuthBoardScreen extends Component {
       <Item title={item.title} writer={item.writer} />
     );
 
-    let pickerItems = this.state.data.map((item, i) => {
-      return <Picker.Item key={i} label={item.name} value={item.major_code} />;
-    });
-
     return (
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
         <Text style={styles.title}>인증게시판</Text>
@@ -172,19 +199,19 @@ class AuthBoardScreen extends Component {
             <MkPicker />
           </View>
           <View style={{width: 100, height: 50, backgroundColor: 'skyblue'}}>
-            <MkPicker />
+            <MkPickerTest
+              filterName={'data'}
+              url={'http://myks790.iptime.org:8082/board/location'}
+            />
           </View>
-          <View style={{width: 100, height: 50}}>
-            <Picker
-              selectedValue={this.state.major}
-              style={{height: 50, width: 100}}
-              onValueChange={(itemValue, itemIndex) => {
-                this.setState({major: itemValue});
-                console.log(this.state.major);
-              }}>
-              <Picker.Item label="시도명" value="000" />
-              {pickerItems}
-            </Picker>
+          <View style={{width: 100, height: 50}}>{/* <MkPicker /> */}</View>
+        </View>
+        <View style={styles.tablHheader}>
+          <View>
+            <Text>제목</Text>
+          </View>
+          <View>
+            <Text>작성자</Text>
           </View>
         </View>
         <FlatList
@@ -300,9 +327,10 @@ const styles = StyleSheet.create({
     marginTop: StatusBar.currentHeight || 0,
   },
   item: {
-    backgroundColor: '#f9c2ff',
-    padding: 20,
-    marginVertical: 8,
+    backgroundColor: '#fff',
+    paddingVertical: 15,
+    paddingHorizontal: 100,
+    marginVertical: 2,
     marginHorizontal: 16,
     flex: 1,
     flexDirection: 'row',
@@ -313,5 +341,14 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 32,
     fontWeight: 'bold',
+  },
+  tablHheader: {
+    backgroundColor: '#fff',
+    paddingVertical: 15,
+    paddingHorizontal: 100,
+    marginVertical: 2,
+    marginHorizontal: 16,
+    flex: 1,
+    flexDirection: 'row',
   },
 });
