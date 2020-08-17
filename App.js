@@ -8,66 +8,38 @@ import {
   ScrollView,
   StatusBar,
   SliderComponent,
+  Button,
+  TouchableOpacity,
 } from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-
-import {Picker} from '@react-native-community/picker';
+import {createStackNavigator} from '@react-navigation/stack';
+// import {Picker} from '@react-native-community/picker';
+// import {TapGestureHandler} from 'react-native-gesture-handler';
 //스크린 임포트
 
 const axios = require('axios');
-const MkPicker = require('./function/Mkpicker');
-//임시데이터
-const DATA = [
-  {
-    id: '58694a0f-3da1-471f-bd96-145571e29d74',
-    title: 'Third Item',
-    writer: '유저2',
-    content:
-      '토끼토끼토끼토끼토끼토끼토끼토끼토끼토끼토끼토끼토끼토끼토끼토끼토끼토끼토끼토끼토끼토끼토끼토끼토끼토끼토끼토끼토끼토끼토끼토끼토끼토끼토끼토끼',
-  },
-  {
-    id: '58694a0f-3da1-471f-bd96-145571e29d75',
-    title: 'Second Item',
-    writer: '유저1',
-    content:
-      '강아지강아지강아지강아지강아지강아지강아지강아지강아지강아지강아지강아지강아지강아지강아지강아지강아지강아지강아지강아지강아지강아지강아지강아지',
-  },
-  {
-    id: '58694a0f-3da1-471f-bd96-145571e29d76',
-    title: 'First Item',
-    writer: '유저1',
-    content:
-      '고양이고양이고양이고양이고양이고양이고양이고양이고양이고양이고양이고양이고양이고양이고양이고양이고양이고양이고양이고양이고양이고양이고양이고양이고양이',
-  },
-  {
-    id: '58694a0f-3da1-471f-bd96-145571e29d77',
-    title: 'Third Item',
-    writer: '유저5',
-    content:
-      '토끼토끼토끼토끼토끼토끼토끼토끼토끼토끼토끼토끼토끼토끼토끼토끼토끼토끼토끼토끼토끼토끼토끼토끼토끼토끼토끼토끼토끼토끼토끼토끼토끼토끼토끼토끼',
-  },
-  {
-    id: '58694a0f-3da1-471f-bd96-145571e29d79',
-    title: 'Second Item',
-    writer: '유저5',
-    content:
-      '강아지강아지강아지강아지강아지강아지강아지강아지강아지강아지강아지강아지강아지강아지강아지강아지강아지강아지강아지강아지강아지강아지강아지강아지',
-  },
-  {
-    id: '58694a0f-3da1-471f-bd96-145571e29d78',
-    title: 'First Item',
-    writer: '유저5',
-    content:
-      '고양이고양이고양이고양이고양이고양이고양이고양이고양이고양이고양이고양이고양이고양이고양이고양이고양이고양이고양이고양이고양이고양이고양이고양이고양이',
-  },
-];
 
+const MkPicker = require('./function/Mkpicker');
+
+//
+function n({navigation}) {
+  return (
+    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+      <Text>Home screen</Text>
+      <Button
+        title="Go to Details"
+        onPress={() => navigation.navigate('Details')}
+      />
+    </View>
+  );
+}
 //인증게시판 스크린 클래스
 class AuthBoardScreen extends Component {
   constructor(props) {
     super(props);
     // console.log('Auth', this.props.data2);
+    console.log(props);
   }
   state = {
     major: '000',
@@ -76,6 +48,15 @@ class AuthBoardScreen extends Component {
   };
   // 변경되는 것을 자동으로 리플래시 되면서 반영함.
   componentDidMount() {
+    let url =
+      'http://myks790.iptime.org:8082/board?auth=true&page=1&pageSize=10';
+    axios.get(url).then((response) => {
+      //state.data에 response로 받은 json 값을 넣어줌
+      var objForSettingFilter = {};
+      objForSettingFilter.auth = response.data.contents;
+      this.setState(objForSettingFilter);
+      console.log(response.data.contents);
+    });
     //변경되는 것 실행할 곳
   }
 
@@ -88,13 +69,19 @@ class AuthBoardScreen extends Component {
       </View>
     );
     let renderItem = ({item}) => (
-      <Item title={item.title} writer={item.writer} />
+      <View>
+        <TouchableOpacity
+          style={{backgroundColor: '#fff'}}
+          onPress={() => this.props.navigation.navigate('Details')}>
+          <Item title={item.title} writer={item.nickname} />
+        </TouchableOpacity>
+      </View>
     );
 
     return (
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-        <Text style={styles.title}>인증게시판</Text>
-
+        {/* <Text style={styles.title}>인증게시판</Text> */}
+        {/* 필터링하는 부분 */}
         <View style={{flex: 1, flexDirection: 'row'}}>
           <View style={{width: 120, height: 50}}>
             <MkPicker
@@ -115,6 +102,7 @@ class AuthBoardScreen extends Component {
             />
           </View>
         </View>
+        {/* 게시판글 목록 */}
         <View style={styles.tablHheader}>
           <View>
             <Text>제목</Text>
@@ -123,10 +111,11 @@ class AuthBoardScreen extends Component {
             <Text>작성자</Text>
           </View>
         </View>
+
         <FlatList
-          data={DATA}
+          data={this.state.auth}
           renderItem={renderItem}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item) => String(item.id)}
         />
       </View>
     );
@@ -182,9 +171,37 @@ class PushAlarm extends Component {
     );
   }
 }
+function DetailsScreen() {
+  return (
+    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+      <Text>Details!</Text>
+    </View>
+  );
+}
+function HomeScreen({navigation}) {
+  return (
+    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+      <Text>Home screen</Text>
+      <Button
+        title="Go to Details"
+        onPress={() => navigation.navigate('Details')}
+      />
+    </View>
+  );
+}
+const HomeStack = createStackNavigator();
 
+function HomeStackScreen() {
+  return (
+    <HomeStack.Navigator>
+      <HomeStack.Screen name="인증게시판" component={AuthBoardScreen} />
+      <HomeStack.Screen name="Details" component={DetailsScreen} />
+    </HomeStack.Navigator>
+  );
+}
 // 탭 부분
 const Tab = createBottomTabNavigator();
+
 // 하단탭
 class MyTabs extends Component {
   constructor(props) {
@@ -202,6 +219,7 @@ class MyTabs extends Component {
         <Tab.Screen name="자유게시판" component={BoardScreen} />
         <Tab.Screen name="마이페이지" component={Mypage} />
         <Tab.Screen name="푸쉬알람" component={PushAlarm} />
+        <Tab.Screen name="Home" component={HomeStackScreen} />
       </Tab.Navigator>
     );
   }
@@ -223,7 +241,6 @@ export default class App extends Component {
     return (
       <NavigationContainer>
         <Text>{this.state.data[0].name}</Text>
-        {/* <Text>{this.state.data}</Text> */}
         <MyTabs data={this.state.data} />
       </NavigationContainer>
     );
@@ -237,7 +254,7 @@ const styles = StyleSheet.create({
   },
   item: {
     backgroundColor: '#fff',
-    paddingVertical: 15,
+    paddingVertical: 10,
     paddingHorizontal: 100,
     marginVertical: 2,
     marginHorizontal: 16,
@@ -247,15 +264,14 @@ const styles = StyleSheet.create({
   postTitle: {
     fontSize: 12,
   },
+
   title: {
     fontSize: 32,
     fontWeight: 'bold',
   },
   tablHheader: {
     backgroundColor: '#fff',
-    paddingVertical: 15,
-    paddingHorizontal: 100,
-    marginVertical: 2,
+    paddingHorizontal: 10,
     marginHorizontal: 16,
     flex: 1,
     flexDirection: 'row',

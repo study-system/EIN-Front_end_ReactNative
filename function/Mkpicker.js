@@ -46,13 +46,12 @@ class MkPicker extends Component {
       console.log(this.props.filterName);
 
       this.setState({name: this.nameFor[this.props.filterName]});
-      console.log(response.data);
     });
   }
   render() {
     //major_code를 code로 통일하면 함수를 통일할 수 있음
     let pickerItems = this.state[this.props.filterName].map((item, i) => {
-      return <Picker.Item key={i} label={item.name} value={item.code} />;
+      return <Picker.Item key={i} label={item.name} value={String(item.id)} />;
     });
 
     return (
@@ -63,7 +62,7 @@ class MkPicker extends Component {
             this.setState({default_type: itemValue});
             console.log(this.state.default_type);
           }}>
-          <Picker.Item label={this.state.name} value="000" />
+          <Picker.Item label={this.state.name} value="0" />
           {pickerItems}
         </Picker>
       </View>
