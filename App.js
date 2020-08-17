@@ -10,6 +10,7 @@ import {
   SliderComponent,
   Button,
   TouchableOpacity,
+  TextInput,
 } from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
@@ -21,19 +22,8 @@ import {createStackNavigator} from '@react-navigation/stack';
 const axios = require('axios');
 
 const MkPicker = require('./function/Mkpicker');
-
+const GetDetail = require('./function/GetDetail');
 //
-function n({navigation}) {
-  return (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <Text>Home screen</Text>
-      <Button
-        title="Go to Details"
-        onPress={() => navigation.navigate('Details')}
-      />
-    </View>
-  );
-}
 //인증게시판 스크린 클래스
 class AuthBoardScreen extends Component {
   constructor(props) {
@@ -72,7 +62,9 @@ class AuthBoardScreen extends Component {
       <View>
         <TouchableOpacity
           style={{backgroundColor: '#fff'}}
-          onPress={() => this.props.navigation.navigate('Details')}>
+          onPress={() => {
+            this.props.navigation.navigate('Details', {id: item.id});
+          }}>
           <Item title={item.title} writer={item.nickname} />
         </TouchableOpacity>
       </View>
@@ -172,31 +164,86 @@ class PushAlarm extends Component {
     );
   }
 }
-function DetailsScreen() {
+function DetailsScreen({route, navigation}) {
+  const {id} = route.params;
+
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <Button
+          onPress={() => {
+            navigation.navigate('Update', {id: id});
+          }}
+          title="수정"
+        />
+      ),
+    });
+  }, [navigation]);
+
   return (
     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <Text>Details!</Text>
-    </View>
-  );
-}
-function HomeScreen({navigation}) {
-  return (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <Text>Home screen</Text>
+      {/* <Text>{JSON.stringify(id)}</Text> */}
+
+      <GetDetail
+        url={'http://myks790.iptime.org:8082/board/' + JSON.stringify(id)}
+      />
       <Button
-        title="Go to Details"
-        onPress={() => navigation.navigate('Details')}
+        title="삭제하기"
+        onPress={() => {
+          navigation.navigate('Update', {id: id});
+        }}
       />
     </View>
   );
 }
+function UpdateScreen({route, navigation}) {
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <Button
+          onPress={() => {
+            navigation.navigate('Update');
+          }}
+          title="수정"
+        />
+      ),
+    });
+  }, [navigation]);
+
+  //
+  const [value, onChangeText] = React.useState('Useless Placeholder');
+
+  return (
+    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+      <Text>Udate!</Text>
+      <TextInput
+        style={{height: 40, width: 300, borderColor: 'gray', borderWidth: 1}}
+        onChangeText={(text) => onChangeText(text)}
+        value={value}
+      />
+      {/* <Text>{JSON.stringify(id)}</Text> */}
+    </View>
+  );
+}
+// function HomeScreen({navigation}) {
+//   return (
+//     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+//       <Text>Home screen</Text>
+//       <Button
+//         title="Go to Details"
+//         onPress={() => navigation.navigate('Details', '전달값')}
+//       />
+//     </View>
+//   );
+// }
 const HomeStack = createStackNavigator();
 
 function HomeStackScreen() {
   return (
     <HomeStack.Navigator>
       <HomeStack.Screen name="인증게시판" component={AuthBoardScreen} />
-      <HomeStack.Screen name="Details" component={DetailsScreen} />
+      <HomeStack.Screen name="Details" component={DetailsScreen} options={{}} />
+      <HomeStack.Screen name="Update" component={UpdateScreen} />
     </HomeStack.Navigator>
   );
 }

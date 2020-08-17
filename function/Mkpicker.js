@@ -44,7 +44,6 @@ class MkPicker extends Component {
       objForSettingFilter[this.props.filterName] = response.data;
       this.setState(objForSettingFilter);
       console.log(this.props.filterName);
-
       this.setState({name: this.nameFor[this.props.filterName]});
     });
   }
