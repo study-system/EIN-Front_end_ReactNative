@@ -103,6 +103,7 @@ class AuthBoardScreen extends Component {
           </View>
         </View>
         {/* 게시판글 목록 */}
+
         <View style={styles.tablHheader}>
           <View>
             <Text>제목</Text>
