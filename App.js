@@ -196,31 +196,66 @@ function DetailsScreen({route, navigation}) {
     </View>
   );
 }
+
 function UpdateScreen({route, navigation}) {
-  React.useLayoutEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <Button
-          onPress={() => {
-            navigation.navigate('Update');
-          }}
-          title="수정"
-        />
-      ),
-    });
-  }, [navigation]);
-
   //
-  const [value, onChangeText] = React.useState('Useless Placeholder');
-
+  let [text, setText] = React.useState({
+    title: '',
+    start_date: '',
+    end_date: '',
+    content: '',
+    location: '',
+    writer: '',
+  });
+  const onChange = (e) => {
+    //input의 name
+    console.log(e._dispatchInstances.memoizedProps.name);
+    //input의 값
+    console.log(e.nativeEvent.text);
+    // const {value, name} = e.target; // 우선 e.target 에서 name 과 value 를 추출
+    setText({
+      ...text, // 기존의 input 객체를 복사한 뒤
+      [e._dispatchInstances.memoizedProps.name]: e.nativeEvent.text, // name 키를 가진 값을 value 로 설정
+    });
+  };
   return (
     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
       <Text>Udate!</Text>
-      <TextInput
-        style={{height: 40, width: 300, borderColor: 'gray', borderWidth: 1}}
-        onChangeText={(text) => onChangeText(text)}
-        value={value}
+      <Button
+        onPress={() => {
+          navigation.navigate('Update');
+          alert(text.title + text.start_date);
+        }}
+        title="수정"
       />
+      <View style={{flex: 1, flexDirection: 'row'}}>
+        <Text>제목</Text>
+        <TextInput
+          name="title"
+          style={{height: 40, width: 200, backgroundColor: '#fff'}}
+          placeholder="Type here to translate!"
+          onChange={onChange}
+          defaultValue={text.title}
+        />
+      </View>
+      <View style={{flex: 1, flexDirection: 'row'}}>
+        <Text>시작날짜</Text>
+        <TextInput
+          name="start_date"
+          style={{height: 40, width: 100, backgroundColor: '#fff'}}
+          placeholder="Type here to translate!"
+          onChange={onChange}
+          defaultValue={text.start_date}
+        />
+        <Text>마감날짜</Text>
+        <TextInput
+          style={{height: 40, width: 100, backgroundColor: '#fff'}}
+          placeholder="Type here to translate!"
+          onChangeText={onChange}
+          defaultValue={text.end_date}
+        />
+      </View>
+      <Text>{text.title}</Text>
       {/* <Text>{JSON.stringify(id)}</Text> */}
     </View>
   );
