@@ -280,6 +280,22 @@ function UpdateScreen({route, navigation}) {
     // console.log(date);
     onChange(e);
   };
+  //validate 메소드들
+  //화면 리플레쉬 필요
+  const validateStartDate = () => {
+    const dateExp = /^\d{4}\-\d{2}\-\d{2}\ \d{2}\:\d{2}\:\d{2}/;
+    if (text.start_date.match(dateExp)) {
+      console.log('포맷성공start');
+      //버튼 disabled를 위한 거라 반대
+      text.validate_start_date = false;
+    } else {
+      console.log('포맷실패');
+      text.validate_start_date = true;
+    }
+    console.log(text.validate_start_date);
+    window.location.reload(false);
+  };
+
   const onSubmitUpdate = () => {
     axios
       .put('http://myks790.iptime.org:8082/board/' + id, {
@@ -322,7 +338,7 @@ function UpdateScreen({route, navigation}) {
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.scrollView}>
         <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-          <Text>Udate!</Text>
+          <Text>Udate! </Text>
           <Button
             onPress={() => {
               navigation.navigate('Update');
@@ -354,7 +370,7 @@ function UpdateScreen({route, navigation}) {
             <Text>제목</Text>
             <TextInput
               name="title"
-              style={{height: 40, width: 200, backgroundColor: '#fff'}}
+              style={{height: 40, width: 350, backgroundColor: '#fff'}}
               placeholder="Type here to translate!"
               onChange={onChange}
               defaultValue={text.title}
@@ -364,16 +380,16 @@ function UpdateScreen({route, navigation}) {
             <Text>시작날짜</Text>
             <TextInput
               name="start_date"
-              style={{height: 40, width: 100, backgroundColor: '#fff'}}
-              placeholder="Type here to translate!"
+              style={{height: 40, width: 150, backgroundColor: '#fff'}}
+              placeholder="2020-01-01 12:00:00"
               onChange={validateDate}
               defaultValue={text.start_date}
             />
             <Text>마감날짜</Text>
             <TextInput
               name="end_date"
-              style={{height: 40, width: 200, backgroundColor: '#fff'}}
-              placeholder="Type here to translate!"
+              style={{height: 40, width: 150, backgroundColor: '#fff'}}
+              placeholder="2020-01-01 12:00:00"
               onChange={validateDate}
               defaultValue={text.end_date}
             />
