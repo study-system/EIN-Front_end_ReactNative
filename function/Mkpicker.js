@@ -34,6 +34,10 @@ class MkPicker extends Component {
     super(props);
   }
 
+  onFormSubmit = (value, name) => {
+    this.props.onSubmit({value: value, name: name});
+  };
+
   // 변경되는 것을 자동으로 리플래시 되면서 반영함.
   componentDidMount() {
     console.log(this.state.default_type);
@@ -59,6 +63,7 @@ class MkPicker extends Component {
           selectedValue={this.state.default_type}
           onValueChange={(itemValue, itemIndex) => {
             this.setState({default_type: itemValue});
+            this.onFormSubmit(itemValue, this.props.filterName);
             console.log(this.state.default_type);
           }}>
           <Picker.Item label={this.state.name} value="0" />

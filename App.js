@@ -20,7 +20,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 //스크린 임포트
 
 const axios = require('axios');
-
+const moment = require('moment');
 const MkPicker = require('./function/Mkpicker');
 const GetDetail = require('./function/GetDetail');
 //
@@ -110,6 +110,12 @@ class AuthBoardScreen extends Component {
           renderItem={renderItem}
           keyExtractor={(item) => String(item.id)}
         />
+        <Button
+          title="임시"
+          onPress={() => {
+            this.props.navigation.navigate('Update', {id: '1'});
+          }}
+        />
       </View>
     );
   }
@@ -198,66 +204,218 @@ function DetailsScreen({route, navigation}) {
 }
 
 function UpdateScreen({route, navigation}) {
-  //
-  let [text, setText] = React.useState({
+  //임시id변수
+  const userId = 'user';
+  const {id} = route.params;
+  const [text, setText] = React.useState({
     title: '',
     start_date: '',
+    validate_start_date: true,
     end_date: '',
+    validate_end_date: true,
     content: '',
     location: '',
+    major: '',
+    target: '',
     writer: '',
   });
+
   const onChange = (e) => {
     //input의 name
     console.log(e._dispatchInstances.memoizedProps.name);
     //input의 값
     console.log(e.nativeEvent.text);
-    // const {value, name} = e.target; // 우선 e.target 에서 name 과 value 를 추출
     setText({
-      ...text, // 기존의 input 객체를 복사한 뒤
+      ...text, // 기존의 객체를 복사한 뒤
       [e._dispatchInstances.memoizedProps.name]: e.nativeEvent.text, // name 키를 가진 값을 value 로 설정
     });
   };
+
+  //picker 데이터를 부모로 가져옴 메서드용
+  let onSubmitPicker = (tmp) => {
+    console.log(tmp);
+    if (tmp.name == 'sido') {
+      text.location = tmp.value;
+    }
+    if (tmp.name == 'major') {
+      text.major = tmp.value;
+    }
+    if (tmp.name == 'target') {
+      text.target = tmp.value;
+    }
+  };
+  const validateDate = (e) => {
+    const dateExp = /^\d{4}\-\d{2}\-\d{2}\ \d{2}\:\d{2}\:\d{2}/;
+    const tmpExp = /^\d{4}\-\d{2}\-\d{2}/;
+    if (e.nativeEvent.text.match(dateExp)) {
+      var com_ymd = moment('2015-01-01 11:11:11').format(
+        'YYYY-MM-DDTHH:mm:ss.SSSZ',
+      );
+      // alert('결과 : ' + com_ymd);
+      console.log('포맷성공');
+      //버튼 disabled를 위한 거라 반대
+
+      if (e._dispatchInstances.memoizedProps.name == 'start_date') {
+        text.validate_start_date = false;
+        console.log('start');
+      } else {
+        text.validate_end_date = false;
+        console.log('end');
+      }
+    } else {
+      console.log('포맷실패');
+      if (e._dispatchInstances.memoizedProps.name == 'start_date') {
+        text.validate_start_date = true;
+        console.log('start');
+      } else {
+        text.validate_end_date = true;
+        console.log('end');
+      }
+    }
+
+    // var da = new Date('2015-03-04T00:00:00.000Z');
+
+    //shxrecord.tistory.com/139 [첫 발]
+    // var date = new Date('1111.11.11').format('2020-07-01T09:12:28.000Z');
+    // console.log(date);
+    onChange(e);
+  };
+  const onSubmitUpdate = () => {
+    axios
+      .put('http://myks790.iptime.org:8082/board/' + id, {
+        title: '여름 코딩 캠프',
+        start_date: '2020-07-01T09:12:28.000Z',
+        end_date: '2020-07-21T09:12:28.000Z',
+        content: '9박 10일 여름 코딩 캠프~~~',
+        location_id: 17,
+        major_id: 1,
+        target_id: 1,
+      })
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+  const onSubmitCreate = () => {
+    axios
+      .post('/user', {
+        userId: 1,
+        title: '생성',
+        start_date: '2020-07-01T09:12:28.000Z',
+        end_date: '2020-07-21T09:12:28.000Z',
+        content: '14박 15일 여름 코딩 캠프~~~',
+        location_id: 17,
+        major_id: 1,
+        target_id: 1,
+      })
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
   return (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <Text>Udate!</Text>
-      <Button
-        onPress={() => {
-          navigation.navigate('Update');
-          alert(text.title + text.start_date);
-        }}
-        title="수정"
-      />
-      <View style={{flex: 1, flexDirection: 'row'}}>
-        <Text>제목</Text>
-        <TextInput
-          name="title"
-          style={{height: 40, width: 200, backgroundColor: '#fff'}}
-          placeholder="Type here to translate!"
-          onChange={onChange}
-          defaultValue={text.title}
-        />
-      </View>
-      <View style={{flex: 1, flexDirection: 'row'}}>
-        <Text>시작날짜</Text>
-        <TextInput
-          name="start_date"
-          style={{height: 40, width: 100, backgroundColor: '#fff'}}
-          placeholder="Type here to translate!"
-          onChange={onChange}
-          defaultValue={text.start_date}
-        />
-        <Text>마감날짜</Text>
-        <TextInput
-          style={{height: 40, width: 100, backgroundColor: '#fff'}}
-          placeholder="Type here to translate!"
-          onChangeText={onChange}
-          defaultValue={text.end_date}
-        />
-      </View>
-      <Text>{text.title}</Text>
-      {/* <Text>{JSON.stringify(id)}</Text> */}
-    </View>
+    <SafeAreaView style={styles.container}>
+      <ScrollView style={styles.scrollView}>
+        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+          <Text>Udate!</Text>
+          <Button
+            onPress={() => {
+              navigation.navigate('Update');
+              alert(
+                'title:' +
+                  text.title +
+                  '\n date:' +
+                  text.start_date +
+                  'to' +
+                  text.end_date +
+                  '\n content:' +
+                  text.content +
+                  '\n loc:' +
+                  text.location +
+                  '\n major:' +
+                  text.major +
+                  '\n target:' +
+                  text.target +
+                  '\n writer:' +
+                  userId +
+                  '\n boardId' +
+                  id,
+              );
+            }}
+            title="수정"
+            disabled={text.validate_start_date || text.validate_end_date}
+          />
+          <View style={{flex: 1, flexDirection: 'row'}}>
+            <Text>제목</Text>
+            <TextInput
+              name="title"
+              style={{height: 40, width: 200, backgroundColor: '#fff'}}
+              placeholder="Type here to translate!"
+              onChange={onChange}
+              defaultValue={text.title}
+            />
+          </View>
+          <View style={{flex: 1, flexDirection: 'row'}}>
+            <Text>시작날짜</Text>
+            <TextInput
+              name="start_date"
+              style={{height: 40, width: 100, backgroundColor: '#fff'}}
+              placeholder="Type here to translate!"
+              onChange={validateDate}
+              defaultValue={text.start_date}
+            />
+            <Text>마감날짜</Text>
+            <TextInput
+              name="end_date"
+              style={{height: 40, width: 200, backgroundColor: '#fff'}}
+              placeholder="Type here to translate!"
+              onChange={validateDate}
+              defaultValue={text.end_date}
+            />
+          </View>
+          <TextInput
+            name="content"
+            multiline
+            style={{height: 250, width: 250, backgroundColor: '#fff'}}
+            numberOfLines={4}
+            onChange={onChange}
+            value={text.content}
+            editable
+            maxLength={300}
+          />
+          <View style={{flex: 1, flexDirection: 'row'}}>
+            <View style={{width: 120, height: 50}}>
+              <MkPicker
+                filterName={'sido'}
+                url={'http://myks790.iptime.org:8082/board/location'}
+                onSubmit={onSubmitPicker}
+              />
+            </View>
+            <View style={{width: 120, height: 50}}>
+              <MkPicker
+                filterName={'major'}
+                url={'http://myks790.iptime.org:8082/board/major'}
+                onSubmit={onSubmitPicker}
+              />
+            </View>
+            <View style={{width: 120, height: 50}}>
+              <MkPicker
+                filterName={'target'}
+                url={'http://myks790.iptime.org:8082/board/target'}
+                onSubmit={onSubmitPicker}
+              />
+            </View>
+          </View>
+          <Text>{text.content}</Text>
+          {/* <Text>{JSON.stringify(id)}</Text> */}
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 // function HomeScreen({navigation}) {
