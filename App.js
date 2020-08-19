@@ -11,6 +11,7 @@ import {
   Button,
   TouchableOpacity,
   TextInput,
+  Alert,
 } from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
@@ -28,9 +29,9 @@ const GetDetail = require('./function/GetDetail');
 class AuthBoardScreen extends Component {
   state = {
     auth: 'no',
-    major: '000',
-    sido: '000',
-    target: '000',
+    major: '0',
+    sido: '0',
+    target: '0',
   };
   constructor(props) {
     super(props);
@@ -68,7 +69,7 @@ class AuthBoardScreen extends Component {
           style={{backgroundColor: '#fff'}}
           onPress={() => {
             this.props.navigation.navigate('Details', {
-              id: item.id,
+              boardId: item.id,
               auth: this.state.auth,
             });
           }}>
@@ -76,7 +77,19 @@ class AuthBoardScreen extends Component {
         </TouchableOpacity>
       </View>
     );
-
+    const onSubmitPicker = (tmp) => {
+      if (tmp.name == 'sido') {
+        // text.location = tmp.value;
+        this.state.location = tmp.value;
+        console.log(this.state.location);
+      }
+      if (tmp.name == 'major') {
+        this.state.major = tmp.value;
+      }
+      if (tmp.name == 'target') {
+        this.state.target = tmp.value;
+      }
+    };
     return (
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
         {/* <Text style={styles.title}>인증게시판</Text> */}
@@ -86,6 +99,7 @@ class AuthBoardScreen extends Component {
             <MkPicker
               filterName={'sido'}
               url={'http://myks790.iptime.org:8082/board/location'}
+              onSubmit={onSubmitPicker}
             />
           </View>
           <View style={{width: 120, height: 50}}>
@@ -118,10 +132,9 @@ class AuthBoardScreen extends Component {
           keyExtractor={(item) => String(item.id)}
         />
         <Button
-          title="임시"
+          title="글쓰기"
           onPress={() => {
             this.props.navigation.navigate('Update', {
-              id: '1',
               auth: this.state.auth,
             });
           }}
@@ -181,7 +194,7 @@ class PushAlarm extends Component {
   }
 }
 function DetailsScreen({route, navigation}) {
-  const {id} = route.params;
+  const {boardId} = route.params;
   const {auth} = route.params;
   console.log(auth);
 
@@ -190,7 +203,7 @@ function DetailsScreen({route, navigation}) {
       headerRight: () => (
         <Button
           onPress={() => {
-            navigation.navigate('Update', {id: id, auth: auth});
+            navigation.navigate('Update', {boardId: boardId, auth: auth});
           }}
           title="수정"
         />
@@ -198,17 +211,47 @@ function DetailsScreen({route, navigation}) {
     });
   }, [navigation]);
 
+  const deleteCreateAlert = () =>
+    Alert.alert(
+      '확인',
+      '정말 게시글을 삭제하시겠습니까?',
+      [
+        {
+          text: '취소',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel',
+        },
+        {text: '확인', onPress: () => onSubmitDelete()},
+        ,
+      ],
+      {cancelable: false},
+    );
+
+  const onSubmitDelete = () => {
+    axios
+      .delete('http://myks790.iptime.org:8082/board/' + boardId)
+      .then(function (response) {
+        console.log(response);
+
+        navigation.navigate('인증게시판');
+        console.log('글삭제성공');
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
   return (
     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
       {/* <Text>{JSON.stringify(id)}</Text> */}
 
       <GetDetail
-        url={'http://myks790.iptime.org:8082/board/' + JSON.stringify(id)}
+        url={'http://myks790.iptime.org:8082/board/' + JSON.stringify(boardId)}
       />
       <Button
         title="삭제하기"
         onPress={() => {
-          navigation.navigate('Update', {id: id});
+          deleteCreateAlert();
         }}
       />
     </View>
@@ -217,11 +260,16 @@ function DetailsScreen({route, navigation}) {
 
 function UpdateScreen({route, navigation}) {
   //임시변수 로그인 만든 후에는 쿠키에서 가져오자
-  const userId = 'user';
+  const userId = 1;
   //게시글의 id
   console.log(route);
-  const {id} = route.params;
+  const {boardId} = route.params;
+  // if (boardId) {
+  //   console.log('test성공');
+  // }
   const {auth} = route.params;
+  console.log('boardId', boardId, auth);
+
   //input과 입력받은값 유효성체크를 위한
   const [text, setText] = React.useState({
     //글제목
@@ -268,10 +316,7 @@ function UpdateScreen({route, navigation}) {
   const onSubmitPicker = (tmp) => {
     if (tmp.name == 'sido') {
       // text.location = tmp.value;
-      setText({
-        ...text, // 기존의 객체를 복사한 뒤
-        ['location']: tmp.value, // name 키를 가진 값을 value 로 설정
-      });
+      text.location = tmp.value;
       console.log(text.location);
     }
     if (tmp.name == 'major') {
@@ -389,39 +434,51 @@ function UpdateScreen({route, navigation}) {
   };
   const dateFormat = (date) => {
     //나중에 요청보내는 곳으로
-    return moment(text.start_date).format('YYYY-MM-DDTHH:mm:ss.SSSZ');
+
+    return moment(date).utcOffset(0).toISOString();
+  };
+  const toggleButton = () => {
+    if (boardId) {
+      onSubmitUpdate();
+    } else {
+      onSubmitCreate();
+    }
+  };
+  var jsonForUpdate = {
+    title: text.title,
+    start_date: dateFormat(text.start_date),
+    end_date: dateFormat(text.end_date),
+    content: text.content,
+    location_id: Number(text.location),
+    major_id: Number(text.major),
+    target_id: Number(text.target),
   };
   const onSubmitUpdate = () => {
     axios
-      .put('http://myks790.iptime.org:8082/board/' + id, {
-        title: '여름 코딩 캠프',
-        start_date: '2020-07-01T09:12:28.000Z',
-        end_date: '2020-07-21T09:12:28.000Z',
-        content: '9박 10일 여름 코딩 캠프~~~',
-        location_id: 17,
-        major_id: 1,
-        target_id: 1,
-      })
+      .put('http://myks790.iptime.org:8082/board/' + boardId, jsonForUpdate)
       .then(function (response) {
         console.log(response);
+        console.log('글수정성공');
       })
       .catch(function (error) {
         console.log(error);
       });
   };
+  var jsonForCreate = {
+    user_id: text.writer,
+    title: text.title,
+    start_date: dateFormat(text.start_date),
+    end_date: dateFormat(text.end_date),
+    content: text.content,
+    location_id: Number(text.location),
+    major_id: Number(text.major),
+    target_id: Number(text.target),
+    auth: auth,
+  };
+  console.log(jsonForCreate);
   const onSubmitCreate = () => {
     axios
-      .post('http://myks790.iptime.org:8082/board', {
-        userId: text.writer,
-        title: text.title,
-        start_date: dateFormat(text.start_date),
-        end_date: dateFormat(text.end_date),
-        content: text.component,
-        location_id: text.location,
-        major_id: text.major,
-        target_id: text.target,
-        auth: auth,
-      })
+      .post('http://myks790.iptime.org:8082/board', jsonForCreate)
       .then(function (response) {
         console.log('글쓰기 성공', response);
       })
@@ -430,6 +487,28 @@ function UpdateScreen({route, navigation}) {
       });
   };
 
+  const booleanCheck = (booleanValue) => {
+    if (booleanValue) {
+      return 'True';
+    } else {
+      return 'False';
+    }
+  };
+  // console.log(
+  //   booleanCheck(text.validate_start_date) +
+  //     '\n' +
+  //     booleanCheck(text.validate_end_date) +
+  //     '\n' +
+  //     booleanCheck(text.validate_title) +
+  //     '\n' +
+  //     booleanCheck(text.validate_content) +
+  //     '\n' +
+  //     booleanCheck(text.validate_location) +
+  //     '\n' +
+  //     booleanCheck(text.validate_major) +
+  //     '\n' +
+  //     booleanCheck(text.validate_target),
+  // );
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.scrollView}>
@@ -437,7 +516,8 @@ function UpdateScreen({route, navigation}) {
           <Text>Udate! </Text>
           <Button
             onPress={() => {
-              navigation.navigate('Update');
+              toggleButton();
+              navigation.navigate('인증게시판');
               alert(
                 'title:' +
                   text.title +
@@ -456,7 +536,7 @@ function UpdateScreen({route, navigation}) {
                   '\n writer:' +
                   userId +
                   '\n boardId' +
-                  id +
+                  boardId +
                   '   ' +
                   text.validate_location,
               );
@@ -534,7 +614,6 @@ function UpdateScreen({route, navigation}) {
             maxLength={300}
           />
 
-          <Text>{text.content}</Text>
           {/* <Text>{JSON.stringify(id)}</Text> */}
         </View>
       </ScrollView>
