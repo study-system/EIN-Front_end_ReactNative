@@ -26,28 +26,32 @@ const GetDetail = require('./function/GetDetail');
 //
 //인증게시판 스크린 클래스
 class AuthBoardScreen extends Component {
-  constructor(props) {
-    super(props);
-    // console.log('Auth', this.props.data2);
-    console.log(props);
-  }
   state = {
+    auth: 'no',
     major: '000',
     sido: '000',
     target: '000',
   };
-  // 변경되는 것을 자동으로 리플래시 되면서 반영함.
+  constructor(props) {
+    super(props);
+    // console.log('Auth', this.props.data2);
+    console.log(props);
+    this.state.auth = props.route.params.auth;
+  }
+
+  // 실행한 결과가 오면 자동으로 리플래시 되면서 반영함. 1번
   componentDidMount() {
     let url =
-      'http://myks790.iptime.org:8082/board?auth=yes&page=1&pageSize=10';
+      'http://myks790.iptime.org:8082/board?auth=' +
+      this.state.auth +
+      '&page=1&pageSize=10';
     axios.get(url).then((response) => {
       //state.data에 response로 받은 json 값을 넣어줌
       var objForSettingFilter = {};
-      objForSettingFilter.auth = response.data.contents;
+      objForSettingFilter.authBoard = response.data.contents;
       this.setState(objForSettingFilter);
       console.log(response.data.contents);
     });
-    //변경되는 것 실행할 곳
   }
 
   render() {
@@ -63,7 +67,10 @@ class AuthBoardScreen extends Component {
         <TouchableOpacity
           style={{backgroundColor: '#fff'}}
           onPress={() => {
-            this.props.navigation.navigate('Details', {id: item.id});
+            this.props.navigation.navigate('Details', {
+              id: item.id,
+              auth: this.state.auth,
+            });
           }}>
           <Item title={item.title} writer={item.nickname} />
         </TouchableOpacity>
@@ -106,14 +113,17 @@ class AuthBoardScreen extends Component {
         </View>
 
         <FlatList
-          data={this.state.auth}
+          data={this.state.authBoard}
           renderItem={renderItem}
           keyExtractor={(item) => String(item.id)}
         />
         <Button
           title="임시"
           onPress={() => {
-            this.props.navigation.navigate('Update', {id: '1'});
+            this.props.navigation.navigate('Update', {
+              id: '1',
+              auth: this.state.auth,
+            });
           }}
         />
       </View>
@@ -172,13 +182,15 @@ class PushAlarm extends Component {
 }
 function DetailsScreen({route, navigation}) {
   const {id} = route.params;
+  const {auth} = route.params;
+  console.log(auth);
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
         <Button
           onPress={() => {
-            navigation.navigate('Update', {id: id});
+            navigation.navigate('Update', {id: id, auth: auth});
           }}
           title="수정"
         />
@@ -207,7 +219,9 @@ function UpdateScreen({route, navigation}) {
   //임시변수 로그인 만든 후에는 쿠키에서 가져오자
   const userId = 'user';
   //게시글의 id
+  console.log(route);
   const {id} = route.params;
+  const {auth} = route.params;
   //input과 입력받은값 유효성체크를 위한
   const [text, setText] = React.useState({
     //글제목
@@ -234,6 +248,9 @@ function UpdateScreen({route, navigation}) {
     //글작성자
     writer: userId,
     validate_writer: false,
+    //추후추가
+    imgUrl: '',
+    validate_imgUrl: false,
   });
   //input의 onChange에 쓸 메소드
   const onChange = (e) => {
@@ -395,7 +412,7 @@ function UpdateScreen({route, navigation}) {
   const onSubmitCreate = () => {
     axios
       .post('http://myks790.iptime.org:8082/board', {
-        userId: 1,
+        userId: text.writer,
         title: text.title,
         start_date: dateFormat(text.start_date),
         end_date: dateFormat(text.end_date),
@@ -403,6 +420,7 @@ function UpdateScreen({route, navigation}) {
         location_id: text.location,
         major_id: text.major,
         target_id: text.target,
+        auth: auth,
       })
       .then(function (response) {
         console.log('글쓰기 성공', response);
@@ -529,7 +547,11 @@ const HomeStack = createStackNavigator();
 function HomeStackScreen() {
   return (
     <HomeStack.Navigator>
-      <HomeStack.Screen name="인증게시판" component={AuthBoardScreen} />
+      <HomeStack.Screen
+        name="인증게시판"
+        component={AuthBoardScreen}
+        initialParams={{auth: 'yes'}}
+      />
       <HomeStack.Screen name="Details" component={DetailsScreen} options={{}} />
       <HomeStack.Screen name="Update" component={UpdateScreen} />
     </HomeStack.Navigator>
