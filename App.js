@@ -1,4 +1,4 @@
-import React, {useState, Component} from 'react';
+import React, { useState, Component } from 'react';
 import {
   SafeAreaView,
   FlatList,
@@ -13,9 +13,9 @@ import {
   TextInput,
   Alert,
 } from 'react-native';
-import {NavigationContainer} from '@react-navigation/native';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {createStackNavigator} from '@react-navigation/stack';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createStackNavigator } from '@react-navigation/stack';
 // import {Picker} from '@react-native-community/picker';
 // import {TapGestureHandler} from 'react-native-gesture-handler';
 //스크린 임포트
@@ -57,16 +57,16 @@ class AuthBoardScreen extends Component {
 
   render() {
     //포스트 하나 만드는 메서드
-    let Item = ({title, writer}) => (
+    let Item = ({ title, writer }) => (
       <View style={styles.item}>
         <Text style={styles.postTitle}>{title} </Text>
         <Text style={styles.postTitle}>{writer}</Text>
       </View>
     );
-    let renderItem = ({item}) => (
+    let renderItem = ({ item }) => (
       <View>
         <TouchableOpacity
-          style={{backgroundColor: '#fff'}}
+          style={{ backgroundColor: '#fff' }}
           onPress={() => {
             this.props.navigation.navigate('Details', {
               boardId: item.id,
@@ -90,28 +90,46 @@ class AuthBoardScreen extends Component {
         this.state.target = tmp.value;
       }
     };
+
+    const getList = (auth, page, location, major, target) => {
+      let url =
+        'http://myks790.iptime.org:8082/board?auth=' +
+        auth +
+        '&page=' +
+        page +
+        '&pageSize=10';
+      axios.get(url).then((response) => {
+        //state.data에 response로 받은 json 값을 넣어줌
+        var objForSettingFilter = {};
+        objForSettingFilter.authBoard = response.data.contents;
+        this.setState(objForSettingFilter);
+        console.log(response.data.contents);
+      });
+    };
     return (
-      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         {/* <Text style={styles.title}>인증게시판</Text> */}
         {/* 필터링하는 부분 */}
-        <View style={{flex: 1, flexDirection: 'row'}}>
-          <View style={{width: 120, height: 50}}>
+        <View style={{ flex: 1, flexDirection: 'row' }}>
+          <View style={{ width: 120, height: 50 }}>
             <MkPicker
               filterName={'sido'}
               url={'http://myks790.iptime.org:8082/board/location'}
               onSubmit={onSubmitPicker}
             />
           </View>
-          <View style={{width: 120, height: 50}}>
+          <View style={{ width: 120, height: 50 }}>
             <MkPicker
               filterName={'major'}
               url={'http://myks790.iptime.org:8082/board/major'}
+              onSubmit={onSubmitPicker}
             />
           </View>
-          <View style={{width: 120, height: 50}}>
+          <View style={{ width: 120, height: 50 }}>
             <MkPicker
               filterName={'target'}
               url={'http://myks790.iptime.org:8082/board/target'}
+              onSubmit={onSubmitPicker}
             />
           </View>
         </View>
@@ -148,7 +166,7 @@ class AuthBoardScreen extends Component {
 class BoardScreen extends Component {
   render() {
     return (
-      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <Text>자유게시판입니다.</Text>
       </View>
     );
@@ -158,7 +176,7 @@ class BoardScreen extends Component {
 class Mypage extends Component {
   render() {
     return (
-      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <Text>마이페이지입니다.</Text>
       </View>
     );
@@ -193,9 +211,9 @@ class PushAlarm extends Component {
     );
   }
 }
-function DetailsScreen({route, navigation}) {
-  const {boardId} = route.params;
-  const {auth} = route.params;
+function DetailsScreen({ route, navigation }) {
+  const { boardId } = route.params;
+  const { auth } = route.params;
   console.log(auth);
 
   React.useLayoutEffect(() => {
@@ -203,7 +221,7 @@ function DetailsScreen({route, navigation}) {
       headerRight: () => (
         <Button
           onPress={() => {
-            navigation.navigate('Update', {boardId: boardId, auth: auth});
+            navigation.navigate('Update', { boardId: boardId, auth: auth });
           }}
           title="수정"
         />
@@ -221,10 +239,10 @@ function DetailsScreen({route, navigation}) {
           onPress: () => console.log('Cancel Pressed'),
           style: 'cancel',
         },
-        {text: '확인', onPress: () => onSubmitDelete()},
+        { text: '확인', onPress: () => onSubmitDelete() },
         ,
       ],
-      {cancelable: false},
+      { cancelable: false },
     );
 
   const onSubmitDelete = () => {
@@ -242,7 +260,7 @@ function DetailsScreen({route, navigation}) {
   };
 
   return (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       {/* <Text>{JSON.stringify(id)}</Text> */}
 
       <GetDetail
@@ -258,16 +276,16 @@ function DetailsScreen({route, navigation}) {
   );
 }
 
-function UpdateScreen({route, navigation}) {
+function UpdateScreen({ route, navigation }) {
   //임시변수 로그인 만든 후에는 쿠키에서 가져오자
   const userId = 1;
   //게시글의 id
   console.log(route);
-  const {boardId} = route.params;
+  const { boardId } = route.params;
   // if (boardId) {
   //   console.log('test성공');
   // }
-  const {auth} = route.params;
+  const { auth } = route.params;
   console.log('boardId', boardId, auth);
 
   //input과 입력받은값 유효성체크를 위한
@@ -512,7 +530,7 @@ function UpdateScreen({route, navigation}) {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.scrollView}>
-        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
           <Text>Udate! </Text>
           <Button
             onPress={() => {
@@ -520,25 +538,25 @@ function UpdateScreen({route, navigation}) {
               navigation.navigate('인증게시판');
               alert(
                 'title:' +
-                  text.title +
-                  '\n date:' +
-                  text.start_date +
-                  'to' +
-                  text.end_date +
-                  '\n content:' +
-                  text.content +
-                  '\n loc:' +
-                  text.location +
-                  '\n major:' +
-                  text.major +
-                  '\n target:' +
-                  text.target +
-                  '\n writer:' +
-                  userId +
-                  '\n boardId' +
-                  boardId +
-                  '   ' +
-                  text.validate_location,
+                text.title +
+                '\n date:' +
+                text.start_date +
+                'to' +
+                text.end_date +
+                '\n content:' +
+                text.content +
+                '\n loc:' +
+                text.location +
+                '\n major:' +
+                text.major +
+                '\n target:' +
+                text.target +
+                '\n writer:' +
+                userId +
+                '\n boardId' +
+                boardId +
+                '   ' +
+                text.validate_location,
               );
             }}
             title="수정"
@@ -552,32 +570,32 @@ function UpdateScreen({route, navigation}) {
               text.validate_target
             }
           />
-          <View style={{flex: 1, flexDirection: 'row'}}>
+          <View style={{ flex: 1, flexDirection: 'row' }}>
             <Text>제목</Text>
             <TextInput
               name="title"
-              style={{height: 40, width: 350, backgroundColor: '#fff'}}
+              style={{ height: 40, width: 350, backgroundColor: '#fff' }}
               placeholder="Type here to translate!"
               onChange={validateTitle}
               defaultValue={text.title}
             />
           </View>
-          <View style={{flex: 1, flexDirection: 'row'}}>
-            <View style={{width: 120, height: 50}}>
+          <View style={{ flex: 1, flexDirection: 'row' }}>
+            <View style={{ width: 120, height: 50 }}>
               <MkPicker
                 filterName={'sido'}
                 url={'http://myks790.iptime.org:8082/board/location'}
                 onSubmit={onSubmitPicker}
               />
             </View>
-            <View style={{width: 120, height: 50}}>
+            <View style={{ width: 120, height: 50 }}>
               <MkPicker
                 filterName={'major'}
                 url={'http://myks790.iptime.org:8082/board/major'}
                 onSubmit={onSubmitPicker}
               />
             </View>
-            <View style={{width: 120, height: 50}}>
+            <View style={{ width: 120, height: 50 }}>
               <MkPicker
                 filterName={'target'}
                 url={'http://myks790.iptime.org:8082/board/target'}
@@ -585,11 +603,11 @@ function UpdateScreen({route, navigation}) {
               />
             </View>
           </View>
-          <View style={{flex: 1, flexDirection: 'row'}}>
+          <View style={{ flex: 1, flexDirection: 'row' }}>
             <Text>시작날짜</Text>
             <TextInput
               name="start_date"
-              style={{height: 40, width: 150, backgroundColor: '#fff'}}
+              style={{ height: 40, width: 150, backgroundColor: '#fff' }}
               placeholder="2020-01-01 12:00:00"
               onChange={validateDate}
               defaultValue={text.start_date}
@@ -597,7 +615,7 @@ function UpdateScreen({route, navigation}) {
             <Text>마감날짜</Text>
             <TextInput
               name="end_date"
-              style={{height: 40, width: 150, backgroundColor: '#fff'}}
+              style={{ height: 40, width: 150, backgroundColor: '#fff' }}
               placeholder="2020-01-01 12:00:00"
               onChange={validateDate}
               defaultValue={text.end_date}
@@ -606,7 +624,7 @@ function UpdateScreen({route, navigation}) {
           <TextInput
             name="content"
             multiline
-            style={{height: 250, width: 250, backgroundColor: '#fff'}}
+            style={{ height: 250, width: 250, backgroundColor: '#fff' }}
             numberOfLines={4}
             onChange={validateContent}
             value={text.content}
@@ -629,7 +647,7 @@ function HomeStackScreen() {
       <HomeStack.Screen
         name="인증게시판"
         component={AuthBoardScreen}
-        initialParams={{auth: 'yes'}}
+        initialParams={{ auth: 'yes' }}
       />
       <HomeStack.Screen name="Details" component={DetailsScreen} options={{}} />
       <HomeStack.Screen name="Update" component={UpdateScreen} />
@@ -665,11 +683,11 @@ class MyTabs extends Component {
 export default class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {data: 'adaa'};
+    this.state = { data: 'adaa' };
   }
   componentDidMount() {
     axios.get('http://myks790.iptime.org:8082/board/major').then((response) => {
-      this.setState({data: response.data});
+      this.setState({ data: response.data });
       // this.setState({data: '인증게시판'});
       // console.log(response.data);
     });
