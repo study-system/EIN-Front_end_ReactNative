@@ -15,8 +15,7 @@ import {
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
-// import {Picker} from '@react-native-community/picker';
-// import {TapGestureHandler} from 'react-native-gesture-handler';
+
 
 const styles = require('./css/Styles');
 const axios = require('axios');
@@ -27,10 +26,7 @@ const GetDetail = require('./function/GetDetail');
 
 //스크린 import
 import MypageStack from './screen/MypageStackScreen';
-import DetailsScreen from './screen/DetailsScreen';
-import AuthBoardScreen from './screen/AuthBoardScreen';
-import UpdateScreen from './screen/UpdateScreen';
-
+import AuthBoardStackScreen from './screen/AuthBoardStackScreen';
 
 // 자유게시판 스크린
 class BoardScreen extends Component {
@@ -55,7 +51,7 @@ class PushAlarm extends Component {
     );
   }
 }
-import AuthBoardStackScreen from './screen/AuthBoardStackScreen';
+
 
 // 탭 부분
 const Tab = createBottomTabNavigator();

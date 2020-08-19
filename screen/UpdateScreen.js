@@ -265,21 +265,7 @@ export default function UpdateScreen({ route, navigation }) {
             return 'False';
         }
     };
-    // console.log(
-    //   booleanCheck(text.validate_start_date) +
-    //     '\n' +
-    //     booleanCheck(text.validate_end_date) +
-    //     '\n' +
-    //     booleanCheck(text.validate_title) +
-    //     '\n' +
-    //     booleanCheck(text.validate_content) +
-    //     '\n' +
-    //     booleanCheck(text.validate_location) +
-    //     '\n' +
-    //     booleanCheck(text.validate_major) +
-    //     '\n' +
-    //     booleanCheck(text.validate_target),
-    // );
+
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView style={styles.scrollView}>
