@@ -1,4 +1,4 @@
-import React, {useState, Component} from 'react';
+import React, { useState, Component } from 'react';
 import {
   SafeAreaView,
   FlatList,
@@ -9,9 +9,9 @@ import {
   StatusBar,
   SliderComponent,
 } from 'react-native';
-import {NavigationContainer} from '@react-navigation/native';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {timing} from 'react-native-reanimated';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { timing } from 'react-native-reanimated';
 
 //스크린 임포트
 
@@ -37,7 +37,7 @@ class GetDetail extends Component {
     //시도 필터정보
     axios.get(this.props.url).then((response) => {
       //state.data에 response로 받은 json 값을 넣어줌
-      this.setState({data: response.data});
+      this.setState({ data: response.data });
       console.log(response.data);
 
       console.log('확인중입니다.', Object.keys(response.data));

@@ -7,7 +7,6 @@ import {
   View,
   ScrollView,
   StatusBar,
-  SliderComponent,
   Button,
   TouchableOpacity,
   TextInput,
@@ -18,20 +17,25 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 // import {Picker} from '@react-native-community/picker';
 // import {TapGestureHandler} from 'react-native-gesture-handler';
-//스크린 임포트
 
+const styles = require('./css/Styles');
 const axios = require('axios');
 const moment = require('moment');
+//기능 import
 const MkPicker = require('./function/Mkpicker');
 const GetDetail = require('./function/GetDetail');
+
+//스크린 import
+import MypageStack from './screen/MypageStackScreen';
 //
 //인증게시판 스크린 클래스
 class AuthBoardScreen extends Component {
   state = {
     auth: 'no',
-    major: '0',
-    sido: '0',
-    target: '0',
+    major: 0,
+    sido: 0,
+    target: 0,
+    page: 1,
   };
   constructor(props) {
     super(props);
@@ -82,22 +86,34 @@ class AuthBoardScreen extends Component {
         // text.location = tmp.value;
         this.state.location = tmp.value;
         console.log(this.state.location);
+        getList();
       }
       if (tmp.name == 'major') {
         this.state.major = tmp.value;
+        getList();
       }
       if (tmp.name == 'target') {
         this.state.target = tmp.value;
+        getList();
       }
     };
 
-    const getList = (auth, page, location, major, target) => {
+    const getList = () => {
       let url =
         'http://myks790.iptime.org:8082/board?auth=' +
-        auth +
+        this.state.auth +
         '&page=' +
-        page +
+        this.state.page +
         '&pageSize=10';
+      if (this.state.location > 0) {
+        url = url + '&location_id=' + this.state.location;
+      }
+      if (this.state.major > 0) {
+        url = url + '&major_id=' + this.state.major;
+      }
+      if (this.state.target > 0) {
+        url = url + '&target_id=' + this.state.target;
+      }
       axios.get(url).then((response) => {
         //state.data에 response로 받은 json 값을 넣어줌
         var objForSettingFilter = {};
@@ -106,8 +122,9 @@ class AuthBoardScreen extends Component {
         console.log(response.data.contents);
       });
     };
+
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <View style={styles.containerAuth}>
         {/* <Text style={styles.title}>인증게시판</Text> */}
         {/* 필터링하는 부분 */}
         <View style={{ flex: 1, flexDirection: 'row' }}>
@@ -135,8 +152,8 @@ class AuthBoardScreen extends Component {
         </View>
         {/* 게시판글 목록 */}
 
-        <View style={styles.tablHheader}>
-          <View>
+        <View style={styles.tableHeader}>
+          <View style={{ alignSelf: 'flex-start' }}>
             <Text>제목</Text>
           </View>
           <View>
@@ -154,10 +171,11 @@ class AuthBoardScreen extends Component {
           onPress={() => {
             this.props.navigation.navigate('Update', {
               auth: this.state.auth,
+
             });
           }}
         />
-      </View>
+      </View >
     );
   }
 }
@@ -172,45 +190,20 @@ class BoardScreen extends Component {
     );
   }
 }
-// 마이페이지 스크린
-class Mypage extends Component {
-  render() {
-    return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>마이페이지입니다.</Text>
-      </View>
-    );
-  }
-}
 //푸쉬알람 스크린
 //스크롤뷰 + 플로팅버튼
 class PushAlarm extends Component {
   render() {
     return (
       <ScrollView>
-        <Text>
-          푸쉬입니다. {'\n'}푸쉬입니다. {'\n'}푸쉬입니다. {'\n'}푸쉬입니다.{' '}
-          {'\n'}
-          푸쉬입니다. {'\n'}푸쉬입니다. {'\n'}푸쉬입니다. {'\n'}푸쉬입니다.{' '}
-          {'\n'}
-          푸쉬입니다. {'\n'}푸쉬입니다. {'\n'}푸쉬입니다. {'\n'}푸쉬입니다.{' '}
-          {'\n'}
-          푸쉬입니다. {'\n'}푸쉬입니다. {'\n'}푸쉬입니다. {'\n'}푸쉬입니다.{' '}
-          {'\n'}
-          푸쉬입니다. {'\n'}푸쉬입니다. {'\n'}푸쉬입니다. {'\n'}푸쉬입니다.{' '}
-          {'\n'}
-          푸쉬입니다. {'\n'}푸쉬입니다. {'\n'}푸쉬입니다. {'\n'}푸쉬입니다.{' '}
-          {'\n'}
-          푸쉬입니다. {'\n'}푸쉬입니다. {'\n'}푸쉬입니다. {'\n'}푸쉬입니다.{' '}
-          {'\n'}
-          푸쉬입니다. {'\n'}푸쉬입니다. {'\n'}푸쉬입니다. {'\n'}푸쉬입니다.{' '}
-          {'\n'}
-          푸쉬입니다. {'\n'}푸쉬입니다. {'\n'}푸쉬입니다. {'\n'}
-        </Text>
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+          <Text>개발중입니다.</Text>
+        </View>
       </ScrollView>
     );
   }
 }
+import DetailsScreen2 from './screen/DetailsScreen';
 function DetailsScreen({ route, navigation }) {
   const { boardId } = route.params;
   const { auth } = route.params;
@@ -535,7 +528,10 @@ function UpdateScreen({ route, navigation }) {
           <Button
             onPress={() => {
               toggleButton();
+
               navigation.navigate('인증게시판');
+
+
               alert(
                 'title:' +
                 text.title +
@@ -639,21 +635,24 @@ function UpdateScreen({ route, navigation }) {
   );
 }
 
-const HomeStack = createStackNavigator();
+const AuthBoardStack = createStackNavigator();
 
-function HomeStackScreen() {
+function AuthBoardStackScreen() {
   return (
-    <HomeStack.Navigator>
-      <HomeStack.Screen
+    <AuthBoardStack.Navigator>
+      <AuthBoardStack.Screen
         name="인증게시판"
         component={AuthBoardScreen}
         initialParams={{ auth: 'yes' }}
       />
-      <HomeStack.Screen name="Details" component={DetailsScreen} options={{}} />
-      <HomeStack.Screen name="Update" component={UpdateScreen} />
-    </HomeStack.Navigator>
+      <AuthBoardStack.Screen name="Details" component={DetailsScreen2} options={{}} />
+      <AuthBoardStack.Screen name="Update" component={UpdateScreen} />
+    </AuthBoardStack.Navigator>
   );
 }
+
+
+
 // 탭 부분
 const Tab = createBottomTabNavigator();
 
@@ -666,14 +665,14 @@ class MyTabs extends Component {
   render() {
     return (
       <Tab.Navigator>
-        <Tab.Screen name="Home" component={HomeStackScreen} />
+        <Tab.Screen name="Home" component={AuthBoardStackScreen} />
         {/* <Tab.Screen
           name="인증게시판"
           component={AuthBoardScreen}
           data2={this.props.data}
         /> */}
         <Tab.Screen name="자유게시판" component={BoardScreen} />
-        <Tab.Screen name="마이페이지" component={Mypage} />
+        <Tab.Screen name="마이페이지" component={MypageStack} />
         <Tab.Screen name="푸쉬알람" component={PushAlarm} />
       </Tab.Navigator>
     );
@@ -701,34 +700,3 @@ export default class App extends Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    marginTop: StatusBar.currentHeight || 0,
-  },
-  item: {
-    backgroundColor: '#fff',
-    paddingVertical: 10,
-    paddingHorizontal: 100,
-    marginVertical: 2,
-    marginHorizontal: 16,
-    flex: 1,
-    flexDirection: 'row',
-  },
-  postTitle: {
-    fontSize: 12,
-  },
-
-  title: {
-    fontSize: 32,
-    fontWeight: 'bold',
-  },
-  tablHheader: {
-    backgroundColor: '#fff',
-    paddingHorizontal: 10,
-    marginHorizontal: 16,
-    flex: 1,
-    flexDirection: 'row',
-  },
-});

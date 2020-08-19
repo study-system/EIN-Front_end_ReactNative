@@ -1,4 +1,4 @@
-import React, {useState, Component} from 'react';
+import React, { useState, Component } from 'react';
 import {
   SafeAreaView,
   FlatList,
@@ -9,10 +9,10 @@ import {
   StatusBar,
   SliderComponent,
 } from 'react-native';
-import {NavigationContainer} from '@react-navigation/native';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import {Picker} from '@react-native-community/picker';
+import { Picker } from '@react-native-community/picker';
 //스크린 임포트
 
 const axios = require('axios');
@@ -35,7 +35,7 @@ class MkPicker extends Component {
   }
 
   onFormSubmit = (value, name) => {
-    this.props.onSubmit({value: value, name: name});
+    this.props.onSubmit({ value: value, name: name });
   };
 
   // 변경되는 것을 자동으로 리플래시 되면서 반영함.
@@ -48,7 +48,7 @@ class MkPicker extends Component {
       objForSettingFilter[this.props.filterName] = response.data;
       this.setState(objForSettingFilter);
       console.log(this.props.filterName);
-      this.setState({name: this.nameFor[this.props.filterName]});
+      this.setState({ name: this.nameFor[this.props.filterName] });
     });
   }
   render() {
@@ -62,7 +62,7 @@ class MkPicker extends Component {
         <Picker
           selectedValue={this.state.default_type}
           onValueChange={(itemValue, itemIndex) => {
-            this.setState({default_type: itemValue});
+            this.setState({ default_type: itemValue });
             this.onFormSubmit(itemValue, this.props.filterName);
             console.log(this.state.default_type);
           }}>
