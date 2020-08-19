@@ -27,6 +27,7 @@ const GetDetail = require('./function/GetDetail');
 
 //스크린 import
 import MypageStack from './screen/MypageStackScreen';
+import DetailsScreen from './screen/DetailsScreen';
 //
 //인증게시판 스크린 클래스
 class AuthBoardScreen extends Component {
@@ -203,71 +204,7 @@ class PushAlarm extends Component {
     );
   }
 }
-import DetailsScreen2 from './screen/DetailsScreen';
-function DetailsScreen({ route, navigation }) {
-  const { boardId } = route.params;
-  const { auth } = route.params;
-  console.log(auth);
 
-  React.useLayoutEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <Button
-          onPress={() => {
-            navigation.navigate('Update', { boardId: boardId, auth: auth });
-          }}
-          title="수정"
-        />
-      ),
-    });
-  }, [navigation]);
-
-  const deleteCreateAlert = () =>
-    Alert.alert(
-      '확인',
-      '정말 게시글을 삭제하시겠습니까?',
-      [
-        {
-          text: '취소',
-          onPress: () => console.log('Cancel Pressed'),
-          style: 'cancel',
-        },
-        { text: '확인', onPress: () => onSubmitDelete() },
-        ,
-      ],
-      { cancelable: false },
-    );
-
-  const onSubmitDelete = () => {
-    axios
-      .delete('http://myks790.iptime.org:8082/board/' + boardId)
-      .then(function (response) {
-        console.log(response);
-
-        navigation.navigate('인증게시판');
-        console.log('글삭제성공');
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  };
-
-  return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      {/* <Text>{JSON.stringify(id)}</Text> */}
-
-      <GetDetail
-        url={'http://myks790.iptime.org:8082/board/' + JSON.stringify(boardId)}
-      />
-      <Button
-        title="삭제하기"
-        onPress={() => {
-          deleteCreateAlert();
-        }}
-      />
-    </View>
-  );
-}
 
 function UpdateScreen({ route, navigation }) {
   //임시변수 로그인 만든 후에는 쿠키에서 가져오자
@@ -645,7 +582,7 @@ function AuthBoardStackScreen() {
         component={AuthBoardScreen}
         initialParams={{ auth: 'yes' }}
       />
-      <AuthBoardStack.Screen name="Details" component={DetailsScreen2} options={{}} />
+      <AuthBoardStack.Screen name="Details" component={DetailsScreen} options={{}} />
       <AuthBoardStack.Screen name="Update" component={UpdateScreen} />
     </AuthBoardStack.Navigator>
   );
