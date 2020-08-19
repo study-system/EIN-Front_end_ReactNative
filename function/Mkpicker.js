@@ -19,7 +19,7 @@ const axios = require('axios');
 //picker 생성클래스
 class MkPicker extends Component {
   state = {
-    default_type: '000',
+    default_type: '0',
     sido: [],
     target: [],
     major: [],
