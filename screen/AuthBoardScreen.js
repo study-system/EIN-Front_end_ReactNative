@@ -26,12 +26,11 @@ const MkPicker = require('../function/Mkpicker');
 const GetDetail = require('../function/GetDetail');
 
 //스크린 import
-import MypageStack from './screen/MypageStackScreen';
 //
 //인증게시판 스크린 클래스
 export default class AuthBoardScreen extends Component {
     state = {
-        auth: 'no',
+        auth: 'yes',
         major: 0,
         sido: 0,
         target: 0,
@@ -51,12 +50,19 @@ export default class AuthBoardScreen extends Component {
             this.state.auth +
             '&page=1&pageSize=10';
         axios.get(url).then((response) => {
+            console.log("리스트", response.data.contents);
             //state.data에 response로 받은 json 값을 넣어줌
             var objForSettingFilter = {};
             objForSettingFilter.authBoard = response.data.contents;
             this.setState(objForSettingFilter);
-            console.log(response.data.contents);
-        });
+        }).catch(function (error) {
+            console.log("리스트에러에러");
+            // handle error
+            console.log(error);
+        })
+            .then(function () {
+                // always executed
+            });
     }
 
     render() {

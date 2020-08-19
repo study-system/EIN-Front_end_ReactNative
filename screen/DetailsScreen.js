@@ -27,6 +27,7 @@ export default function DetailsScreen({ route, navigation }) {
     const { boardId } = route.params;
     const { auth } = route.params;
     console.log(auth);
+    console.log("게시글번호", boardId);
 
     React.useLayoutEffect(() => {
         navigation.setOptions({
