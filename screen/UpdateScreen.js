@@ -265,7 +265,9 @@ export default function UpdateScreen({ route, navigation }) {
             return 'False';
         }
     };
-
+    const onFormSubmit = (tmp) => {
+        route.params.onSubmitRefresh({ params: tmp });
+    };
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView style={styles.scrollView}>
@@ -276,30 +278,7 @@ export default function UpdateScreen({ route, navigation }) {
                             toggleButton();
 
                             navigation.navigate('인증게시판');
-
-
-                            alert(
-                                'title:' +
-                                text.title +
-                                '\n date:' +
-                                text.start_date +
-                                'to' +
-                                text.end_date +
-                                '\n content:' +
-                                text.content +
-                                '\n loc:' +
-                                text.location +
-                                '\n major:' +
-                                text.major +
-                                '\n target:' +
-                                text.target +
-                                '\n writer:' +
-                                userId +
-                                '\n boardId' +
-                                boardId +
-                                '   ' +
-                                text.validate_location,
-                            );
+                            onFormSubmit("리프레쉬성공?");
                         }}
                         title="수정"
                         disabled={

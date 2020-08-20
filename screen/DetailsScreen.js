@@ -26,6 +26,7 @@ const GetDetail = require('../function/GetDetail');
 export default function DetailsScreen({ route, navigation }) {
     const { boardId } = route.params;
     const { auth } = route.params;
+    const { onSubmitRefresh } = route.params;
     console.log(auth);
     console.log("게시글번호", boardId);
 
@@ -34,7 +35,7 @@ export default function DetailsScreen({ route, navigation }) {
             headerRight: () => (
                 <Button
                     onPress={() => {
-                        navigation.navigate('Update', { boardId: boardId, auth: auth });
+                        navigation.navigate('Update', { boardId: boardId, auth: auth, onSubmitRefresh: onSubmitRefresh });
                     }}
                     title="수정"
                 />

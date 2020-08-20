@@ -29,6 +29,7 @@ const GetDetail = require('../function/GetDetail');
 //
 //인증게시판 스크린 클래스
 export default class AuthBoardScreen extends Component {
+
     state = {
         auth: 'yes',
         major: 0,
@@ -41,10 +42,12 @@ export default class AuthBoardScreen extends Component {
         // console.log('Auth', this.props.data2);
         console.log(props);
         this.state.auth = props.route.params.auth;
+        this.handleStatusChange = this.handleStatusChange.bind(this);
     }
 
     // 실행한 결과가 오면 자동으로 리플래시 되면서 반영함. 1번
     componentDidMount() {
+        this.onLoad();
         let url =
             'http://myks790.iptime.org:8082/board?auth=' +
             this.state.auth +
@@ -63,9 +66,28 @@ export default class AuthBoardScreen extends Component {
             .then(function () {
                 // always executed
             });
+        this.onLoad();
+
     }
+    componentDidUpdate() {
+        console.log("업데이트");
+        console.log(this.state);
+
+    }
+    componentWillUnmount() {
+        console.log("will마운트");
+    }
+    handleStatusChange(status) {
+        console.log("state체인지");
+    }
+    onLoad = () => {
+        this.props.navigation.addListener('willFocus', () => {
+            console.log("focus");
+        });
+    };
 
     render() {
+        this.onLoad();
         //포스트 하나 만드는 메서드
         let Item = ({ title, writer }) => (
             <View style={styles.item}>
@@ -81,6 +103,7 @@ export default class AuthBoardScreen extends Component {
                         this.props.navigation.navigate('Details', {
                             boardId: item.id,
                             auth: this.state.auth,
+                            onSubmitRefresh: onSubmitRefresh,
                         });
                     }}>
                     <Item title={item.title} writer={item.nickname} />
@@ -103,7 +126,15 @@ export default class AuthBoardScreen extends Component {
                 getList();
             }
         };
+        const onSubmitRefresh = (tmp) => {
+            console.log("auth", tmp.params);
+            this.setState({
+                location: 17,
+            });
 
+            getList();
+
+        }
         const getList = () => {
             let url =
                 'http://myks790.iptime.org:8082/board?auth=' +
@@ -177,6 +208,7 @@ export default class AuthBoardScreen extends Component {
                     onPress={() => {
                         this.props.navigation.navigate('Update', {
                             auth: this.state.auth,
+                            onSubmitRefresh: onSubmitRefresh,
 
                         });
                     }}
