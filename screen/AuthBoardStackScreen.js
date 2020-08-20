@@ -1,20 +1,20 @@
-import React, { useState, Component } from 'react';
+import React, {useState, Component} from 'react';
 import {
-    SafeAreaView,
-    FlatList,
-    StyleSheet,
-    Text,
-    View,
-    ScrollView,
-    StatusBar,
-    Button,
-    TouchableOpacity,
-    TextInput,
-    Alert,
+  SafeAreaView,
+  FlatList,
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  StatusBar,
+  Button,
+  TouchableOpacity,
+  TextInput,
+  Alert,
 } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createStackNavigator } from '@react-navigation/stack';
+import {NavigationContainer} from '@react-navigation/native';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {createStackNavigator} from '@react-navigation/stack';
 // import {Picker} from '@react-native-community/picker';
 // import {TapGestureHandler} from 'react-native-gesture-handler';
 
@@ -32,15 +32,19 @@ import UpdateScreen from '../screen/UpdateScreen';
 
 const AuthBoardStack = createStackNavigator();
 export default function AuthBoardStackScreen() {
-    return (
-        <AuthBoardStack.Navigator>
-            <AuthBoardStack.Screen
-                name="인증게시판"
-                component={AuthBoardScreen}
-                initialParams={{ auth: 'yes' }}
-            />
-            <AuthBoardStack.Screen name="Details" component={DetailsScreen} options={{}} />
-            <AuthBoardStack.Screen name="Update" component={UpdateScreen} />
-        </AuthBoardStack.Navigator>
-    );
+  return (
+    <AuthBoardStack.Navigator>
+      <AuthBoardStack.Screen
+        name="인증게시판"
+        component={AuthBoardScreen}
+        initialParams={{auth: 'yes'}}
+      />
+      <AuthBoardStack.Screen
+        name="Details"
+        component={DetailsScreen}
+        options={{}}
+      />
+      <AuthBoardStack.Screen name="Update" component={UpdateScreen} />
+    </AuthBoardStack.Navigator>
+  );
 }

@@ -1,4 +1,4 @@
-import React, { useState, Component } from 'react';
+import React, {useState, Component} from 'react';
 import {
   SafeAreaView,
   FlatList,
@@ -12,10 +12,9 @@ import {
   TextInput,
   Alert,
 } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createStackNavigator } from '@react-navigation/stack';
-
+import {NavigationContainer} from '@react-navigation/native';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {createStackNavigator} from '@react-navigation/stack';
 
 const styles = require('./css/Styles');
 const axios = require('axios');
@@ -32,7 +31,7 @@ import AuthBoardStackScreen from './screen/AuthBoardStackScreen';
 class BoardScreen extends Component {
   render() {
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
         <Text>자유게시판입니다.</Text>
       </View>
     );
@@ -44,14 +43,13 @@ class PushAlarm extends Component {
   render() {
     return (
       <ScrollView>
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
           <Text>개발중입니다.</Text>
         </View>
       </ScrollView>
     );
   }
 }
-
 
 // 탭 부분
 const Tab = createBottomTabNavigator();
@@ -82,11 +80,11 @@ class MyTabs extends Component {
 export default class App extends Component {
   constructor(props) {
     super(props);
-    this.state = { data: 'adaa' };
+    this.state = {data: 'adaa'};
   }
   componentDidMount() {
     axios.get('http://myks790.iptime.org:8082/board/major').then((response) => {
-      this.setState({ data: response.data });
+      this.setState({data: response.data});
       // this.setState({data: '인증게시판'});
       // console.log(response.data);
     });

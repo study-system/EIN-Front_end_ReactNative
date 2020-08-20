@@ -17,26 +17,25 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createStackNavigator} from '@react-navigation/stack';
 const axios = require('axios');
 const styles = require('../css/Styles');
-// 마이페이지 스크린
-export default class LoginPage extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      cookie: '',
-      email: '',
-      password: '',
-    };
-  }
-  onChange = (e) => {
+//추후 함수형으로 통일 하도록하자
+// 
+export default function LoginPage ({route,navigation}){
+  const [state, setState] = React.useState({
+    cookie: '',
+    email: '',
+    password: '',
+  });
+  const onChange = (e) => {
     //input의 name
     console.log(e._dispatchInstances.memoizedProps.name);
     //input의 값
     console.log(e.nativeEvent.text);
-    this.setState({
-      ...this.state, // 기존의 객체를 복사한 뒤
+    setText({
+      ...text, // 기존의 객체를 복사한 뒤
       [e._dispatchInstances.memoizedProps.name]: e.nativeEvent.text, // name 키를 가진 값을 value 로 설정
     });
-  };
+  };     
+    
   handleEmail = (text) => {
     this.setState({email: text});
   };
@@ -61,54 +60,52 @@ export default class LoginPage extends Component {
         console.log('요청성공', response);
         alert('성공');
         this.setState({cookie: '쿠키'});
-        // this.onSubmit('쿠키');
-        // this.getLogin('쿠키');
+        this.onSubmit('쿠키');
+        this.getLogin('쿠키');
       })
       .catch(function (error) {
         console.log('요청실패', error);
         alert('실패');
       });
   }
-  //   onSubmit = (cookie) => {
-  //     this.props.route.params.onSubmit('쿠키');
-  //   };
-  //   getLogin = (cookie) => {
-  //     this.props.getLoginToken('쿠키');
-  //   };
-  render() {
+  onSubmit = (cookie) => {
+    this.props.route.params.onSubmit('쿠키');
+  };
+  getLogin = (cookie) => {
+    this.props.getLoginToken('쿠키');
+  };
     return (
       <View style={styles.containerLogin}>
         <TextInput
-          name={'email'}
+          name={"email"}
           style={styles.input}
           underlineColorAndroid="transparent"
           placeholder="Email"
           placeholderTextColor="black"
           autoCapitalize="none"
-          onChange={this.onChange}
+          onChangeText={onChange}
         />
         <TextInput
-          name={'password'}
+          name={"password"}
           style={styles.input}
           underlineColorAndroid="transparent"
           placeholder="Password"
           placeholderTextColor="black"
           autoCapitalize="none"
           secureTextEntry={true}
-          onChange={this.onChange}
+          onChangeText={onChange}
         />
         <TouchableOpacity
           style={styles.submitButton}
-          onPress={() => this.login(this.state.email, this.state.password)}>
+          onPress={() => login(state.email, state.password)}>
           <Text style={styles.submitButtonText}> Submit </Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.submitButton}
-          onPress={() => this.props.navigation.navigate('SignUp')}>
+          onPress={() => navigation.navigate('SignUp')}>
           <Text style={styles.submitButtonText}> 회원가입 </Text>
         </TouchableOpacity>
       </View>
     );
-  }
 }
 // https://www.instamobile.io/react-native-tutorials/asyncstorage-example-react-native/
