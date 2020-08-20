@@ -95,9 +95,6 @@ export default function UpdateScreen({route, navigation}) {
     validatePicker(tmp.name);
   };
   const validateDate = (e) => {
-    //나중에 옮기자
-    var a = moment(text.start_date).utcOffset(0).toISOString();
-    console.log('날짜', a);
     const dateExp = /^\d{4}\-\d{2}\-\d{2}\ \d{2}\:\d{2}\:\d{2}/;
     if (e.nativeEvent.text.match(dateExp)) {
       console.log('포맷성공');

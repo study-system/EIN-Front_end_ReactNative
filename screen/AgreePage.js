@@ -121,14 +121,16 @@ export default class AgreePage extends Component {
             동의를 거부할 권리 개인정보의 수집 및 이용 동의를 거부할 권리가
             있습니다. 회원가입 시 수집하는 최소한의 개인정보, 즉, 필수 항목에
             대한 수집 및 이용 동의를 거부하실 경우, 회원가입이 어려울 수
-            있습니다.
+            있습니다. 푸쉬알람의 동의하시겠습니까? 동의시 지역에 맞는 푸쉬알람이
+            가도록 되어있습니다. 푸쉬알람의 받기 여부는 경우는 추후
+            마이페이지에서 수정가능합니다.
           </Text>
           <TouchableOpacity
             style={styles.submitButton}
             onPress={() =>
               this.props.navigation.navigate(this.props.route.params.nextPage)
             }>
-            <Text style={styles.submitButtonText}> 다음으로 </Text>
+            <Text style={styles.submitButtonText}> 동의합니다 </Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
