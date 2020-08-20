@@ -27,6 +27,7 @@ export default class Adress extends Component {
   };
   constructor(props) {
     super(props);
+    console.log(props);
     this.state.value = this.props.route.params.addrName;
   }
   //http://www.juso.go.kr/addrlink/addrLinkApi.do?confmKey=devU01TX0FVVEgyMDIwMDgyMDIwMDYyODExMDA4NDk=&keyword=%EC%9A%B0%ED%8F%89%EB%A1%9C&resultType=json
@@ -39,12 +40,16 @@ export default class Adress extends Component {
     this.getList();
   }
   handleValue = (text) => {
+    console.log(text);
+    //개선할 곳 setState만을 사용시 느려서 글자하나씩 빠짐 this.state.value만 사용시 글자가 입력이 제대로 되지 않음
     this.setState({value: text});
+    this.state.value = text;
     this.getList();
   };
   onFormSubmit = (siNm, roadAddr) => {
     console.log('onSubmit 메서드 진입');
-    this.props.onSubmit({siNm: siNm, roadAddr: roadAddr});
+    console.log(siNm, roadAddr);
+    this.props.route.params.onSubmit({siNm: siNm, roadAddr: roadAddr});
   };
   getList = () => {
     //resultType=json
@@ -57,9 +62,7 @@ export default class Adress extends Component {
       .then((response) => {
         //state.data에 response로 받은 json 값을 넣어줌
         var objForSettingFilter = {};
-        console.log('json', JSON.parse(response.request._response));
         var data = JSON.parse(response.request._response);
-        console.log('json2', data.results.juso);
         objForSettingFilter.list = data.results.juso;
         this.setState(objForSettingFilter);
       })
@@ -80,9 +83,10 @@ export default class Adress extends Component {
         <TouchableOpacity
           style={{backgroundColor: '#fff'}}
           onPress={() => {
+            this.onFormSubmit(item.siNm, item.roadAddrPart1);
             this.props.navigation.navigate('UserSignUp', {
               siNm: item.siNm,
-              roadAddrPart1: this.state.roadAddrPart1,
+              roadAddrPart1: item.roadAddrPart1,
             });
           }}>
           <Item roadAddr={item.roadAddrPart1} />
@@ -99,6 +103,7 @@ export default class Adress extends Component {
           placeholderTextColor="black"
           autoCapitalize="none"
           onChangeText={this.handleValue}
+          value={this.state.value}
         />
         <FlatList
           data={this.state.list}

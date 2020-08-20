@@ -1,640 +1,87 @@
 {
-    "_dispatchInstances": {
-        "_debugHookTypes": null,
-        "_debugID": 217296,
-        "_debugIsCurrentlyTiming": false,
-        "_debugNeedsRemount": false,
-        "_debugOwner": {
-            "_debugHookTypes": [Array
-            ],
-            "_debugID": 217290,
-            "_debugIsCurrentlyTiming": false,
-            "_debugNeedsRemount": false,
-            "_debugOwner": [FiberNode
-            ],
-            "_debugSource": [Object
-            ],
-            "actualDuration": 2,
-            "actualStartTime": 1248322,
-            "alternate": null,
-            "child": [FiberNode
-            ],
-            "childExpirationTime": 0,
-            "dependencies": null,
-            "effectTag": 517,
-            "elementType": [Function InternalTextInput
-            ],
-            "expirationTime": 0,
-            "firstEffect": [Circular
-            ],
-            "index": 0,
-            "key": null,
-            "lastEffect": [FiberNode
-            ],
-            "memoizedProps": [Object
-            ],
-            "memoizedState": [Object
-            ],
-            "mode": 8,
-            "nextEffect": null,
-            "pendingProps": [Object
-            ],
-            "ref": null,
-            "return": [FiberNode
-            ],
-            "selfBaseDuration": 0,
-            "sibling": null,
-            "stateNode": null,
-            "tag": 0,
-            "treeBaseDuration": 0,
-            "type": [Function InternalTextInput
-            ],
-            "updateQueue": [Object
-            ]
-        },
-        "_debugSource": {
-            "columnNumber": 7,
-            "fileName": "D:\\workspcae\\react-native\\StudySystem\\InfoAlarm\\node_modules\\react-native\\Libraries\\Components\\TextInput\\TextInput.js",
-            "lineNumber": 1108
-        },
-        "actualDuration": 2,
-        "actualStartTime": 1248322,
-        "alternate": null,
-        "child": null,
-        "childExpirationTime": 0,
-        "dependencies": null,
-        "effectTag": 128,
-        "elementType": "AndroidTextInput",
-        "expirationTime": 0,
-        "firstEffect": null,
-        "index": 0,
-        "key": null,
-        "lastEffect": null,
-        "memoizedProps": {
-            "accessible": true,
-            "allowFontScaling": true,
-            "autoCapitalize": "sentences",
-            "children": undefined,
-            "disableFullscreenUI": undefined,
-            "editable": true,
-            "focusable": true,
-            "forwardedRef": null,
-            "maxLength": 40,
-            "mostRecentEventCount": 0,
-            "multiline": true,
-            "name": "content",
-            "numberOfLines": 4,
-            "onBlur": [Function _onBlur
-            ],
-            "onChange": [Function _onChange
-            ],
-            "onClick": [Function onClick
-            ],
-            "onFocus": [Function _onFocus
-            ],
-            "onResponderGrant": [Function onResponderGrant
-            ],
-            "onResponderMove": [Function onResponderMove
-            ],
-            "onResponderRelease": [Function onResponderRelease
-            ],
-            "onResponderTerminate": [Function onResponderTerminate
-            ],
-            "onResponderTerminationRequest": [Function onResponderTerminationRequest
-            ],
-            "onScroll": [Function _onScroll
-            ],
-            "onSelectionChange": [Function _onSelectionChange
-            ],
-            "onStartShouldSetResponder": [Function onStartShouldSetResponder
-            ],
-            "rejectResponderTermination": true,
-            "selection": null,
-            "style": [Array
-            ],
-            "text": "",
-            "textBreakStrategy": undefined,
-            "underlineColorAndroid": "transparent",
-            "value": ""
-        },
-        "memoizedState": null,
-        "mode": 8,
-        "nextEffect": null,
-        "pendingProps": {
-            "accessible": true,
-            "allowFontScaling": true,
-            "autoCapitalize": "sentences",
-            "children": undefined,
-            "disableFullscreenUI": undefined,
-            "editable": true,
-            "focusable": true,
-            "forwardedRef": null,
-            "maxLength": 40,
-            "mostRecentEventCount": 0,
-            "multiline": true,
-            "name": "content",
-            "numberOfLines": 4,
-            "onBlur": [Function _onBlur
-            ],
-            "onChange": [Function _onChange
-            ],
-            "onClick": [Function onClick
-            ],
-            "onFocus": [Function _onFocus
-            ],
-            "onResponderGrant": [Function onResponderGrant
-            ],
-            "onResponderMove": [Function onResponderMove
-            ],
-            "onResponderRelease": [Function onResponderRelease
-            ],
-            "onResponderTerminate": [Function onResponderTerminate
-            ],
-            "onResponderTerminationRequest": [Function onResponderTerminationRequest
-            ],
-            "onScroll": [Function _onScroll
-            ],
-            "onSelectionChange": [Function _onSelectionChange
-            ],
-            "onStartShouldSetResponder": [Function onStartShouldSetResponder
-            ],
-            "rejectResponderTermination": true,
-            "selection": null,
-            "style": [Array
-            ],
-            "text": "",
-            "textBreakStrategy": undefined,
-            "underlineColorAndroid": "transparent",
-            "value": ""
-        },
-        "ref": [Function forwardRef
+    "config": {
+        "adapter": [Function xhrAdapter
         ],
-        "return": {
-            "_debugHookTypes": null,
-            "_debugID": 217294,
-            "_debugIsCurrentlyTiming": false,
-            "_debugNeedsRemount": false,
-            "_debugOwner": [FiberNode
-            ],
-            "_debugSource": [Object
-            ],
-            "actualDuration": 2,
-            "actualStartTime": 1248322,
-            "alternate": null,
-            "child": [Circular
-            ],
-            "childExpirationTime": 0,
-            "dependencies": null,
-            "effectTag": 5,
-            "elementType": [Function TouchableWithoutFeedback
-            ],
-            "expirationTime": 0,
-            "firstEffect": [Circular
-            ],
-            "index": 0,
-            "key": null,
-            "lastEffect": [Circular
-            ],
-            "memoizedProps": [Object
-            ],
-            "memoizedState": [Object
-            ],
-            "mode": 8,
-            "nextEffect": null,
-            "pendingProps": [Object
-            ],
-            "ref": null,
-            "return": [FiberNode
-            ],
-            "selfBaseDuration": 0,
-            "sibling": null,
-            "stateNode": [TouchableWithoutFeedback
-            ],
-            "tag": 1,
-            "treeBaseDuration": 0,
-            "type": [Function TouchableWithoutFeedback
-            ],
-            "updateQueue": [Object
-            ]
+        "data": undefined,
+        "headers": {
+            "Accept": "application/json, text/plain, */*"
         },
-        "selfBaseDuration": 0,
-        "sibling": null,
-        "stateNode": {
-            "_children": [Array
-            ],
-            "_internalFiberInstanceHandleDEV": [Circular
-            ],
-            "_nativeTag": 18047,
-            "clear": [Function clear
-            ],
-            "getNativeRef": [Function getNativeRef
-            ],
-            "isFocused": [Function isFocused
-            ],
-            "viewConfig": [Object
+        "maxContentLength": -1,
+        "method": "get",
+        "timeout": 0,
+        "transformRequest": [
+            [Function transformRequest
             ]
-        },
-        "tag": 5,
-        "treeBaseDuration": 0,
-        "type": "AndroidTextInput",
-        "updateQueue": null
+        ],
+        "transformResponse": [
+            [Function transformResponse
+            ]
+        ],
+        "url": "http://www.juso.go.kr/addrlink/addrLinkApi.do?confmKey=devU01TX0FVVEgyMDIwMDgyMDIwMDYyODExMDA4NDk=&keyword=우평로&resultType=json",
+        "validateStatus": [Function validateStatus
+        ],
+        "xsrfCookieName": "XSRF-TOKEN",
+        "xsrfHeaderName": "X-XSRF-TOKEN"
     },
-    "_dispatchListeners": [Function _onChange
-    ],
-    "_targetInst": {
-        "_debugHookTypes": null,
-        "_debugID": 217296,
-        "_debugIsCurrentlyTiming": false,
-        "_debugNeedsRemount": false,
-        "_debugOwner": {
-            "_debugHookTypes": [Array
-            ],
-            "_debugID": 217290,
-            "_debugIsCurrentlyTiming": false,
-            "_debugNeedsRemount": false,
-            "_debugOwner": [FiberNode
-            ],
-            "_debugSource": [Object
-            ],
-            "actualDuration": 2,
-            "actualStartTime": 1248322,
-            "alternate": null,
-            "child": [FiberNode
-            ],
-            "childExpirationTime": 0,
-            "dependencies": null,
-            "effectTag": 517,
-            "elementType": [Function InternalTextInput
-            ],
-            "expirationTime": 0,
-            "firstEffect": [Circular
-            ],
-            "index": 0,
-            "key": null,
-            "lastEffect": [FiberNode
-            ],
-            "memoizedProps": [Object
-            ],
-            "memoizedState": [Object
-            ],
-            "mode": 8,
-            "nextEffect": null,
-            "pendingProps": [Object
-            ],
-            "ref": null,
-            "return": [FiberNode
-            ],
-            "selfBaseDuration": 0,
-            "sibling": null,
-            "stateNode": null,
-            "tag": 0,
-            "treeBaseDuration": 0,
-            "type": [Function InternalTextInput
-            ],
-            "updateQueue": [Object
-            ]
-        },
-        "_debugSource": {
-            "columnNumber": 7,
-            "fileName": "D:\\workspcae\\react-native\\StudySystem\\InfoAlarm\\node_modules\\react-native\\Libraries\\Components\\TextInput\\TextInput.js",
-            "lineNumber": 1108
-        },
-        "actualDuration": 2,
-        "actualStartTime": 1248322,
-        "alternate": null,
-        "child": null,
-        "childExpirationTime": 0,
-        "dependencies": null,
-        "effectTag": 128,
-        "elementType": "AndroidTextInput",
-        "expirationTime": 0,
-        "firstEffect": null,
-        "index": 0,
-        "key": null,
-        "lastEffect": null,
-        "memoizedProps": {
-            "accessible": true,
-            "allowFontScaling": true,
-            "autoCapitalize": "sentences",
-            "children": undefined,
-            "disableFullscreenUI": undefined,
-            "editable": true,
-            "focusable": true,
-            "forwardedRef": null,
-            "maxLength": 40,
-            "mostRecentEventCount": 0,
-            "multiline": true,
-            "name": "content",
-            "numberOfLines": 4,
-            "onBlur": [Function _onBlur
-            ],
-            "onChange": [Function _onChange
-            ],
-            "onClick": [Function onClick
-            ],
-            "onFocus": [Function _onFocus
-            ],
-            "onResponderGrant": [Function onResponderGrant
-            ],
-            "onResponderMove": [Function onResponderMove
-            ],
-            "onResponderRelease": [Function onResponderRelease
-            ],
-            "onResponderTerminate": [Function onResponderTerminate
-            ],
-            "onResponderTerminationRequest": [Function onResponderTerminationRequest
-            ],
-            "onScroll": [Function _onScroll
-            ],
-            "onSelectionChange": [Function _onSelectionChange
-            ],
-            "onStartShouldSetResponder": [Function onStartShouldSetResponder
-            ],
-            "rejectResponderTermination": true,
-            "selection": null,
-            "style": [Array
-            ],
-            "text": "",
-            "textBreakStrategy": undefined,
-            "underlineColorAndroid": "transparent",
-            "value": ""
-        },
-        "memoizedState": null,
-        "mode": 8,
-        "nextEffect": null,
-        "pendingProps": {
-            "accessible": true,
-            "allowFontScaling": true,
-            "autoCapitalize": "sentences",
-            "children": undefined,
-            "disableFullscreenUI": undefined,
-            "editable": true,
-            "focusable": true,
-            "forwardedRef": null,
-            "maxLength": 40,
-            "mostRecentEventCount": 0,
-            "multiline": true,
-            "name": "content",
-            "numberOfLines": 4,
-            "onBlur": [Function _onBlur
-            ],
-            "onChange": [Function _onChange
-            ],
-            "onClick": [Function onClick
-            ],
-            "onFocus": [Function _onFocus
-            ],
-            "onResponderGrant": [Function onResponderGrant
-            ],
-            "onResponderMove": [Function onResponderMove
-            ],
-            "onResponderRelease": [Function onResponderRelease
-            ],
-            "onResponderTerminate": [Function onResponderTerminate
-            ],
-            "onResponderTerminationRequest": [Function onResponderTerminationRequest
-            ],
-            "onScroll": [Function _onScroll
-            ],
-            "onSelectionChange": [Function _onSelectionChange
-            ],
-            "onStartShouldSetResponder": [Function onStartShouldSetResponder
-            ],
-            "rejectResponderTermination": true,
-            "selection": null,
-            "style": [Array
-            ],
-            "text": "",
-            "textBreakStrategy": undefined,
-            "underlineColorAndroid": "transparent",
-            "value": ""
-        },
-        "ref": [Function forwardRef
-        ],
-        "return": {
-            "_debugHookTypes": null,
-            "_debugID": 217294,
-            "_debugIsCurrentlyTiming": false,
-            "_debugNeedsRemount": false,
-            "_debugOwner": [FiberNode
-            ],
-            "_debugSource": [Object
-            ],
-            "actualDuration": 2,
-            "actualStartTime": 1248322,
-            "alternate": null,
-            "child": [Circular
-            ],
-            "childExpirationTime": 0,
-            "dependencies": null,
-            "effectTag": 5,
-            "elementType": [Function TouchableWithoutFeedback
-            ],
-            "expirationTime": 0,
-            "firstEffect": [Circular
-            ],
-            "index": 0,
-            "key": null,
-            "lastEffect": [Circular
-            ],
-            "memoizedProps": [Object
-            ],
-            "memoizedState": [Object
-            ],
-            "mode": 8,
-            "nextEffect": null,
-            "pendingProps": [Object
-            ],
-            "ref": null,
-            "return": [FiberNode
-            ],
-            "selfBaseDuration": 0,
-            "sibling": null,
-            "stateNode": [TouchableWithoutFeedback
-            ],
-            "tag": 1,
-            "treeBaseDuration": 0,
-            "type": [Function TouchableWithoutFeedback
-            ],
-            "updateQueue": [Object
-            ]
-        },
-        "selfBaseDuration": 0,
-        "sibling": null,
-        "stateNode": {
-            "_children": [Array
-            ],
-            "_internalFiberInstanceHandleDEV": [Circular
-            ],
-            "_nativeTag": 18047,
-            "clear": [Function clear
-            ],
-            "getNativeRef": [Function getNativeRef
-            ],
-            "isFocused": [Function isFocused
-            ],
-            "viewConfig": [Object
-            ]
-        },
-        "tag": 5,
-        "treeBaseDuration": 0,
-        "type": "AndroidTextInput",
-        "updateQueue": null
-    },
-    "bubbles": undefined,
-    "cancelable": undefined,
-    "currentTarget": {
-        "_children": [],
-        "_internalFiberInstanceHandleDEV": {
-            "_debugHookTypes": null,
-            "_debugID": 217296,
-            "_debugIsCurrentlyTiming": false,
-            "_debugNeedsRemount": false,
-            "_debugOwner": [FiberNode
-            ],
-            "_debugSource": [Object
-            ],
-            "actualDuration": 2,
-            "actualStartTime": 1248322,
-            "alternate": null,
-            "child": null,
-            "childExpirationTime": 0,
-            "dependencies": null,
-            "effectTag": 128,
-            "elementType": "AndroidTextInput",
-            "expirationTime": 0,
-            "firstEffect": null,
-            "index": 0,
-            "key": null,
-            "lastEffect": null,
-            "memoizedProps": [Object
-            ],
-            "memoizedState": null,
-            "mode": 8,
-            "nextEffect": null,
-            "pendingProps": [Object
-            ],
-            "ref": [Function forwardRef
-            ],
-            "return": [FiberNode
-            ],
-            "selfBaseDuration": 0,
-            "sibling": null,
-            "stateNode": [Circular
-            ],
-            "tag": 5,
-            "treeBaseDuration": 0,
-            "type": "AndroidTextInput",
-            "updateQueue": null
-        },
-        "_nativeTag": 18047,
-        "clear": [Function clear
-        ],
-        "getNativeRef": [Function getNativeRef
-        ],
-        "isFocused": [Function isFocused
-        ],
-        "viewConfig": {
-            "Commands": [Object
-            ],
-            "Constants": [Object
-            ],
-            "NativeProps": [Object
-            ],
-            "bubblingEventTypes": [Object
-            ],
-            "directEventTypes": [Object
-            ],
-            "uiViewClassName": "AndroidTextInput",
-            "validAttributes": [Object
+    "data": {
+        "results": {
+            "common": [Object
+            ],
+            "juso": [Array
             ]
         }
     },
-    "defaultPrevented": undefined,
-    "dispatchConfig": {
-        "phasedRegistrationNames": {
-            "bubbled": "onChange",
-            "captured": "onChangeCapture"
-        }
+    "headers": {
+        "access-control-allow-origin": "*",
+        "connection": "Keep-Alive",
+        "content-type": "application/json;charset=UTF-8",
+        "date": "Thu, 20 Aug 2020 12:52:51 GMT",
+        "transfer-encoding": "chunked"
     },
-    "eventPhase": undefined,
-    "isDefaultPrevented": [Function functionThatReturnsFalse
-    ],
-    "isPropagationStopped": [Function functionThatReturnsFalse
-    ],
-    "isTrusted": undefined,
-    "nativeEvent": {
-        "eventCount": 1,
-        "target": 18047,
-        "text": "d"
-    },
-    "target": {
-        "_children": [],
-        "_internalFiberInstanceHandleDEV": {
-            "_debugHookTypes": null,
-            "_debugID": 217296,
-            "_debugIsCurrentlyTiming": false,
-            "_debugNeedsRemount": false,
-            "_debugOwner": [FiberNode
-            ],
-            "_debugSource": [Object
-            ],
-            "actualDuration": 2,
-            "actualStartTime": 1248322,
-            "alternate": null,
-            "child": null,
-            "childExpirationTime": 0,
-            "dependencies": null,
-            "effectTag": 128,
-            "elementType": "AndroidTextInput",
-            "expirationTime": 0,
-            "firstEffect": null,
-            "index": 0,
-            "key": null,
-            "lastEffect": null,
-            "memoizedProps": [Object
-            ],
-            "memoizedState": null,
-            "mode": 8,
-            "nextEffect": null,
-            "pendingProps": [Object
-            ],
-            "ref": [Function forwardRef
-            ],
-            "return": [FiberNode
-            ],
-            "selfBaseDuration": 0,
-            "sibling": null,
-            "stateNode": [Circular
-            ],
-            "tag": 5,
-            "treeBaseDuration": 0,
-            "type": "AndroidTextInput",
-            "updateQueue": null
+    "request": {
+        "DONE": 4,
+        "HEADERS_RECEIVED": 2,
+        "LOADING": 3,
+        "OPENED": 1,
+        "UNSENT": 0,
+        "_aborted": false,
+        "_cachedResponse": undefined,
+        "_hasError": false,
+        "_headers": {
+            "accept": "application/json, text/plain, */*"
         },
-        "_nativeTag": 18047,
-        "clear": [Function clear
-        ],
-        "getNativeRef": [Function getNativeRef
-        ],
-        "isFocused": [Function isFocused
-        ],
-        "viewConfig": {
-            "Commands": [Object
-            ],
-            "Constants": [Object
-            ],
-            "NativeProps": [Object
-            ],
-            "bubblingEventTypes": [Object
-            ],
-            "directEventTypes": [Object
-            ],
-            "uiViewClassName": "AndroidTextInput",
-            "validAttributes": [Object
-            ]
-        }
+        "_incrementalEvents": false,
+        "_lowerCaseResponseHeaders": {
+            "access-control-allow-origin": "*",
+            "connection": "Keep-Alive",
+            "content-type": "application/json;charset=UTF-8",
+            "date": "Thu, 20 Aug 2020 12:52:51 GMT",
+            "transfer-encoding": "chunked"
+        },
+        "_method": "GET",
+        "_perfKey": "network_XMLHttpRequest_http://www.juso.go.kr/addrlink/addrLinkApi.do?confmKey=devU01TX0FVVEgyMDIwMDgyMDIwMDYyODExMDA4NDk=&keyword=우평로&resultType=json",
+        "_requestId": null,
+        "_response": "{\"results\":{\"common\":{\"errorMessage\":\"정상\",\"countPerPage\":\"10\",\"totalCount\":\"106\",\"errorCode\":\"0\",\"currentPage\":\"1\"},\"juso\":[{\"detBdNmList\":\"\",\"engAddr\":\"2, Uopyeong-ro, Jeju-si, Jeju-do\",\"rn\":\"우평로\",\"emdNm\":\"노형동\",\"zipNo\":\"63106\",\"roadAddrPart2\":\" (노형동)\",\"emdNo\":\"01\",\"sggNm\":\"제주시\",\"jibunAddr\":\"제주특별자치도 제주시 노형동 3116-1\",\"siNm\":\"제주특별자치도\",\"roadAddrPart1\":\"제주특별자치도 제주시 우평로 2\",\"bdNm\":\"\",\"admCd\":\"5011012200\",\"udrtYn\":\"0\",\"lnbrMnnm\":\"3116\",\"roadAddr\":\"제주특별자치도 제주시 우평로 2 (노형동)\",\"lnbrSlno\":\"1\",\"buldMnnm\":\"2\",\"bdKdcd\":\"0\",\"liNm\":\"\",\"rnMgtSn\":\"501103349161\",\"mtYn\":\"0\",\"bdMgtSn\":\"5011012200131160001023072\",\"buldSlno\":\"0\"},{\"detBdNmList\":\"\",\"engAddr\":\"6, Uopyeong-ro, Jeju-si, Jeju-do\",\"rn\":\"우 평로\",\"emdNm\":\"노형동\",\"zipNo\":\"63106\",\"roadAddrPart2\":\" (노형동)\",\"emdNo\":\"01\",\"sggNm\":\"제주시\",\"jibunAddr\":\"제주특별자치도 제주시 노형동 3106\",\"siNm\":\"제주특별자치도\",\"roadAddrPart1\":\"제주특별자치도 제주시 우평로 6\",\"bdNm\":\"\",\"admCd\":\"5011012200\",\"udrtYn\":\"0\",\"lnbrMnnm\":\"3106\",\"roadAddr\":\"제주특별자치도  제주시 우평로 6 (노형동)\",\"lnbrSlno\":\"0\",\"buldMnnm\":\"6\",\"bdKdcd\":\"0\",\"liNm\":\"\",\"rnMgtSn\":\"501103349161\",\"mtYn\":\"0\",\"bdMgtSn\":\"5011012200131060000000001\",\"buldSlno\":\"0\"},{\"detBdNmList\":\"\",\"engAddr\":\"9, Uopyeong-ro, Jeju-si, Jeju-do\",\"rn\":\"우평로\",\"emdNm\":\"노형동\",\"zipNo\":\"63107\",\"roadAddrPart2\":\" (노형동)\",\"emdNo\":\"01\",\"sggNm\":\"제주시\",\"jibunAddr\":\"제주특별자치도 제주시 노형동 3132-1\",\"siNm\":\"제주특별자치 도\",\"roadAddrPart1\":\"제주특별자치도 제주시 우평로 9\",\"bdNm\":\"\",\"admCd\":\"5011012200\",\"udrtYn\":\"0\",\"lnbrMnnm\":\"3132\",\"roadAddr\":\"제주특별자치도 제주시 우평로 9 (노형동)\",\"lnbrSlno\":\"1\",\"buldMnnm\":\"9\",\"bdKdcd\":\"0\",\"liNm\":\"\",\"rnMgtSn\":\"501103349161\",\"mtYn\":\"0\",\"bdMgtSn\":\"5011012200131320001062242\",\"buldSlno\":\"0\"},{\"detBdNmList\":\"\",\"engAddr\":\"10, Uopyeong-ro, Jeju-si, Jeju-do\",\"rn\":\"우평로\",\"emdNm\":\"노형동\",\"zipNo\":\"63106\",\"roadAddrPart2\":\" (노형동)\",\"emdNo\":\"01\",\"sggNm\":\"제주시\",\"jibunAddr\":\"제주특별자치도 제주시 노형동 3766\",\"siNm\":\"제주특별자치도\",\"roadAddrPart1\":\"제주특별자치도 제주시 우평로 10\",\"bdNm\":\"\",\"admCd\":\"5011012200\",\"udrtYn\":\"0\",\"lnbrMnnm\":\"3766\",\"roadAddr\":\"제주특별자치도 제주시 우평로 10 (노형동)\",\"lnbrSlno\":\"0\",\"buldMnnm\":\"10\",\"bdKdcd\":\"0\",\"liNm\":\"\",\"rnMgtSn\":\"501103349161\",\"mtYn\":\"0\",\"bdMgtSn\":\"5011012200137660000004927\",\"buldSlno\":\"0\"},{\"detBdNmList\":\"\",\"engAddr\":\"11, Uopyeong-ro, Jeju-si, Jeju-do\",\"rn\":\"우평로\",\"emdNm\":\"노형동\",\"zipNo\":\"63107\",\"roadAddrPart2\":\" (노형동)\",\"emdNo\":\"01\",\"sggNm\":\"제주시\",\"jibunAddr\":\"제주특별자치도 제주시 노형동 3134-3\",\"siNm\":\"제주특별자치도\",\"roadAddrPart1\":\"제주특별자치도 제주시 우평로 11\",\"bdNm\":\"\",\"admCd\":\"5011012200\",\"udrtYn\":\"0\",\"lnbrMnnm\":\"3134\",\"roadAddr\":\"제주특별자치도 제주시 우평로 11 (노형동)\",\"lnbrSlno\":\"3\",\"buldMnnm\":\"11\",\"bdKdcd\":\"0\",\"liNm\":\"\",\"rnMgtSn\":\"501103349161\",\"mtYn\":\"0\",\"bdMgtSn\":\"5011012200131340003065034\",\"buldSlno\":\"0\"},{\"detBdNmList\":\"\",\"engAddr\":\"12, Uopyeong-ro, Jeju-si, Jeju-do\",\"rn\":\"우평로\",\"emdNm\":\"노형동\",\"zipNo\":\"63106\",\"roadAddrPart2\":\" (노형동)\",\"emdNo\":\"01\",\"sggNm\":\"제주시\",\"jibunAddr\":\"제주특별자치도 제주시 노형동 3078-3\",\"siNm\":\"제주특별자치도\",\"roadAddrPart1\":\"제주특별자치도 제주시 우평로 12\",\"bdNm\":\"\",\"admCd\":\"5011012200\",\"udrtYn\":\"0\",\"lnbrMnnm\":\"3078\",\"roadAddr\":\"제주특별자치도 제주시 우평로 12 (노형동)\",\"lnbrSlno\":\"3\",\"buldMnnm\":\"12\",\"bdKdcd\":\"0\",\"liNm\":\"\",\"rnMgtSn\":\"501103349161\",\"mtYn\":\"0\",\"bdMgtSn\":\"5011012200130780001004836\",\"buldSlno\":\"0\"},{\"detBdNmList\":\"\",\"engAddr\":\"15, Uopyeong-ro, Jeju-si, Jeju-do\",\"rn\":\"우평로\",\"emdNm\":\"노형동\",\"zipNo\":\"63107\",\"roadAddrPart2\":\" (노형동)\",\"emdNo\":\"01\",\"sggNm\":\"제주시\",\"jibunAddr\":\"제주특별자치도 제주시 노형동 3104-5\",\"siNm\":\"제주특별자치도\",\"roadAddrPart1\":\"제주특별자치도 제주시 우평로 15\",\"bdNm\":\"\",\"admCd\":\"5011012200\",\"udrtYn\":\"0\",\"lnbrMnnm\":\"3104\",\"roadAddr\":\"제주특별자치도 제주시 우평로 15 (노형동)\",\"lnbrSlno\":\"5\",\"buldMnnm\":\"15\",\"bdKdcd\":\"0\",\"liNm\":\"\",\"rnMgtSn\":\"501103349161\",\"mtYn\":\"0\",\"bdMgtSn\":\"5011012200131040005000001\",\"buldSlno\":\"0\"},{\"detBdNmList\":\"\",\"engAddr\":\"19, Uopyeong-ro, Jeju-si, Jeju-do\",\"rn\":\"우평로\",\"emdNm\":\"노형동\",\"zipNo\":\"63107\",\"roadAddrPart2\":\" (노형 동)\",\"emdNo\":\"01\",\"sggNm\":\"제주시\",\"jibunAddr\":\"제주특별자치도 제주시 노형동 3086-3\",\"siNm\":\"제주특별자 치도\",\"roadAddrPart1\":\"제주특별자치도 제주시 우평로 19\",\"bdNm\":\"\",\"admCd\":\"5011012200\",\"udrtYn\":\"0\",\"lnbrMnnm\":\"3086\",\"roadAddr\":\"제주특별자치도 제주시 우평로 19 (노형동)\",\"lnbrSlno\":\"3\",\"buldMnnm\":\"19\",\"bdKdcd\":\"0\",\"liNm\":\"\",\"rnMgtSn\":\"501103349161\",\"mtYn\":\"0\",\"bdMgtSn\":\"5011012200130860003065627\",\"buldSlno\":\"0\"},{\"detBdNmList\":\"\",\"engAddr\":\"28-1, Uopyeong-ro, Jeju-si, Jeju-do\",\"rn\":\"우평로\",\"emdNm\":\"노 형동\",\"zipNo\":\"63106\",\"roadAddrPart2\":\" (노형동)\",\"emdNo\":\"01\",\"sggNm\":\"제주시\",\"jibunAddr\":\"제주특 별자치도 제주시 노형동 3074\",\"siNm\":\"제주특별자치도\",\"roadAddrPart1\":\"제주특별자치도 제주시 우평로 28-1\",\"bdNm\":\"\",\"admCd\":\"5011012200\",\"udrtYn\":\"0\",\"lnbrMnnm\":\"3074\",\"roadAddr\":\"제주특별자치도 제주시 우평로 28-1 (노형동)\",\"lnbrSlno\":\"0\",\"buldMnnm\":\"28\",\"bdKdcd\":\"0\",\"liNm\":\"\",\"rnMgtSn\":\"501103349161\",\"mtYn\":\"0\",\"bdMgtSn\":\"5011012200130740000063415\",\"buldSlno\":\"1\"},{\"detBdNmList\":\"\",\"engAddr\":\"28-2, Uopyeong-ro, Jeju-si, Jeju-do\",\"rn\":\"우평로\",\"emdNm\":\"노형동\",\"zipNo\":\"63106\",\"roadAddrPart2\":\" (노형동)\",\"emdNo\":\"01\",\"sggNm\":\"제주시\",\"jibunAddr\":\"제주특별자치도 제주시 노형동 3083-3\",\"siNm\":\"제주특별자치도\",\"roadAddrPart1\":\"제주특별자치도 제주시 우평로 28-2\",\"bdNm\":\"\",\"admCd\":\"5011012200\",\"udrtYn\":\"0\",\"lnbrMnnm\":\"3083\",\"roadAddr\":\"제주특별자치도 제주시 우평로 28-2 (노형동)\",\"lnbrSlno\":\"3\",\"buldMnnm\":\"28\",\"bdKdcd\":\"0\",\"liNm\":\"\",\"rnMgtSn\":\"501103349161\",\"mtYn\":\"0\",\"bdMgtSn\":\"5011012200130830003066752\",\"buldSlno\":\"2\"}]}}",
+        "_responseType": "",
+        "_sent": true,
+        "_subscriptions": [],
+        "_timedOut": false,
+        "_trackingName": "unknown",
+        "_url": "http://www.juso.go.kr/addrlink/addrLinkApi.do?confmKey=devU01TX0FVVEgyMDIwMDgyMDIwMDYyODExMDA4NDk=&keyword=우평로&resultType=json",
+        "readyState": 4,
+        "responseHeaders": {
+            "Access-Control-Allow-Origin": "*",
+            "Connection": "Keep-Alive",
+            "Content-Type": "application/json;charset=UTF-8",
+            "Date": "Thu, 20 Aug 2020 12:52:51 GMT",
+            "Transfer-Encoding": "chunked"
+        },
+        "responseURL": "http://www.juso.go.kr/addrlink/addrLinkApi.do?confmKey=devU01TX0FVVEgyMDIwMDgyMDIwMDYyODExMDA4NDk=&keyword=%EC%9A%B0%ED%8F%89%EB%A1%9C&resultType=json",
+        "status": 200,
+        "timeout": 0,
+        "upload": {},
+        "withCredentials": true
     },
-    "timeStamp": 1597712671291,
-    "type": undefined
+    "status": 200,
+    "statusText": undefined
 }

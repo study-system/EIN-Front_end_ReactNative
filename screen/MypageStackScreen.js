@@ -21,6 +21,7 @@ import SignUp from './SignUp';
 import AuthUserSignUp from './AuthUserSignUp ';
 import UserSignUp from './UserSignUp';
 import Adress from './Adress';
+import AgreePage from './AgreePage';
 
 const onSubmit = (cookie) => {
   console.log('쿠키', console);
@@ -43,6 +44,7 @@ export default function MypageStackScreen2() {
       <MypageStack.Screen name="UserSignUp" component={UserSignUp} />
       <MypageStack.Screen name="AuthUserSignUp" component={AuthUserSignUp} />
       <MypageStack.Screen name="Adress" component={Adress} />
+      <MypageStack.Screen name="AgreePage" component={AgreePage} />
     </MypageStack.Navigator>
   );
 }

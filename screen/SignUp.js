@@ -25,12 +25,20 @@ export default class SignUp extends Component {
         <Text>회원가입</Text>
         <TouchableOpacity
           style={styles.submitButton}
-          onPress={() => this.props.navigation.navigate('UserSignUp')}>
+          onPress={() =>
+            this.props.navigation.navigate('AgreePage', {
+              nextPage: 'UserSignUp',
+            })
+          }>
           <Text style={styles.submitButtonText}> 일반회원가입 </Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.submitButton}
-          onPress={() => this.props.navigation.navigate('AuthUserSignUp')}>
+          onPress={() =>
+            this.props.navigation.navigate('AgreePage', {
+              nextPage: 'AuthUserSignUp',
+            })
+          }>
           <Text style={styles.submitButtonText}> 인증회원가입 </Text>
         </TouchableOpacity>
       </View>

@@ -15,7 +15,7 @@ import {
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createStackNavigator} from '@react-navigation/stack';
-
+const axios = require('axios');
 const styles = require('../css/Styles');
 // 마이페이지 스크린
 export default class UserSignUp extends Component {
@@ -24,39 +24,38 @@ export default class UserSignUp extends Component {
     email: '',
     password: '',
     name: '',
+    nickName: '',
     phone: '',
     addr: '',
     roadAddr: '',
     siNm: '',
+    detail_address: '',
   };
   constructor(props) {
     super(props);
   }
-  handleEmail = (text) => {
-    this.setState({email: text});
+  componentDidMount() {
+    axios
+      .get('http://myks790.iptime.org:8082/board/location')
+      .then((response) => {
+        //state.data에 response로 받은 json 값을 넣어줌
+        this.setState({sido: response.data});
+      });
+  }
+  onChange = (e) => {
+    //input의 name
+    console.log(e._dispatchInstances.memoizedProps.name);
+    //input의 값
+    console.log(e.nativeEvent.text);
+    this.setState({
+      ...this.state, // 기존의 객체를 복사한 뒤
+      [e._dispatchInstances.memoizedProps.name]: e.nativeEvent.text, // name 키를 가진 값을 value 로 설정
+    });
   };
-  handlePassword = (text) => {
-    this.setState({password: text});
+  transSiNmToSido = (siNm) => {
+    var temp = this.state.sido.filter((item) => item.name == siNm);
+    return temp[0].name;
   };
-  handleName = (text) => {
-    this.setState({name: text});
-  };
-  handleNickName = (text) => {
-    this.setState({NickName: text});
-  };
-  handlePhone = (text) => {
-    this.setState({Phone: text});
-  };
-  handleAddr = (text) => {
-    this.setState({addr: text});
-  };
-  handleRoadAddr = (text) => {
-    this.setState({addr: text});
-  };
-  handleSiNm = (text) => {
-    this.setState({addr: text});
-  };
-
   render() {
     let json = {
       email: 'myks790@gmail.com',
@@ -71,94 +70,99 @@ export default class UserSignUp extends Component {
     };
     const onSubmit = (tmp) => {
       console.log('넘어온 주소 값', tmp);
-      this.state.addr = tmp.roadAddr;
-      this.state.sido = tmp.siNm;
+      this.state.roadAddr = tmp.roadAddr;
+      this.state.siNm = tmp.siNm;
+      this.transSiNmToSido(this.state.siNm);
     };
-    return (
-      <View style={styles.containerLogin}>
-        <Text>유저회원가입</Text>
-        <TextInput
-          style={styles.input}
-          underlineColorAndroid="transparent"
-          placeholder="Email"
-          placeholderTextColor="black"
-          autoCapitalize="none"
-          onChangeText={this.handleEmail}
-        />
-        <TextInput
-          style={styles.input}
-          underlineColorAndroid="transparent"
-          placeholder="Password"
-          placeholderTextColor="black"
-          autoCapitalize="none"
-          secureTextEntry={true}
-          onChangeText={this.handlePassword}
-        />
-        <TextInput
-          style={styles.input}
-          underlineColorAndroid="transparent"
-          placeholder="이름"
-          placeholderTextColor="black"
-          autoCapitalize="none"
-          onChangeText={this.handleName}
-        />
-        <TextInput
-          style={styles.input}
-          underlineColorAndroid="transparent"
-          placeholder="닉네임"
-          placeholderTextColor="black"
-          autoCapitalize="none"
-          onChangeText={this.handleNickName}
-        />
-        <TextInput
-          style={styles.input}
-          underlineColorAndroid="transparent"
-          placeholder="전화번호"
-          placeholderTextColor="black"
-          autoCapitalize="none"
-          onChangeText={this.handlePhone}
-        />
-        <TextInput
-          style={styles.input}
-          underlineColorAndroid="transparent"
-          placeholder="주소"
-          placeholderTextColor="black"
-          autoCapitalize="none"
-          onChangeText={this.handleAddr}
-        />
-        <TouchableOpacity
-          style={styles.submitButton}
-          onPress={() =>
-            this.props.navigation.navigate('Adress', {
-              addrName: this.state.addr,
-              onSubmit: onSubmit,
-            })
-          }>
-          <Text style={styles.submitButtonText}> 주소찾기 </Text>
-        </TouchableOpacity>
-        <TextInput
-          style={styles.input}
-          underlineColorAndroid="transparent"
-          placeholder="주소"
-          placeholderTextColor="black"
-          autoCapitalize="none"
-          onChangeText={this.handleRoadAddr}
-        />
-        <TextInput
-          style={styles.input}
-          underlineColorAndroid="transparent"
-          placeholder="주소"
-          placeholderTextColor="black"
-          autoCapitalize="none"
-          onChangeText={this.handleSiNm}
-        />
 
-        <TouchableOpacity
-          style={styles.submitButton}
-          onPress={() => this.props.navigation.navigate('로그인')}>
-          <Text style={styles.submitButtonText}> 회원가입 </Text>
-        </TouchableOpacity>
-      </View>
+    return (
+      <ScrollView>
+        <View style={styles.containerLogin}>
+          <Text>유저회원가입</Text>
+          <TextInput
+            name={'email'}
+            style={styles.input}
+            underlineColorAndroid="transparent"
+            placeholder="Email"
+            placeholderTextColor="black"
+            autoCapitalize="none"
+            onChange={this.onChange}
+          />
+          <TextInput
+            name={'password'}
+            style={styles.input}
+            underlineColorAndroid="transparent"
+            placeholder="Password"
+            placeholderTextColor="black"
+            autoCapitalize="none"
+            secureTextEntry={true}
+            onChange={this.onChange}
+          />
+          <TextInput
+            name={'name'}
+            style={styles.input}
+            underlineColorAndroid="transparent"
+            placeholder="이름"
+            placeholderTextColor="black"
+            autoCapitalize="none"
+            onChange={this.onChange}
+          />
+          <TextInput
+            name={'nickName'}
+            style={styles.input}
+            underlineColorAndroid="transparent"
+            placeholder="닉네임"
+            placeholderTextColor="black"
+            autoCapitalize="none"
+            onChange={this.onChange}
+          />
+          <TextInput
+            name={'phone'}
+            style={styles.input}
+            underlineColorAndroid="transparent"
+            placeholder="전화번호"
+            placeholderTextColor="black"
+            autoCapitalize="none"
+            onChange={this.onChange}
+            dataDetectorTypes={'phoneNumber'}
+          />
+
+          <TouchableOpacity
+            style={styles.submitButton}
+            onPress={() =>
+              this.props.navigation.navigate('Adress', {
+                onSubmit: onSubmit,
+              })
+            }>
+            <Text style={styles.submitButtonText}> 주소찾기 </Text>
+          </TouchableOpacity>
+          <TextInput
+            editable={false}
+            style={styles.input}
+            underlineColorAndroid="transparent"
+            placeholder="주소"
+            placeholderTextColor="black"
+            autoCapitalize="none"
+            value={this.state.roadAddr}
+          />
+          <TextInput
+            name={'detail_address'}
+            style={styles.input}
+            underlineColorAndroid="transparent"
+            placeholder="상세주소"
+            placeholderTextColor="black"
+            autoCapitalize="none"
+            onChange={this.onChange}
+          />
+
+          <TouchableOpacity
+            style={styles.submitButton}
+            onPress={() => this.props.navigation.navigate('로그인')}>
+            <Text style={styles.submitButtonText}> 회원가입 </Text>
+          </TouchableOpacity>
+          <Text>{}</Text>
+        </View>
+      </ScrollView>
     );
   }
 }
