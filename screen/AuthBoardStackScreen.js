@@ -31,13 +31,14 @@ import AuthBoardScreen from '../screen/AuthBoardScreen';
 import UpdateScreen from '../screen/UpdateScreen';
 
 const AuthBoardStack = createStackNavigator();
-export default function AuthBoardStackScreen() {
+export default function AuthBoardStackScreen({route, navigation}) {
+  console.log('인보스택', route.params.isLogin);
   return (
     <AuthBoardStack.Navigator>
       <AuthBoardStack.Screen
         name="인증게시판"
         component={AuthBoardScreen}
-        initialParams={{auth: 'yes'}}
+        initialParams={{auth: 'yes', isLogin: route.params.isLogin}}
       />
       <AuthBoardStack.Screen
         name="Details"

@@ -27,6 +27,7 @@ const GetDetail = require('./function/GetDetail');
 import MypageStack from './screen/MypageStackScreen';
 import AuthBoardStackScreen from './screen/AuthBoardStackScreen';
 import config from './config';
+import {UserProvider} from './screen/UserContext';
 // 자유게시판 스크린
 class BoardScreen extends Component {
   render() {
@@ -56,22 +57,61 @@ const Tab = createBottomTabNavigator();
 
 // 하단탭
 class MyTabs extends Component {
+  state = {
+    isLogin: false,
+    id: '',
+  };
+
+  onSubmit(params) {
+    if (params.isLogin) this.state.isLogin = params.isLogin;
+    if (params.id) this.state.id = params.id;
+    console.log('최상위params', params);
+  }
   constructor(props) {
     super(props);
     console.log('MyTabs', this.props.data);
   }
   render() {
+    console.log('최상위', this.state.isLogin);
     return (
       <Tab.Navigator>
-        <Tab.Screen name="Home" component={AuthBoardStackScreen} />
+        <Tab.Screen
+          name="Home"
+          component={AuthBoardStackScreen}
+          initialParams={{
+            onSubmit: this.onSubmit,
+            isLogin: this.state.isLogin,
+            id: this.state.id,
+          }}
+        />
         {/* <Tab.Screen
           name="인증게시판"
           component={AuthBoardScreen}
           data2={this.props.data}
         /> */}
-        <Tab.Screen name="자유게시판" component={BoardScreen} />
-        <Tab.Screen name="마이페이지" component={MypageStack} />
-        <Tab.Screen name="푸쉬알람" component={PushAlarm} />
+        <Tab.Screen
+          name="자유게시판"
+          component={BoardScreen}
+          onSubmit={this.onSubmit}
+          isLogin={this.state.isLogin}
+          id={this.state.id}
+        />
+        <Tab.Screen
+          name="마이페이지"
+          component={MypageStack}
+          initialParams={{
+            onSubmit: this.onSubmit,
+            isLogin: this.state.isLogin,
+            id: this.state.id,
+          }}
+        />
+        <Tab.Screen
+          name="푸쉬알람"
+          component={PushAlarm}
+          onSubmit={this.onSubmit}
+          isLogin={this.state.isLogin}
+          id={this.state.id}
+        />
       </Tab.Navigator>
     );
   }
@@ -91,10 +131,12 @@ export default class App extends Component {
   }
   render() {
     return (
-      <NavigationContainer>
-        {/* <Text>{this.state.data[0].name}</Text> */}
-        <MyTabs data={this.state.data} />
-      </NavigationContainer>
+      <UserProvider>
+        <NavigationContainer>
+          {/* <Text>{this.state.data[0].name}</Text> */}
+          <MyTabs data={this.state.data} />
+        </NavigationContainer>
+      </UserProvider>
     );
   }
 }

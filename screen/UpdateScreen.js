@@ -250,6 +250,7 @@ export default function UpdateScreen({route, navigation}) {
       .post('http://myks790.iptime.org:8082/board', jsonForCreate)
       .then(function (response) {
         console.log('글쓰기 성공', response);
+        navigation.navigate('인증게시판', {reset: true});
       })
       .catch(function (error) {
         console.log(error);
@@ -272,8 +273,6 @@ export default function UpdateScreen({route, navigation}) {
           <Button
             onPress={() => {
               toggleButton();
-
-              navigation.navigate('인증게시판');
             }}
             title="수정"
             disabled={

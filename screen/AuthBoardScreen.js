@@ -25,6 +25,7 @@ const moment = require('moment');
 const MkPicker = require('../function/Mkpicker');
 const GetDetail = require('../function/GetDetail');
 import dumy from '../dumydata';
+import {UserConsumer} from './UserContext';
 
 //스크린 import
 //
@@ -36,6 +37,7 @@ export default class AuthBoardScreen extends Component {
     sido: 0,
     target: 0,
     page: 1,
+    reset: false,
   };
   constructor(props) {
     super(props);
@@ -49,10 +51,7 @@ export default class AuthBoardScreen extends Component {
   componentDidMount() {
     this.getList();
   }
-  componentDidUpdate() {
-    console.log('업데이트');
-    console.log(this.state);
-  }
+
   componentWillUnmount() {
     console.log('will마운트');
   }
@@ -91,6 +90,7 @@ export default class AuthBoardScreen extends Component {
     });
   };
   render() {
+    console.log('인증보드', this.props.route.params.isLogin);
     //포스트 하나 만드는 메서드
     let Item = ({title, writer}) => (
       <View style={styles.item}>
@@ -229,15 +229,21 @@ export default class AuthBoardScreen extends Component {
           </View>
           <View style={{flex: 1}} />
         </View>
-        <Button
-          style={{flex: 1}}
-          title="글쓰기"
-          onPress={() => {
-            this.props.navigation.navigate('Update', {
-              auth: this.state.auth,
-            });
-          }}
-        />
+        <UserConsumer>
+          {({userInfo}) => (
+            <Button
+              style={{flex: 1}}
+              title="글쓰기"
+              disabled={!userInfo.isLogin}
+              onPress={() => {
+                console.log('유저인포!!!!!!!!!!!!!!!!!!!!!!!!!!!!!', userInfo);
+                this.props.navigation.navigate('Update', {
+                  auth: this.state.auth,
+                });
+              }}
+            />
+          )}
+        </UserConsumer>
       </View>
     );
   }

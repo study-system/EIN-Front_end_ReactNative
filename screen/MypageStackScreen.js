@@ -30,13 +30,14 @@ const getLoginToken = (cookie) => {
   console.log('쿠키', console);
 };
 const MypageStack = createStackNavigator();
-export default function MypageStackScreen2() {
+export default function MypageStackScreen2({route, navigation}) {
+  console.log(route.params.isLogin);
   return (
     <MypageStack.Navigator>
       <MypageStack.Screen
         name="로그인"
         component={LoginPage}
-        initialParams={{onSubmit: onSubmit}}
+        initialParams={route.params}
         getLoginToken={getLoginToken}
       />
       <MypageStack.Screen name="마이페이지" component={Mypage} />

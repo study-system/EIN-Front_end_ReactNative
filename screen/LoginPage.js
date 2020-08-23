@@ -1,4 +1,4 @@
-import React, {useState, Component} from 'react';
+import React, {useState, Component, useContext} from 'react';
 import {
   SafeAreaView,
   FlatList,
@@ -18,15 +18,18 @@ import {createStackNavigator} from '@react-navigation/stack';
 const axios = require('axios');
 const styles = require('../css/Styles');
 import config from '../config';
+import {UserConsumer} from './UserContext';
+
 // 마이페이지 스크린
 export default class LoginPage extends Component {
+  state = {
+    cookie: '',
+    email: '',
+    password: '',
+    isLogIn: false,
+  };
   constructor(props) {
     super(props);
-    this.state = {
-      cookie: '',
-      email: '',
-      password: '',
-    };
   }
   onChange = (e) => {
     //input의 name
@@ -44,6 +47,7 @@ export default class LoginPage extends Component {
   handlePassword = (text) => {
     this.setState({password: text});
   };
+
   login = (email, password) => {
     //http://myks790.iptime.org:8082/login
     //post
@@ -57,11 +61,15 @@ export default class LoginPage extends Component {
   };
   postReq(url, json) {
     axios
-      .post(url, json)
+      .post(url, json, {withCredentials: true})
       .then((response) => {
         console.log('요청성공', response);
         alert('성공');
-        this.setState({cookie: '쿠키'});
+
+        // this.props.navigation.navigate('로그인', {isLogIn: true});
+        // this.setState({isLogIn: true});
+        this.setState({isLogIn: true});
+        // this.updateLogin();
         // this.onSubmit('쿠키');
         // this.getLogin('쿠키');
       })
@@ -70,6 +78,10 @@ export default class LoginPage extends Component {
         alert('실패');
       });
   }
+
+  updateLogin() {
+    this.props.route.params.onSubmit({isLogIn: true});
+  }
   //   onSubmit = (cookie) => {
   //     this.props.route.params.onSubmit('쿠키');
   //   };
@@ -77,37 +89,58 @@ export default class LoginPage extends Component {
   //     this.props.getLoginToken('쿠키');
   //   };
   render() {
+    console.log(this.props.route.params);
+    this.props.route.params.onSubmit({isLogIn: true});
     return (
       <View style={styles.containerLogin}>
-        <TextInput
-          name={'email'}
-          style={styles.input}
-          underlineColorAndroid="transparent"
-          placeholder="Email"
-          placeholderTextColor="black"
-          autoCapitalize="none"
-          onChange={this.onChange}
-        />
-        <TextInput
-          name={'password'}
-          style={styles.input}
-          underlineColorAndroid="transparent"
-          placeholder="Password"
-          placeholderTextColor="black"
-          autoCapitalize="none"
-          secureTextEntry={true}
-          onChange={this.onChange}
-        />
-        <TouchableOpacity
-          style={styles.submitButton}
-          onPress={() => this.login(this.state.email, this.state.password)}>
-          <Text style={styles.submitButtonText}> Submit </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.submitButton}
-          onPress={() => this.props.navigation.navigate('SignUp')}>
-          <Text style={styles.submitButtonText}> 회원가입 </Text>
-        </TouchableOpacity>
+        {this.state.isLogIn ? (
+          <View>
+            <Text>로그인완료</Text>
+          </View>
+        ) : (
+          <View>
+            <TextInput
+              name={'email'}
+              style={styles.input}
+              underlineColorAndroid="transparent"
+              placeholder="Email"
+              placeholderTextColor="black"
+              autoCapitalize="none"
+              onChange={this.onChange}
+            />
+            <TextInput
+              name={'password'}
+              style={styles.input}
+              underlineColorAndroid="transparent"
+              placeholder="Password"
+              placeholderTextColor="black"
+              autoCapitalize="none"
+              secureTextEntry={true}
+              onChange={this.onChange}
+            />
+            <UserConsumer>
+              {({ctxLogIn, ctxLogOut, userInfo}) => (
+                <TouchableOpacity
+                  style={styles.submitButton}
+                  onPress={() => {
+                    console.log(userInfo, ctxLogIn);
+                    this.login(this.state.email, this.state.password);
+                    ctxLogIn({email: this.state.email, isLogIn: true});
+                    console.log('컨텍스트', userInfo);
+                    // ctxLogIn({email: this.state.email, isLogin: true});
+                  }}>
+                  <Text style={styles.submitButtonText}> Submit </Text>
+                </TouchableOpacity>
+              )}
+            </UserConsumer>
+
+            <TouchableOpacity
+              style={styles.submitButton}
+              onPress={() => this.props.navigation.navigate('SignUp')}>
+              <Text style={styles.submitButtonText}> 회원가입 </Text>
+            </TouchableOpacity>
+          </View>
+        )}
       </View>
     );
   }
