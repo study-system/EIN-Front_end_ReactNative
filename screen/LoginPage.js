@@ -17,6 +17,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createStackNavigator} from '@react-navigation/stack';
 const axios = require('axios');
 const styles = require('../css/Styles');
+import config from '../config';
 // 마이페이지 스크린
 export default class LoginPage extends Component {
   constructor(props) {
@@ -52,7 +53,7 @@ export default class LoginPage extends Component {
       email: email,
       password: password,
     };
-    this.postReq('http://myks790.iptime.org:8082/login', jsonForLogin);
+    this.postReq(config.server + '/login', jsonForLogin);
   };
   postReq(url, json) {
     axios

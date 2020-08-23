@@ -26,7 +26,7 @@ const GetDetail = require('./function/GetDetail');
 //스크린 import
 import MypageStack from './screen/MypageStackScreen';
 import AuthBoardStackScreen from './screen/AuthBoardStackScreen';
-
+import config from './config';
 // 자유게시판 스크린
 class BoardScreen extends Component {
   render() {
@@ -83,7 +83,7 @@ export default class App extends Component {
     this.state = {data: 'adaa'};
   }
   componentDidMount() {
-    axios.get('http://myks790.iptime.org:8082/board/major').then((response) => {
+    axios.get(config.server + '/board/major').then((response) => {
       this.setState({data: response.data});
       // this.setState({data: '인증게시판'});
       // console.log(response.data);
@@ -92,7 +92,7 @@ export default class App extends Component {
   render() {
     return (
       <NavigationContainer>
-        <Text>{this.state.data[0].name}</Text>
+        {/* <Text>{this.state.data[0].name}</Text> */}
         <MyTabs data={this.state.data} />
       </NavigationContainer>
     );

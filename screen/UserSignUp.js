@@ -17,6 +17,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createStackNavigator} from '@react-navigation/stack';
 const axios = require('axios');
 const styles = require('../css/Styles');
+import config from '../config';
 // 마이페이지 스크린
 export default class UserSignUp extends Component {
   state = {
@@ -45,12 +46,10 @@ export default class UserSignUp extends Component {
     super(props);
   }
   componentDidMount() {
-    axios
-      .get('http://myks790.iptime.org:8082/board/location')
-      .then((response) => {
-        //state.data에 response로 받은 json 값을 넣어줌
-        this.setState({sido: response.data});
-      });
+    axios.get(config.server + '/board/location').then((response) => {
+      //state.data에 response로 받은 json 값을 넣어줌
+      this.setState({sido: response.data});
+    });
   }
   onChange = (e) => {
     //input의 name
@@ -188,6 +187,7 @@ export default class UserSignUp extends Component {
         .post('http://myks790.iptime.org:8082/user', jsonForSignIn)
         .then(function (response) {
           console.log('계정생성성공', response);
+          this.setState();
         })
         .catch(function (error) {
           console.log(error);
@@ -229,8 +229,7 @@ export default class UserSignUp extends Component {
         alert('주소찾기를 다시 해주십시오');
       } else {
         signInReq();
-
-        this.props.navigation.navigate('UserSignUp');
+        this.props.navigation.navigate('로그인');
       }
     };
     return (

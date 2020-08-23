@@ -15,6 +15,7 @@ import {
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createStackNavigator} from '@react-navigation/stack';
+import config from '../config';
 const axios = require('axios');
 const styles = require('../css/Styles');
 // 마이페이지 스크린

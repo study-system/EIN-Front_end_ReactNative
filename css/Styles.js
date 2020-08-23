@@ -41,17 +41,21 @@ const styles = StyleSheet.create({
     marginTop: StatusBar.currentHeight || 0,
   },
   item: {
+    borderBottomColor: '#777',
+    borderBottomWidth: 1,
     backgroundColor: '#fff',
-    paddingVertical: 10,
+    paddingVertical: 15,
     paddingHorizontal: 100,
-    marginVertical: 2,
-    marginHorizontal: 16,
+    marginVertical: 0,
+    marginHorizontal: 0,
     flex: 1,
     flexDirection: 'row',
   },
   postTitle: {
     fontSize: 12,
+    flex: 8,
   },
+  postTitleWriter: {flex: 2, textAlign: 'center'},
 
   title: {
     fontSize: 32,

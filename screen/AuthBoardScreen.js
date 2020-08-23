@@ -17,13 +17,14 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createStackNavigator} from '@react-navigation/stack';
 // import {Picker} from '@react-native-community/picker';
 // import {TapGestureHandler} from 'react-native-gesture-handler';
-
+import config from '../config';
 const styles = require('../css/Styles');
 const axios = require('axios');
 const moment = require('moment');
 //기능 import
 const MkPicker = require('../function/Mkpicker');
 const GetDetail = require('../function/GetDetail');
+import dumy from '../dumydata';
 
 //스크린 import
 //
@@ -46,27 +47,7 @@ export default class AuthBoardScreen extends Component {
 
   // 실행한 결과가 오면 자동으로 리플래시 되면서 반영함. 1번
   componentDidMount() {
-    let url =
-      'http://myks790.iptime.org:8082/board?auth=' +
-      this.state.auth +
-      '&page=1&pageSize=10';
-    axios
-      .get(url)
-      .then((response) => {
-        console.log('리스트', response.data.contents);
-        //state.data에 response로 받은 json 값을 넣어줌
-        var objForSettingFilter = {};
-        objForSettingFilter.authBoard = response.data.contents;
-        this.setState(objForSettingFilter);
-      })
-      .catch(function (error) {
-        console.log('리스트에러에러');
-        // handle error
-        console.log(error);
-      })
-      .then(function () {
-        // always executed
-      });
+    this.getList();
   }
   componentDidUpdate() {
     console.log('업데이트');
@@ -83,17 +64,42 @@ export default class AuthBoardScreen extends Component {
       console.log('focus');
     });
   };
-
+  getList = () => {
+    console.log('컨피그', config);
+    let url =
+      config.server +
+      '/board?auth=' +
+      this.state.auth +
+      '&page=' +
+      this.state.page +
+      '&pageSize=8';
+    if (this.state.location > 0) {
+      url = url + '&location_id=' + this.state.location;
+    }
+    if (this.state.major > 0) {
+      url = url + '&major_id=' + this.state.major;
+    }
+    if (this.state.target > 0) {
+      url = url + '&target_id=' + this.state.target;
+    }
+    axios.get(url).then((response) => {
+      //state.data에 response로 받은 json 값을 넣어줌
+      var objForSettingFilter = {};
+      objForSettingFilter.authBoard = response.data.contents;
+      this.setState(objForSettingFilter);
+      console.log(response.data.contents);
+    });
+  };
   render() {
     //포스트 하나 만드는 메서드
     let Item = ({title, writer}) => (
       <View style={styles.item}>
         <Text style={styles.postTitle}>{title} </Text>
-        <Text style={styles.postTitle}>{writer}</Text>
+        <Text style={styles.postWriter}>{writer}</Text>
       </View>
     );
     let renderItem = ({item}) => (
-      <View>
+      <View style={{flex: 1}}>
         <TouchableOpacity
           style={{backgroundColor: '#fff'}}
           onPress={() => {
@@ -111,87 +117,120 @@ export default class AuthBoardScreen extends Component {
         // text.location = tmp.value;
         this.state.location = tmp.value;
         console.log(this.state.location);
-        getList();
+        this.getList();
       }
       if (tmp.name == 'major') {
         this.state.major = tmp.value;
-        getList();
+        this.getList();
       }
       if (tmp.name == 'target') {
         this.state.target = tmp.value;
-        getList();
+        this.getList();
       }
     };
+    //  url = config.server + '/board?auth=' + this.state.auth + '&page=1&pageSize=8';
 
-    const getList = () => {
-      let url =
-        'http://myks790.iptime.org:8082/board?auth=' +
-        this.state.auth +
-        '&page=' +
-        this.state.page +
-        '&pageSize=10';
-      if (this.state.location > 0) {
-        url = url + '&location_id=' + this.state.location;
-      }
-      if (this.state.major > 0) {
-        url = url + '&major_id=' + this.state.major;
-      }
-      if (this.state.target > 0) {
-        url = url + '&target_id=' + this.state.target;
-      }
-      axios.get(url).then((response) => {
-        //state.data에 response로 받은 json 값을 넣어줌
-        var objForSettingFilter = {};
-        objForSettingFilter.authBoard = response.data.contents;
-        this.setState(objForSettingFilter);
-        console.log(response.data.contents);
-      });
-    };
-
+    const n = 2;
     return (
-      <View style={styles.containerAuth}>
+      <View
+        style={{
+          flex: 1,
+          flexDirection: 'column',
+          backgroundColor: '#fff',
+        }}>
         {/* <Text style={styles.title}>인증게시판</Text> */}
         {/* 필터링하는 부분 */}
-        <View style={{flex: 1, flexDirection: 'row'}}>
-          <View style={{width: 120, height: 50}}>
+        <View
+          style={{
+            flex: 1,
+            flexDirection: 'row',
+            justifyContent: 'space-around',
+            backgroundColor: '#fff',
+            height: 200,
+            paddingBottom: 0,
+            marginBottom: 0,
+          }}>
+          <View
+            style={{
+              borderWidth: 1,
+              width: 120,
+              height: 50,
+              backgroundColor: '#fff',
+            }}>
             <MkPicker
               filterName={'sido'}
-              url={'http://myks790.iptime.org:8082/board/location'}
+              url={config.server + '/board/location'}
               onSubmit={onSubmitPicker}
             />
           </View>
-          <View style={{width: 120, height: 50}}>
+          <View
+            style={{
+              borderBottomWidth: 2,
+              borderRightWidth: 1,
+              width: 120,
+              height: 50,
+              backgroundColor: '#fff',
+            }}>
             <MkPicker
               filterName={'major'}
-              url={'http://myks790.iptime.org:8082/board/major'}
+              url={config.server + '/board/major'}
               onSubmit={onSubmitPicker}
             />
           </View>
-          <View style={{width: 120, height: 50}}>
+
+          <View
+            style={{
+              borderBottomWidth: 1,
+              width: 120,
+              height: 50,
+              backgroundColor: '#fff',
+            }}>
             <MkPicker
               filterName={'target'}
-              url={'http://myks790.iptime.org:8082/board/target'}
+              url={config.server + '/board/target'}
               onSubmit={onSubmitPicker}
             />
           </View>
         </View>
+
         {/* 게시판글 목록 */}
-
-        <View style={styles.tableHeader}>
-          <View style={{alignSelf: 'flex-start'}}>
-            <Text>제목</Text>
-          </View>
-          <View>
-            <Text>작성자</Text>
-          </View>
+        <View
+          style={{flex: 7, flexDirection: 'column', backgroundColor: '#fff'}}>
+          <FlatList
+            style={{borderTopColor: '#000', borderTopWidth: 2}}
+            data={this.state.authBoard} //dumy.boardList
+            renderItem={renderItem}
+            keyExtractor={(item) => String(item.id)}
+          />
         </View>
-
-        <FlatList
-          data={this.state.authBoard}
-          renderItem={renderItem}
-          keyExtractor={(item) => String(item.id)}
-        />
+        <View style={{flex: 1, flexDirection: 'column', alignSelf: 'center'}}>
+          <View style={{flex: 1}} />
+          <View style={{flex: 3, flexDirection: 'row', alignSelf: 'center'}}>
+            <View style={{flex: 1}} />
+            <Button
+              title="<"
+              onPress={() => {
+                this.props.navigation.navigate('Update', {
+                  auth: this.state.auth,
+                });
+              }}
+            />
+            <View style={{flex: 2}} />
+            <Button
+              style={{}}
+              title=">"
+              onPress={() => {
+                this.props.navigation.navigate('Update', {
+                  auth: this.state.auth,
+                });
+              }}
+            />
+            <View style={{flex: 1}} />
+          </View>
+          <View style={{flex: 1}} />
+        </View>
         <Button
+          style={{flex: 1}}
           title="글쓰기"
           onPress={() => {
             this.props.navigation.navigate('Update', {

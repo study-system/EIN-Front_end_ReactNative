@@ -15,6 +15,7 @@ import {
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createStackNavigator} from '@react-navigation/stack';
+import config from '../config';
 // import {Picker} from '@react-native-community/picker';
 // import {TapGestureHandler} from 'react-native-gesture-handler';
 
@@ -299,21 +300,21 @@ export default function UpdateScreen({route, navigation}) {
             <View style={{width: 120, height: 50}}>
               <MkPicker
                 filterName={'sido'}
-                url={'http://myks790.iptime.org:8082/board/location'}
+                url={config.server + '/board/location'}
                 onSubmit={onSubmitPicker}
               />
             </View>
             <View style={{width: 120, height: 50}}>
               <MkPicker
                 filterName={'major'}
-                url={'http://myks790.iptime.org:8082/board/major'}
+                url={config.server + '/board/major'}
                 onSubmit={onSubmitPicker}
               />
             </View>
             <View style={{width: 120, height: 50}}>
               <MkPicker
                 filterName={'target'}
-                url={'http://myks790.iptime.org:8082/board/target'}
+                url={config.server + '/board/target'}
                 onSubmit={onSubmitPicker}
               />
             </View>

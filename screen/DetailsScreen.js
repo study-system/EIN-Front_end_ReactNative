@@ -17,7 +17,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createStackNavigator} from '@react-navigation/stack';
 // import {Picker} from '@react-native-community/picker';
 // import {TapGestureHandler} from 'react-native-gesture-handler';
-
+import config from '../config';
 const axios = require('axios');
 const moment = require('moment');
 //기능 import
@@ -76,9 +76,7 @@ export default function DetailsScreen({route, navigation}) {
     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
       {/* <Text>{JSON.stringify(id)}</Text> */}
 
-      <GetDetail
-        url={'http://myks790.iptime.org:8082/board/' + JSON.stringify(boardId)}
-      />
+      <GetDetail url={config.server + '/board/' + JSON.stringify(boardId)} />
       <Button
         title="삭제하기"
         onPress={() => {
