@@ -15,20 +15,23 @@ import {
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createStackNavigator} from '@react-navigation/stack';
-const axios = require('axios');
+import axios from 'axios';
+import {UserConsumer} from './UserContext';
 const styles = require('../css/Styles');
 import config from '../config';
 // 마이페이지 스크린
-export default class UserSignUp extends Component {
+export default class Mypage extends Component {
   state = {
     email: '',
     password: '',
+    newPassword: '',
     rePassword: '',
     name: '',
     nickName: '',
     phone: '',
     roadAddr: '',
     siNm: '',
+    sido: 0,
     detail_address: '',
     validate: {
       email: true,
@@ -41,9 +44,19 @@ export default class UserSignUp extends Component {
       detail_address: true,
       req: true,
     },
+    userInfo: {
+      email: '',
+      name: '',
+      nickname: '',
+      address: '',
+      detail_address: '',
+      phone: '',
+    },
   };
   constructor(props) {
     super(props);
+    this.state.userInfo = props.route.params.userInfo;
+    console.log(this.state);
   }
   componentDidMount() {
     axios.get(config.server + '/board/location').then((response) => {
@@ -51,6 +64,28 @@ export default class UserSignUp extends Component {
       this.setState({sido: response.data});
     });
   }
+  jsonForUpdate = {
+    password: '비밀번호',
+    nickname: '닉네임',
+    phone: 17119607,
+    address: '제주도 특별자치도 제주시 진남로 99길 10',
+    addressDetail: '101호',
+    pushAgree: true,
+  };
+  MkTextInputPassword = (props) => {
+    return (
+      <TextInput
+        underlineColorAndroid="transparent"
+        placeholderTextColor="black"
+        autoCapitalize="none"
+        secureTextEntry={true}
+        style={this.state.validate.password ? styles.input : styles.inputO}
+        placeholder={props.placeholder}
+        name={props.name}
+        onChange={props.onChange}
+      />
+    );
+  };
   onChange = (e) => {
     //input의 name
     console.log(e._dispatchInstances.memoizedProps.name);
@@ -168,25 +203,13 @@ export default class UserSignUp extends Component {
 
     this.onChange(e);
   };
-  //http://myks790.iptime.org:8082/user
-  //post
+
   render() {
-    // let json = {
-    //   email: 'myks790@gmail.com',
-    //   password: 1234,
-    //   name: '강상훈',
-    //   nickname: '닉네임',
-    //   phone: '01012345678',
-    //   address: '제주도 특별자치도 제주시 진남로 99길 10',
-    //   detail_address: '101호',
-    //   location_id: 17,
-    //   push_agree: 'yes',
-    // };
     const signInReq = () => {
       axios
-        .post('http://myks790.iptime.org:8082/user', jsonForSignIn)
+        .post(config.server + '/user', jsonForSignIn)
         .then(function (response) {
-          console.log('계정생성성공', response);
+          console.log('계정수정', response);
           this.setState();
         })
         .catch(function (error) {
@@ -195,9 +218,9 @@ export default class UserSignUp extends Component {
     };
     const onSubmit = (tmp) => {
       console.log('넘어온 주소 값', tmp);
-      this.state.roadAddr = tmp.roadAddr;
-      this.state.siNm = tmp.siNm;
-      this.transSiNmToSido(this.state.siNm);
+      this.state.userInfo.address = tmp.roadAddr;
+      this.state.userInfo.siNm = tmp.siNm;
+      this.transSiNmToSido(this.state.siNm, this.state.roadAddr);
     };
     var jsonForSignIn = {
       email: this.state.email,
@@ -235,71 +258,86 @@ export default class UserSignUp extends Component {
     return (
       <ScrollView>
         <View style={styles.containerLogin}>
-          <Text>유저회원가입</Text>
-          <TextInput
-            name={'email'}
-            style={this.state.validate.email ? styles.input : styles.inputO}
-            underlineColorAndroid="transparent"
-            placeholder="Email"
-            placeholderTextColor="black"
-            autoCapitalize="none"
-            onChange={this.varidateEmail}
-          />
-          <TextInput
-            name={'password'}
-            style={this.state.validate.password ? styles.input : styles.inputO}
-            underlineColorAndroid="transparent"
-            placeholder="Password"
-            placeholderTextColor="black"
-            autoCapitalize="none"
-            secureTextEntry={true}
-            onChange={this.onChange}
-          />
-          <TextInput
-            name={'rePassword'}
-            style={this.state.validate.password ? styles.input : styles.inputO}
-            underlineColorAndroid="transparent"
-            placeholder="Password확인"
-            placeholderTextColor="black"
-            autoCapitalize="none"
-            secureTextEntry={true}
-            onChange={this.varidatePassword}
-          />
-          <TextInput
-            name={'name'}
-            style={this.state.validate.name ? styles.input : styles.inputO}
-            underlineColorAndroid="transparent"
-            placeholder="이름"
-            placeholderTextColor="black"
-            autoCapitalize="none"
-            onChange={this.varidateName}
-          />
-          <TextInput
-            name={'nickName'}
-            style={this.state.validate.nickName ? styles.input : styles.inputO}
-            underlineColorAndroid="transparent"
-            placeholder="닉네임"
-            placeholderTextColor="black"
-            autoCapitalize="none"
-            onChange={this.varidateNickName}
-          />
-          <TextInput
-            name={'phone'}
-            style={this.state.validate.phone ? styles.input : styles.inputO}
-            underlineColorAndroid="transparent"
-            placeholder="전화번호"
-            placeholderTextColor="black"
-            autoCapitalize="none"
-            onChange={this.varidatePhone}
-            dataDetectorTypes={'phoneNumber'}
-          />
+          <View>
+            <Text style={styles.inputNameTag}>이메일</Text>
+            <Text style={styles.informationText}>
+              Email: {this.state.userInfo.email}
+            </Text>
+          </View>
+          <View>
+            <Text style={styles.inputNameTag}>비밀번호</Text>
+            <this.MkTextInputPassword
+              name={'password'}
+              onChange={this.onChange}
+              placeholder={'현재비밀번호'}
+            />
+          </View>
+          <View>
+            <Text style={styles.inputNameTag}>새로운 비밀번호</Text>
+            <TextInput
+              name={'newPassword'}
+              style={
+                this.state.validate.password ? styles.input : styles.inputO
+              }
+              underlineColorAndroid="transparent"
+              placeholder="새로운비밀번호"
+              placeholderTextColor="black"
+              autoCapitalize="none"
+              secureTextEntry={true}
+              onChange={this.onChange}
+            />
+          </View>
+          <View>
+            <Text style={styles.inputNameTag}>새로운 비밀번호 확인</Text>
+            <TextInput
+              name={'rePassword'}
+              style={
+                this.state.validate.password ? styles.input : styles.inputO
+              }
+              underlineColorAndroid="transparent"
+              placeholder="새로운비밀번호확인"
+              placeholderTextColor="black"
+              autoCapitalize="none"
+              secureTextEntry={true}
+              onChange={this.varidatePassword}
+            />
+          </View>
+          <View>
+            <Text style={styles.inputNameTag}>닉네임</Text>
+            <TextInput
+              name={'nickName'}
+              style={
+                this.state.validate.nickName ? styles.input : styles.inputO
+              }
+              underlineColorAndroid="transparent"
+              placeholder="닉네임"
+              placeholderTextColor="black"
+              autoCapitalize="none"
+              onChange={this.varidateNickName}
+              defaultValue={this.state.userInfo.nickname}
+            />
+          </View>
+          <View>
+            <Text style={styles.inputNameTag}>전화번호</Text>
+            <TextInput
+              name={'phone'}
+              style={this.state.validate.phone ? styles.input : styles.inputO}
+              underlineColorAndroid="transparent"
+              placeholder="전화번호"
+              placeholderTextColor="black"
+              autoCapitalize="none"
+              onChange={this.varidatePhone}
+              dataDetectorTypes={'phoneNumber'}
+              defaultValue={this.state.userInfo.phone}
+            />
+          </View>
 
           <TouchableOpacity
             style={styles.submitButton}
             onPress={() =>
               this.props.navigation.navigate('Adress', {
                 onSubmit: onSubmit,
-                reqPage: 'UserSignUp',
+                reqPage: '정보수정',
               })
             }>
             <Text style={styles.submitButtonText}> 주소찾기 </Text>
@@ -311,8 +349,9 @@ export default class UserSignUp extends Component {
             placeholder="주소"
             placeholderTextColor="black"
             autoCapitalize="none"
-            value={this.state.roadAddr}
+            value={this.state.userInfo.address}
             onChange={this.varidateRoadAddr}
+            defaultValue={this.state.userInfo.address}
           />
           <TextInput
             name={'detail_address'}
@@ -322,6 +361,7 @@ export default class UserSignUp extends Component {
             placeholderTextColor="black"
             autoCapitalize="none"
             onChange={this.varidateDetail}
+            defaultValue={this.state.userInfo.detail_address}
           />
 
           <TouchableOpacity
@@ -330,9 +370,8 @@ export default class UserSignUp extends Component {
               console.log(jsonForSignIn);
               checkBoolForSignUp();
             }}>
-            <Text style={styles.submitButtonText}> 회원가입 </Text>
+            <Text style={styles.submitButtonText}> 수정 </Text>
           </TouchableOpacity>
-          <Text>{}</Text>
         </View>
       </ScrollView>
     );

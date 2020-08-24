@@ -4,6 +4,7 @@ const UserContext = createContext({
   userInfo: {},
   ctxLogIn: () => {},
   ctxLogOut: () => {},
+  ctxGetUser: () => {},
 });
 
 export class UserProvider extends React.Component {
@@ -13,7 +14,7 @@ export class UserProvider extends React.Component {
       ...this.state,
       userInfo: {
         email: data.email,
-        isLogin: true, //생각해보니 필요는 없어 보임 추후 제거하자
+        isLogin: true,
       },
     });
   };
@@ -22,10 +23,19 @@ export class UserProvider extends React.Component {
     console.log('로그인정보를 제거합니다.');
     this.setState({...this.state, userInfo: {email: '', isLogin: false}});
   };
+  ctxGetUser = (data) => {
+    this.setState({
+      ...this.state,
+      userInfo: {
+        id: data.id,
+      },
+    });
+  };
   state = {
     userInfo: {email: '', isLogin: false},
     ctxLogIn: this.ctxLogIn1,
     ctxLogOut: this.ctxLogOut,
+    ctxGetUser: this.ctxGetUser,
   };
   render() {
     return (

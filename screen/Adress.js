@@ -85,7 +85,7 @@ export default class Adress extends Component {
           style={{backgroundColor: '#fff'}}
           onPress={() => {
             this.onFormSubmit(item.siNm, item.roadAddrPart1);
-            this.props.navigation.navigate('UserSignUp', {
+            this.props.navigation.navigate(this.props.route.params.reqPage, {
               siNm: item.siNm,
               roadAddrPart1: item.roadAddrPart1,
             });
@@ -111,14 +111,6 @@ export default class Adress extends Component {
           renderItem={renderItem}
           keyExtractor={(item) => String(item.id)}
         />
-        <TouchableOpacity
-          style={styles.submitButton}
-          onPress={() => {
-            this.onFormSubmit(this.state.siNm, this.state.roadAddr);
-            this.props.navigation.navigate('UserSignUp');
-          }}>
-          <Text style={styles.submitButtonText}> 확인 </Text>
-        </TouchableOpacity>
       </View>
     );
   }

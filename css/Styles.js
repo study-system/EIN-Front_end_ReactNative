@@ -8,17 +8,31 @@ const styles = StyleSheet.create({
     // alignItems: "center",
     backgroundColor: '#F5FCFF',
   },
+  informationText: {
+    fontSize: 20,
+    paddingTop: 10,
+    marginLeft: 30,
+    marginBottom: 10,
+  },
   input: {
     margin: 15,
     height: 40,
     borderColor: 'black',
     borderWidth: 1,
+    borderRadius: 10,
   },
   inputO: {
     margin: 15,
     height: 40,
-    borderColor: 'green',
-    borderWidth: 1,
+    borderColor: '#04B45F',
+    borderWidth: 2,
+    borderRadius: 10,
+  },
+  inputNameTag: {
+    marginLeft: 20,
+    marginBottom: -5,
+    fontSize: 16,
+    fontWeight: '700',
   },
   submitButton: {
     backgroundColor: 'black',
@@ -26,6 +40,7 @@ const styles = StyleSheet.create({
     margin: 15,
     alignItems: 'center',
     height: 40,
+    borderRadius: 10,
   },
   submitButtonText: {
     color: 'white',

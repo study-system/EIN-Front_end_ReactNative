@@ -27,6 +27,14 @@ export default class LoginPage extends Component {
     email: '',
     password: '',
     isLogIn: false,
+    userInfo: {
+      email: '',
+      name: '',
+      nickname: '',
+      address: '',
+      detail_address: '',
+      phone: '',
+    },
   };
   constructor(props) {
     super(props);
@@ -48,7 +56,7 @@ export default class LoginPage extends Component {
     this.setState({password: text});
   };
 
-  login = (email, password) => {
+  login = (email, password, func) => {
     //http://myks790.iptime.org:8082/login
     //post
     //myks790@gmail.com
@@ -57,9 +65,9 @@ export default class LoginPage extends Component {
       email: email,
       password: password,
     };
-    this.postReq(config.server + '/login', jsonForLogin);
+    this.postReq(config.server + '/login', jsonForLogin, func);
   };
-  postReq(url, json) {
+  postReq(url, json, func) {
     axios
       .post(url, json, {withCredentials: true})
       .then((response) => {
@@ -72,6 +80,7 @@ export default class LoginPage extends Component {
         // this.updateLogin();
         // this.onSubmit('쿠키');
         // this.getLogin('쿠키');
+        func({email: this.state.email, isLogin: true});
       })
       .catch(function (error) {
         console.log('요청실패', error);
@@ -88,60 +97,140 @@ export default class LoginPage extends Component {
   //   getLogin = (cookie) => {
   //     this.props.getLoginToken('쿠키');
   //   };
+
+  //마이페이지용
+  ShowUserInfo = (props) => {
+    console.log(props);
+    if (!this.state.isLoad) {
+      var url = 'http://myks790.iptime.org:8082/user/' + props.email;
+
+      axios
+        .get(url)
+        .then((response) => {
+          console.log('마이페이지', response);
+          this.setState({
+            ...this.state,
+            userInfo: response.data,
+            isLoad: true,
+          });
+
+          console.log('스테이트', this.state);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+    // var a = this.state.userInfo.email;
+    // var a = this.state.userInfo.email;
+    return (
+      <View>
+        <Text>Email: {this.state.userInfo.email}</Text>
+        <Text>이름: 임시 아직 안 넘어옴</Text>
+        <Text>닉네임: {this.state.userInfo.nickname}</Text>
+        <Text>거주지: {this.state.userInfo.address}</Text>
+        <Text> {this.state.userInfo.detail_address}</Text>
+        <Text>전화번호: {this.state.userInfo.phone}</Text>
+      </View>
+    );
+  };
+
+  logOut = (func) => {
+    console.log('로그아웃');
+    axios
+      .get('http://myks790.iptime.org:8082/logout', {
+        withCredentials: true,
+      })
+      .then((response) => {
+        console.log('요청성공', response);
+        alert('로그아웃하였습니다.');
+        func();
+        this.setState({isLogIn: false, email: '', password: ''});
+        console.log(this.state.userInfo);
+      })
+      .catch(function (error) {
+        console.log('요청실패', error);
+        alert('실패');
+      });
+  };
+  updateProfile = () => {
+    console.log('정보수정');
+    this.props.navigation.navigate('정보수정', {userInfo: this.state.userInfo});
+  };
   render() {
     console.log(this.props.route.params);
     this.props.route.params.onSubmit({isLogIn: true});
     return (
-      <View style={styles.containerLogin}>
-        {this.state.isLogIn ? (
-          <View>
-            <Text>로그인완료</Text>
-          </View>
-        ) : (
-          <View>
-            <TextInput
-              name={'email'}
-              style={styles.input}
-              underlineColorAndroid="transparent"
-              placeholder="Email"
-              placeholderTextColor="black"
-              autoCapitalize="none"
-              onChange={this.onChange}
-            />
-            <TextInput
-              name={'password'}
-              style={styles.input}
-              underlineColorAndroid="transparent"
-              placeholder="Password"
-              placeholderTextColor="black"
-              autoCapitalize="none"
-              secureTextEntry={true}
-              onChange={this.onChange}
-            />
-            <UserConsumer>
-              {({ctxLogIn, ctxLogOut, userInfo}) => (
+      <UserConsumer>
+        {({userInfo, ctxLogIn, ctxLogOut}) => (
+          <View style={styles.containerLogin}>
+            {this.state.isLogIn ? (
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <Text>마이페이지</Text>
+                <this.ShowUserInfo email={userInfo.email} />
+                <TouchableOpacity
+                  style={styles.submitButton}
+                  onPress={() => this.updateProfile()}>
+                  <Text style={styles.submitButtonText}> 정보수정 </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.submitButton}
+                  onPress={() => this.logOut(ctxLogOut)}>
+                  <Text style={styles.submitButtonText}> 로그아웃 </Text>
+                </TouchableOpacity>
+              </View>
+            ) : (
+              <View>
+                <TextInput
+                  name={'email'}
+                  style={styles.input}
+                  underlineColorAndroid="transparent"
+                  placeholder="Email"
+                  placeholderTextColor="black"
+                  autoCapitalize="none"
+                  onChange={this.onChange}
+                />
+                <TextInput
+                  name={'password'}
+                  style={styles.input}
+                  underlineColorAndroid="transparent"
+                  placeholder="Password"
+                  placeholderTextColor="black"
+                  autoCapitalize="none"
+                  secureTextEntry={true}
+                  onChange={this.onChange}
+                />
+                {/* <UserConsumer>
+                  {({ctxLogIn, ctxLogOut, userInfo}) => ( */}
                 <TouchableOpacity
                   style={styles.submitButton}
                   onPress={() => {
-                    console.log(userInfo, ctxLogIn);
-                    this.login(this.state.email, this.state.password);
-                    ctxLogIn({email: this.state.email, isLogIn: true});
-                    console.log('컨텍스트', userInfo);
+                    this.login(this.state.email, this.state.password, ctxLogIn);
                     // ctxLogIn({email: this.state.email, isLogin: true});
+                    console.log(
+                      '유저정보컨텍스트!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!',
+                      userInfo,
+                    );
                   }}>
                   <Text style={styles.submitButtonText}> Submit </Text>
                 </TouchableOpacity>
-              )}
-            </UserConsumer>
+                {/* )}
+                </UserConsumer> */}
 
-            <TouchableOpacity
-              style={styles.submitButton}
-              onPress={() => this.props.navigation.navigate('SignUp')}>
-              <Text style={styles.submitButtonText}> 회원가입 </Text>
-            </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.submitButton}
+                  onPress={() => this.props.navigation.navigate('SignUp')}>
+                  <Text style={styles.submitButtonText}> 회원가입 </Text>
+                </TouchableOpacity>
+              </View>
+            )}
           </View>
         )}
-      </View>
+      </UserConsumer>
     );
   }
 }

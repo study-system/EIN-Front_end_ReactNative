@@ -15,7 +15,7 @@ import {
 
 import {createStackNavigator} from '@react-navigation/stack';
 
-import Mypage from './Mypage';
+import UserUpdate from './userUpdate';
 import LoginPage from './LoginPage';
 import SignUp from './SignUp';
 import AuthUserSignUp from './AuthUserSignUp ';
@@ -40,7 +40,7 @@ export default function MypageStackScreen2({route, navigation}) {
         initialParams={route.params}
         getLoginToken={getLoginToken}
       />
-      <MypageStack.Screen name="마이페이지" component={Mypage} />
+      <MypageStack.Screen name="정보수정" component={UserUpdate} />
       <MypageStack.Screen name="SignUp" component={SignUp} />
       <MypageStack.Screen name="UserSignUp" component={UserSignUp} />
       <MypageStack.Screen name="AuthUserSignUp" component={AuthUserSignUp} />

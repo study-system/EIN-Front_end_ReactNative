@@ -236,7 +236,6 @@ export default class AuthBoardScreen extends Component {
               title="글쓰기"
               disabled={!userInfo.isLogin}
               onPress={() => {
-                console.log('유저인포!!!!!!!!!!!!!!!!!!!!!!!!!!!!!', userInfo);
                 this.props.navigation.navigate('Update', {
                   auth: this.state.auth,
                 });
