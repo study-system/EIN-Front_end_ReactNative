@@ -71,13 +71,11 @@ export default class LoginPage extends Component {
       .post(url, json, {withCredentials: true})
       .then((response) => {
         console.log('요청성공', response);
-
+        this.props.navigation.navigate('인증게시판');
         // this.props.navigation.navigate('로그인', {isLogIn: true});
         // this.setState({isLogIn: true});
         this.setState({isLogIn: true});
-        // this.updateLogin();
-        // this.onSubmit('쿠키');
-        // this.getLogin('쿠키');
+
         func({email: this.state.email, isLogin: true});
       })
       .catch(function (error) {

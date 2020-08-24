@@ -19,6 +19,7 @@ import axios from 'axios';
 import {UserConsumer} from './UserContext';
 const styles = require('../css/Styles');
 import config from '../config';
+import CheckBox from '@react-native-community/checkbox';
 // 마이페이지 스크린
 export default class Mypage extends Component {
   state = {
@@ -43,12 +44,14 @@ export default class Mypage extends Component {
       password: '',
       newPassword: '',
       rePassword: '',
+      pushAgree: '',
     },
   };
   constructor(props) {
     super(props);
     this.state.userInfo = props.route.params.userInfo;
-    console.log(this.state);
+    console.log('params!!!!!!!!!!!!!!!!!', props.route.params.userInfo);
+    console.log('state!!!!!!!!!!!!!!!!!!!', this.state);
   }
   componentDidMount() {
     axios.get(config.server + '/board/location').then((response) => {
@@ -126,6 +129,16 @@ export default class Mypage extends Component {
 
     this.onChange(e);
   };
+  varidateCurPassword = (e) => {
+    if (e.nativeEvent.text.length > 2) {
+      //버튼 disabled를 위한 거라 반대
+      this.state.validate.curPassword = false;
+    } else {
+      this.state.validate.curPassword = true;
+    }
+
+    this.onChange(e);
+  };
   varidateName = (e) => {
     if (e.nativeEvent.text.length > 1) {
       console.log('포맷성공');
@@ -190,44 +203,58 @@ export default class Mypage extends Component {
 
     this.onChange(e);
   };
-
+  setToggleCheckBox = (e) => {
+    console.log('처크박스', e);
+    this.setState({
+      ...this.state,
+      userInfo: {
+        ...this.state.userInfo,
+        pushAgree: !this.state.userInfo.pushAgree,
+      },
+    });
+  };
+  transBoolToYesNo = (bool) => {
+    if (bool) return 'yes';
+    else return 'no';
+  };
   render() {
     const userInfoUpdate = () => {
-      console.log('업데이트');
-
       //'http://myks790.iptime.org:8082/user/myks790%40gmail.com'
       var url = config.server + '/user/' + this.state.userInfo.email;
+      console.log('url', url);
       var jsonForUpdate = {
         password: this.state.userInfo.password,
         newPassword: this.state.userInfo.newPassword,
         nickname: this.state.userInfo.nickname,
         phone: this.state.userInfo.phone,
-        address: '제주도 특별자치도 제주시 진남로 99길 10',
-        addressDetail: '101호',
-        pushAgree: true,
+        location_id: this.transSiNmToSido(this.state.userInfo.siNm),
+        address: this.state.userInfo.address,
+        addressDetail: this.state.userInfo.detail_address,
+        pushAgree: this.transBoolToYesNo(this.state.userInfo.pushAgree),
       };
+      console.log(JSON.stringify(jsonForUpdate));
       axios
-        .put(url, jsonForUpdate)
-        .then(function (response) {
-          console.log(response);
-          console.log('글수정성공');
+        .put(url, jsonForUpdate, {withCredentials: true})
+        .then((response) => {
+          console.log('응답!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!', response);
+          // console.log(this.props);
+          this.props.navigation.navigate('로그인');
         })
-        .catch(function (error) {
+        .catch((error) => {
           console.log(error);
-          console.log('글수정실패');
+          console.log('업데이트실패');
+          alert('비밀번호가 맞지 않습니다.');
         });
     };
+
     const onSubmit = (tmp) => {
       console.log('넘어온 주소 값', tmp);
       this.state.userInfo.address = tmp.roadAddr;
-      this.state.userInfo.siNm = this.transSiNmToSido(
-        this.state.userInfo.siNm,
-        this.state.userInfo.address,
-      );
+      this.state.userInfo.siNm = tmp.siNm;
     };
     const checkBoolForSignUp = () => {
-      if (this.state.validate.email) {
-        alert('이메일형식이 올바르지 않습니다.');
+      if (this.state.validate.curPassword) {
+        alert('비밀번호의 길이가 너무 짧습니다.');
       } else if (this.state.validate.password) {
         alert('비밀번호 길이가 짧거나 비밀번호확인과 같지 않습니다. ');
       } else if (this.state.validate.nickName) {
@@ -242,7 +269,6 @@ export default class Mypage extends Component {
         alert('주소찾기를 다시 해주십시오');
       } else {
         userInfoUpdate();
-        this.props.navigation.navigate('로그인');
       }
     };
     return (
@@ -258,7 +284,7 @@ export default class Mypage extends Component {
             <Text style={styles.inputNameTag}>비밀번호</Text>
             <this.MkTextInputPassword
               name={'password'}
-              onChange={this.onChange}
+              onChange={this.varidateCurPassword}
               placeholder={'현재비밀번호'}
             />
           </View>
@@ -295,7 +321,7 @@ export default class Mypage extends Component {
           <View>
             <Text style={styles.inputNameTag}>닉네임</Text>
             <TextInput
-              name={'nickName'}
+              name={'nickname'}
               style={
                 this.state.validate.nickName ? styles.input : styles.inputO
               }
@@ -353,12 +379,28 @@ export default class Mypage extends Component {
             onChange={this.varidateDetail}
             defaultValue={this.state.userInfo.detail_address}
           />
+          <View
+            style={{
+              flexDirection: 'row',
+              marginTop: 10,
+              justifyContent: 'center',
+            }}>
+            <Text style={styles.inputNameTag}>푸쉬알람On/Off</Text>
+            <CheckBox
+              style={{marginTop: -6}}
+              name={'pushAgree'}
+              disabled={false}
+              value={this.state.userInfo.pushAgree}
+              onValueChange={this.setToggleCheckBox}
+            />
+          </View>
 
           <TouchableOpacity
             style={styles.submitButton}
             onPress={() => {
               // checkBoolForSignUp();
               console.log(JSON.stringify(this.state));
+              checkBoolForSignUp();
             }}>
             <Text style={styles.submitButtonText}> 수정 </Text>
           </TouchableOpacity>

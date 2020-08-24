@@ -234,7 +234,6 @@ export default class AuthBoardScreen extends Component {
             <Button
               style={{flex: 1}}
               title="글쓰기"
-              disabled={!userInfo.isLogin}
               onPress={() => {
                 this.props.navigation.navigate('Update', {
                   auth: this.state.auth,
