@@ -22,21 +22,10 @@ import config from '../config';
 // 마이페이지 스크린
 export default class Mypage extends Component {
   state = {
-    email: '',
-    password: '',
-    newPassword: '',
-    rePassword: '',
-    name: '',
-    nickName: '',
-    phone: '',
-    roadAddr: '',
-    siNm: '',
-    sido: 0,
-    detail_address: '',
     validate: {
       email: true,
       password: true,
-      name: true,
+      curPassword: true,
       nickName: true,
       phone: true,
       roadAddr: true,
@@ -51,6 +40,9 @@ export default class Mypage extends Component {
       address: '',
       detail_address: '',
       phone: '',
+      password: '',
+      newPassword: '',
+      rePassword: '',
     },
   };
   constructor(props) {
@@ -64,14 +56,7 @@ export default class Mypage extends Component {
       this.setState({sido: response.data});
     });
   }
-  jsonForUpdate = {
-    password: '비밀번호',
-    nickname: '닉네임',
-    phone: 17119607,
-    address: '제주도 특별자치도 제주시 진남로 99길 10',
-    addressDetail: '101호',
-    pushAgree: true,
-  };
+
   MkTextInputPassword = (props) => {
     return (
       <TextInput
@@ -93,9 +78,11 @@ export default class Mypage extends Component {
     console.log(e.nativeEvent.text);
     this.setState({
       ...this.state, // 기존의 객체를 복사한 뒤
-      [e._dispatchInstances.memoizedProps.name]: e.nativeEvent.text, // name 키를 가진 값을 value 로 설정
+      userInfo: {
+        ...this.state.userInfo,
+        [e._dispatchInstances.memoizedProps.name]: e.nativeEvent.text,
+      }, // name 키를 가진 값을 value 로 설정
     });
-    console.log(this.state.email);
   };
   transSiNmToSido = (siNm) => {
     if (siNm) {
@@ -130,7 +117,7 @@ export default class Mypage extends Component {
       console.log('포맷실패');
       booleanPL = true;
     }
-    if (e.nativeEvent.text == this.state.password) {
+    if (e.nativeEvent.text == this.state.userInfo.newPassword) {
       booleanPR = false;
     } else {
       booleanPR = true;
@@ -205,41 +192,44 @@ export default class Mypage extends Component {
   };
 
   render() {
-    const signInReq = () => {
+    const userInfoUpdate = () => {
+      console.log('업데이트');
+
+      //'http://myks790.iptime.org:8082/user/myks790%40gmail.com'
+      var url = config.server + '/user/' + this.state.userInfo.email;
+      var jsonForUpdate = {
+        password: this.state.userInfo.password,
+        newPassword: this.state.userInfo.newPassword,
+        nickname: this.state.userInfo.nickname,
+        phone: this.state.userInfo.phone,
+        address: '제주도 특별자치도 제주시 진남로 99길 10',
+        addressDetail: '101호',
+        pushAgree: true,
+      };
       axios
-        .post(config.server + '/user', jsonForSignIn)
+        .put(url, jsonForUpdate)
         .then(function (response) {
-          console.log('계정수정', response);
-          this.setState();
+          console.log(response);
+          console.log('글수정성공');
         })
         .catch(function (error) {
           console.log(error);
+          console.log('글수정실패');
         });
     };
     const onSubmit = (tmp) => {
       console.log('넘어온 주소 값', tmp);
       this.state.userInfo.address = tmp.roadAddr;
-      this.state.userInfo.siNm = tmp.siNm;
-      this.transSiNmToSido(this.state.siNm, this.state.roadAddr);
-    };
-    var jsonForSignIn = {
-      email: this.state.email,
-      password: this.state.password,
-      name: this.state.name,
-      nickname: this.state.nickName,
-      phone: Number(this.state.phone),
-      address: this.state.roadAddr,
-      detail_address: this.state.detail_address,
-      location_id: this.transSiNmToSido(this.state.siNm),
-      push_agree: 'yes',
+      this.state.userInfo.siNm = this.transSiNmToSido(
+        this.state.userInfo.siNm,
+        this.state.userInfo.address,
+      );
     };
     const checkBoolForSignUp = () => {
       if (this.state.validate.email) {
         alert('이메일형식이 올바르지 않습니다.');
       } else if (this.state.validate.password) {
         alert('비밀번호 길이가 짧거나 비밀번호확인과 같지 않습니다. ');
-      } else if (this.state.validate.name) {
-        alert('이름을 입력해주십시오');
       } else if (this.state.validate.nickName) {
         alert('별명을 입력해주십시오');
       } else if (this.state.validate.phone) {
@@ -251,7 +241,7 @@ export default class Mypage extends Component {
       } else if (this.state.validate.location_id) {
         alert('주소찾기를 다시 해주십시오');
       } else {
-        signInReq();
+        userInfoUpdate();
         this.props.navigation.navigate('로그인');
       }
     };
@@ -367,8 +357,8 @@ export default class Mypage extends Component {
           <TouchableOpacity
             style={styles.submitButton}
             onPress={() => {
-              console.log(jsonForSignIn);
-              checkBoolForSignUp();
+              // checkBoolForSignUp();
+              console.log(JSON.stringify(this.state));
             }}>
             <Text style={styles.submitButtonText}> 수정 </Text>
           </TouchableOpacity>

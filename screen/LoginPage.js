@@ -23,7 +23,6 @@ import {UserConsumer} from './UserContext';
 // 마이페이지 스크린
 export default class LoginPage extends Component {
   state = {
-    cookie: '',
     email: '',
     password: '',
     isLogIn: false,
@@ -72,7 +71,6 @@ export default class LoginPage extends Component {
       .post(url, json, {withCredentials: true})
       .then((response) => {
         console.log('요청성공', response);
-        alert('성공');
 
         // this.props.navigation.navigate('로그인', {isLogIn: true});
         // this.setState({isLogIn: true});
@@ -100,14 +98,17 @@ export default class LoginPage extends Component {
 
   //마이페이지용
   ShowUserInfo = (props) => {
-    console.log(props);
+    console.log('유저인포', props);
     if (!this.state.isLoad) {
       var url = 'http://myks790.iptime.org:8082/user/' + props.email;
 
       axios
         .get(url)
         .then((response) => {
-          console.log('마이페이지', response);
+          console.log(
+            '마이페이지!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!',
+            response,
+          );
           this.setState({
             ...this.state,
             userInfo: response.data,
@@ -117,15 +118,16 @@ export default class LoginPage extends Component {
           console.log('스테이트', this.state);
         })
         .catch((error) => {
-          console.log(error);
+          console.log('유저인포겟요청', error);
         });
     }
     // var a = this.state.userInfo.email;
     // var a = this.state.userInfo.email;
+    console.log('쇼부근', this.state);
     return (
       <View>
         <Text>Email: {this.state.userInfo.email}</Text>
-        <Text>이름: 임시 아직 안 넘어옴</Text>
+        <Text>이름: {this.state.userInfo.name}</Text>
         <Text>닉네임: {this.state.userInfo.nickname}</Text>
         <Text>거주지: {this.state.userInfo.address}</Text>
         <Text> {this.state.userInfo.detail_address}</Text>
@@ -142,10 +144,22 @@ export default class LoginPage extends Component {
       })
       .then((response) => {
         console.log('요청성공', response);
-        alert('로그아웃하였습니다.');
+        this.setState({
+          email: '',
+          password: '',
+          isLogIn: false,
+          userInfo: {
+            email: '',
+            name: '',
+            nickname: '',
+            address: '',
+            detail_address: '',
+            phone: '',
+          },
+          isLoad: false,
+        });
+        console.log('로그아웃후 정보 ', this.state.userInfo);
         func();
-        this.setState({isLogIn: false, email: '', password: ''});
-        console.log(this.state.userInfo);
       })
       .catch(function (error) {
         console.log('요청실패', error);
@@ -205,7 +219,7 @@ export default class LoginPage extends Component {
                   onChange={this.onChange}
                 />
                 {/* <UserConsumer>
-                  {({ctxLogIn, ctxLogOut, userInfo}) => ( */}
+                {({ctxLogIn, ctxLogOut, userInfo}) => ( */}
                 <TouchableOpacity
                   style={styles.submitButton}
                   onPress={() => {
@@ -219,7 +233,7 @@ export default class LoginPage extends Component {
                   <Text style={styles.submitButtonText}> Submit </Text>
                 </TouchableOpacity>
                 {/* )}
-                </UserConsumer> */}
+              </UserConsumer> */}
 
                 <TouchableOpacity
                   style={styles.submitButton}

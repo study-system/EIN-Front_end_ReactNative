@@ -21,7 +21,10 @@ export class UserProvider extends React.Component {
 
   ctxLogOut = () => {
     console.log('로그인정보를 제거합니다.');
-    this.setState({...this.state, userInfo: {email: '', isLogin: false}});
+    this.setState({
+      ...this.state,
+      userInfo: {id: '', email: '', isLogin: false},
+    });
   };
   ctxGetUser = (data) => {
     this.setState({
