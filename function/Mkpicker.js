@@ -19,7 +19,7 @@ const axios = require('axios');
 //picker 생성클래스
 class MkPicker extends Component {
   state = {
-    default_type: '0',
+    default_type: '',
     sido: [],
     target: [],
     major: [],
@@ -63,19 +63,19 @@ class MkPicker extends Component {
 
     //major_code를 code로 통일하면 함수를 통일할 수 있음
     let pickerItems = this.state[this.props.filterName].map((item, i) => {
-      return <Picker.Item key={i} label={item.name} value={String(item.id)} />;
+      return <Picker.Item key={i} label={item.name} value={item.id} />;
     });
 
     return (
       <View>
         <Picker
-          selectedValue={this.props.default || this.state.default_type}
+          selectedValue={this.state.default_type || this.props.default}
           onValueChange={(itemValue, itemIndex) => {
             this.setState({default_type: itemValue});
             this.onFormSubmit(itemValue, this.props.filterName);
             console.log(this.state.default_type);
           }}>
-          <Picker.Item label={this.state.name} value="0" />
+          <Picker.Item label={this.state.name} value="" />
           {pickerItems}
         </Picker>
       </View>
