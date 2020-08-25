@@ -130,6 +130,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
   },
+  submitButtonPopup: {
+    flex: 1,
+    padding: 10,
+    margin: 15,
+    alignItems: 'center',
+    height: 40,
+    borderRadius: 10,
+  },
 });
 
 module.exports = styles;

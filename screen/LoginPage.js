@@ -78,7 +78,7 @@ export default class LoginPage extends Component {
 
         func({email: this.state.email, isLogin: true});
       })
-      .catch(function (error) {
+      .catch((error) => {
         console.log('요청실패', error);
         alert('실패');
       });
@@ -98,7 +98,7 @@ export default class LoginPage extends Component {
   ShowUserInfo = (props) => {
     console.log('유저인포', props);
     if (!this.state.isLoad) {
-      var url = 'http://myks790.iptime.org:8082/user/' + props.email;
+      var url = config.server + '/user/' + props.email;
 
       axios
         .get(url)
@@ -112,7 +112,7 @@ export default class LoginPage extends Component {
             userInfo: response.data,
             isLoad: true,
           });
-
+          props.func(response.data);
           console.log('스테이트', this.state);
         })
         .catch((error) => {
@@ -173,7 +173,7 @@ export default class LoginPage extends Component {
     this.props.route.params.onSubmit({isLogIn: true});
     return (
       <UserConsumer>
-        {({userInfo, ctxLogIn, ctxLogOut}) => (
+        {({userInfo, ctxLogIn, ctxLogOut, ctxGetUser}) => (
           <View style={styles.containerLogin}>
             {this.state.isLogIn ? (
               <View
@@ -183,7 +183,7 @@ export default class LoginPage extends Component {
                   alignItems: 'center',
                 }}>
                 <Text>마이페이지</Text>
-                <this.ShowUserInfo email={userInfo.email} />
+                <this.ShowUserInfo email={userInfo.email} func={ctxGetUser} />
                 <TouchableOpacity
                   style={styles.submitButton}
                   onPress={() => this.updateProfile()}>

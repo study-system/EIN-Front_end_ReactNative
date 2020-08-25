@@ -18,7 +18,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import config from '../config';
 // import {Picker} from '@react-native-community/picker';
 // import {TapGestureHandler} from 'react-native-gesture-handler';
-
+import {UserConsumer} from './UserContext';
 const styles = require('../css/Styles');
 const axios = require('axios');
 const moment = require('moment');
@@ -266,90 +266,272 @@ export default function UpdateScreen({route, navigation}) {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView style={styles.scrollView}>
-        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-          <Text>Udate! </Text>
-          <Button
-            onPress={() => {
-              toggleButton();
-            }}
-            title="수정"
-            disabled={
-              text.validate_start_date ||
-              text.validate_end_date ||
-              text.validate_title ||
-              text.validate_content ||
-              text.validate_location ||
-              text.validate_major ||
-              text.validate_target
-            }
-          />
-          <View style={{flex: 1, flexDirection: 'row'}}>
-            <Text>제목</Text>
-            <TextInput
-              name="title"
-              style={{height: 40, width: 350, backgroundColor: '#fff'}}
-              placeholder="Type here to translate!"
-              onChange={validateTitle}
-              defaultValue={text.title}
-            />
-          </View>
-          <View style={{flex: 1, flexDirection: 'row'}}>
-            <View style={{width: 120, height: 50}}>
-              <MkPicker
-                filterName={'sido'}
-                url={config.server + '/board/location'}
-                onSubmit={onSubmitPicker}
-              />
+    <UserConsumer>
+      {({userInfo, ctxLogIn, ctxLogOut}) => (
+        <View style={styles.containerLogin}>
+          <View
+            style={{
+              height: 50,
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              paddingLeft: 20,
+              backgroundColor: '#000',
+            }}>
+            <View
+              style={{
+                flexDirection: 'column',
+                justifyContent: 'center',
+              }}>
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate('인증게시판');
+                }}>
+                <Text style={{fontSize: 24, color: '#fff'}}>
+                  {route.params.auth == 'yes'
+                    ? '<  인증게시판'
+                    : '<  자유게시판'}
+                  {boardId ? '  글수정' : '  글작성'}
+                </Text>
+              </TouchableOpacity>
             </View>
-            <View style={{width: 120, height: 50}}>
-              <MkPicker
-                filterName={'major'}
-                url={config.server + '/board/major'}
-                onSubmit={onSubmitPicker}
-              />
-            </View>
-            <View style={{width: 120, height: 50}}>
-              <MkPicker
-                filterName={'target'}
-                url={config.server + '/board/target'}
-                onSubmit={onSubmitPicker}
-              />
-            </View>
+            {text.validate_start_date ||
+            text.validate_end_date ||
+            text.validate_title ||
+            text.validate_content ||
+            text.validate_location ||
+            text.validate_major ||
+            text.validate_target ? (
+              <View style={{marginTop: -10}}>
+                <TouchableOpacity
+                  style={stylesEm.submitButtonGrey}
+                  onPress={() => {
+                    console.log('버튼을 누르고 있네요');
+                    alert('항목들을 채워주세요');
+                  }}>
+                  <Text style={stylesEm.submitButtonTextWhite}>
+                    {boardId ? ' 글수정 ' : ' 글작성 '}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            ) : (
+              <View style={{marginTop: -10}}>
+                <TouchableOpacity
+                  style={stylesEm.submitButtonWhite}
+                  onPress={() => {
+                    toggleButton();
+                  }}>
+                  <Text style={stylesEm.submitButtonTextWhite}>
+                    {boardId ? ' 글수정 ' : ' 글작성 '}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            )}
           </View>
-          <View style={{flex: 1, flexDirection: 'row'}}>
-            <Text>시작날짜</Text>
-            <TextInput
-              name="start_date"
-              style={{height: 40, width: 150, backgroundColor: '#fff'}}
-              placeholder="2020-01-01 12:00:00"
-              onChange={validateDate}
-              defaultValue={text.start_date}
-            />
-            <Text>마감날짜</Text>
-            <TextInput
-              name="end_date"
-              style={{height: 40, width: 150, backgroundColor: '#fff'}}
-              placeholder="2020-01-01 12:00:00"
-              onChange={validateDate}
-              defaultValue={text.end_date}
-            />
-          </View>
-          <TextInput
-            name="content"
-            multiline
-            style={{height: 250, width: 250, backgroundColor: '#fff'}}
-            numberOfLines={4}
-            onChange={validateContent}
-            value={text.content}
-            editable
-            maxLength={300}
-          />
+          <SafeAreaView style={styles.container}>
+            <ScrollView style={{flex: 1, marginTop: 20}}>
+              <View>
+                <Text style={styles.inputNameTag}>제목</Text>
+                <TextInput
+                  name="title"
+                  style={stylesEm.inputTitle}
+                  underlineColorAndroid="black"
+                  placeholder="제목을 입력해주세요"
+                  onChange={validateTitle}
+                  defaultValue={text.title}
+                />
+              </View>
 
-          {/* <Text>{JSON.stringify(id)}</Text> */}
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  borderBottomWidth: 1,
+                  borderRadius: 20,
+                  borderColor: '#777',
+                  marginBottom: 10,
+                }}>
+                <View style={{flex: 1, flexDirection: 'row'}}>
+                  <View
+                    style={{
+                      width: 120,
+                      height: 50,
+                      backgroundColor: 'white',
+                      borderRadius: 10,
+                      borderWidth: 1,
+                      marginBottom: 5,
+                    }}>
+                    <MkPicker
+                      filterName={'sido'}
+                      url={config.server + '/board/location'}
+                      onSubmit={onSubmitPicker}
+                    />
+                  </View>
+                  <View
+                    style={{
+                      width: 120,
+                      height: 50,
+                      backgroundColor: 'white',
+                      borderRadius: 10,
+                      borderWidth: 1,
+                      marginBottom: 5,
+                    }}>
+                    <MkPicker
+                      filterName={'major'}
+                      url={config.server + '/board/major'}
+                      onSubmit={onSubmitPicker}
+                    />
+                  </View>
+                  <View
+                    style={{
+                      width: 120,
+                      height: 50,
+                      backgroundColor: 'white',
+                      borderRadius: 10,
+                      borderWidth: 1,
+                      marginBottom: 5,
+                    }}>
+                    <MkPicker
+                      filterName={'target'}
+                      url={config.server + '/board/target'}
+                      onSubmit={onSubmitPicker}
+                    />
+                  </View>
+                </View>
+
+                {/* <Text>{JSON.stringify(id)}</Text> */}
+              </View>
+              <View
+                style={{
+                  flex: 1,
+                  flexDirection: 'row',
+                  justifyContent: 'space-around',
+                  marginBottom: -5,
+                }}>
+                <View>
+                  <Text style={styles.inputNameTag}> 시작날짜</Text>
+                  <TextInput
+                    name="start_date"
+                    style={styles.input}
+                    placeholder="2020-01-01 12:00:00"
+                    onChange={validateDate}
+                    defaultValue={text.start_date}
+                  />
+                </View>
+                <View>
+                  <Text style={styles.inputNameTag}> 시작날짜</Text>
+                  <TextInput
+                    name="end_date"
+                    style={styles.input}
+                    placeholder="2020-01-01 12:00:00"
+                    onChange={validateDate}
+                    defaultValue={text.end_date}
+                  />
+                </View>
+              </View>
+              <TextInput
+                name="content"
+                multiline
+                style={stylesEm.inputMultiLine}
+                numberOfLines={4}
+                onChange={validateContent}
+                value={text.content}
+                editable
+                maxLength={300}
+              />
+            </ScrollView>
+          </SafeAreaView>
         </View>
-      </ScrollView>
-    </SafeAreaView>
+      )}
+    </UserConsumer>
   );
 }
+
+const stylesEm = StyleSheet.create({
+  title: {
+    fontSize: 24,
+  },
+  titleBox: {
+    marginTop: 10,
+    marginLeft: 20,
+    borderColor: '#555',
+    borderBottomWidth: 2,
+    width: 360,
+  },
+  date: {
+    fontSize: 12,
+  },
+  dateBox: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginTop: 10,
+    marginLeft: 20,
+    borderColor: '#555',
+    borderBottomWidth: 2,
+    width: 360,
+  },
+  dateItem: {
+    flex: 2,
+  },
+  contentBox: {
+    marginLeft: 20,
+    width: 340,
+  },
+  contentsBox: {
+    marginTop: 30,
+    marginLeft: 20,
+    borderColor: '#555',
+    borderBottomWidth: 2,
+    width: 360,
+  },
+  writerBox: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 10,
+    marginLeft: 20,
+    borderColor: '#555',
+    borderBottomWidth: 2,
+    width: 360,
+  },
+  reportText: {
+    color: '#07f',
+  },
+  submitButtonWhite: {
+    backgroundColor: 'white',
+    padding: 10,
+    margin: 15,
+    alignItems: 'center',
+    height: 40,
+    borderRadius: 10,
+  },
+  submitButtonGrey: {
+    backgroundColor: 'grey',
+    padding: 10,
+    margin: 15,
+    alignItems: 'center',
+    height: 40,
+    borderRadius: 10,
+  },
+  submitButtonTextWhite: {
+    color: '#000',
+  },
+  inputMultiLine: {
+    margin: 15,
+    borderColor: 'black',
+    borderWidth: 1,
+    borderRadius: 10,
+    height: 250,
+  },
+  inputDate: {
+    height: 40,
+    borderColor: 'black',
+    borderWidth: 1,
+    borderRadius: 10,
+  },
+  inputTitle: {
+    margin: 15,
+    height: 40,
+
+    borderRadius: 10,
+  },
+});

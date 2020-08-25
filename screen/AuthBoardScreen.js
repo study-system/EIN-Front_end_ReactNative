@@ -11,6 +11,8 @@ import {
   TouchableOpacity,
   TextInput,
   Alert,
+  Dimensions,
+  Image,
 } from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
@@ -26,6 +28,7 @@ const MkPicker = require('../function/Mkpicker');
 const GetDetail = require('../function/GetDetail');
 import dumy from '../dumydata';
 import {UserConsumer} from './UserContext';
+import {max} from 'moment';
 
 //스크린 import
 //
@@ -38,6 +41,10 @@ export default class AuthBoardScreen extends Component {
     target: 0,
     page: 1,
     reset: false,
+    popupSetting: true,
+    popupImg: '',
+    popupActive: '',
+    popupStatus: true,
   };
   constructor(props) {
     super(props);
@@ -50,6 +57,7 @@ export default class AuthBoardScreen extends Component {
   // 실행한 결과가 오면 자동으로 리플래시 되면서 반영함. 1번
   componentDidMount() {
     this.getList();
+    if (this.state.popupSetting) this.getPopUp();
   }
 
   componentWillUnmount() {
@@ -89,6 +97,20 @@ export default class AuthBoardScreen extends Component {
       console.log(response.data.contents);
     });
   };
+  getPopUp = () => {
+    var url = config.server + '/popup';
+    axios.get(url).then((response) => {
+      //state.data에 response로 받은 json 값을 넣어줌
+
+      this.setState({
+        ...this.state,
+        popupActive: response.data.active,
+        popupImg: response.data.image,
+      });
+      console.log('팝업팝업팝ㅇ버', this.state.popupImg, response.data);
+    });
+  };
+
   render() {
     console.log('인증보드', this.props.route.params.isLogin);
     //포스트 하나 만드는 메서드
@@ -136,10 +158,95 @@ export default class AuthBoardScreen extends Component {
     };
 
     const n = 2;
+
     return (
       <UserConsumer>
         {({userInfo, ctxLogIn, ctxLogOut}) => (
           <View style={styles.containerLogin}>
+            {/* 팝업 */}
+            {this.state.popupStatus && this.state.popupActive == 'yes' ? (
+              <View
+                style={{
+                  backgroundColor: '#2228',
+
+                  zIndex: 3,
+                  position: 'absolute',
+
+                  width: Dimensions.get('window').width,
+                  height: Dimensions.get('window').height,
+                }}>
+                <View
+                  style={{
+                    borderRadius: 10,
+                    backgroundColor: '#fff',
+                    translateX: 25,
+                    translateY: 50,
+                    width: 360,
+                    height: 580,
+                  }}>
+                  <View style={{flex: 8}}>
+                    <Image
+                      style={{flex: 1, borderRadius: 10}}
+                      source={{
+                        uri: this.state.popupImg,
+                      }}></Image>
+                  </View>
+                  <View
+                    style={{
+                      marginTop: -10,
+                      flex: 1,
+                      backgroundColor: '#0cf',
+                      flexDirection: 'row',
+                      justifyContent: 'space-around',
+                    }}>
+                    <View>
+                      <TouchableOpacity
+                        style={styles.submitButtonPopup}
+                        onPress={() => {
+                          this.setState(
+                            {
+                              ...this.state,
+                              popupSetting: false,
+                              popupStatus: false,
+                            },
+                            () => {
+                              console.log(
+                                '다시보지않기',
+                                this.state.popupSetting,
+                              );
+                            },
+                          );
+                        }}>
+                        <Text style={styles.submitButtonText}>
+                          다시보지않기
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
+                    <View>
+                      <TouchableOpacity
+                        style={styles.submitButtonPopup}
+                        onPress={() => {
+                          this.setState(
+                            {
+                              ...this.state,
+
+                              popupStatus: false,
+                            },
+                            () => {
+                              console.log('닫기', this.state.popupSetting);
+                            },
+                          );
+                        }}>
+                        <Text style={styles.submitButtonText}>닫기</Text>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                </View>
+              </View>
+            ) : (
+              <></>
+            )}
+
             {/* 필터링하는 부분 */}
             <View style={styles.containerPicker}>
               <View style={styles.picker}>
@@ -227,16 +334,26 @@ export default class AuthBoardScreen extends Component {
               </View>
               <View style={{flex: 1}} />
             </View>
-
-            <TouchableOpacity
-              style={styles.submitButton}
-              onPress={() => {
-                this.props.navigation.navigate('Update', {
-                  auth: this.state.auth,
-                });
-              }}>
-              <Text style={styles.submitButtonText}> 글쓰기 </Text>
-            </TouchableOpacity>
+            {userInfo.role == '인증' ? (
+              <TouchableOpacity
+                style={styles.submitButton}
+                onPress={() => {
+                  this.props.navigation.navigate('Update', {
+                    auth: this.state.auth,
+                  });
+                }}>
+                <Text style={styles.submitButtonText}> 글쓰기 </Text>
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity
+                style={styles.submitButton}
+                onPress={() => {
+                  alert('인증회원만 글을 쓸 수 있습니다.');
+                  console.log('버튼을 누르고 있네요');
+                }}>
+                <Text style={styles.submitButtonText}> 글쓰기 </Text>
+              </TouchableOpacity>
+            )}
           </View>
         )}
       </UserConsumer>

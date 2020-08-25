@@ -87,7 +87,6 @@ export default class DetailsScreen extends Component {
       <UserConsumer>
         {({userInfo, ctxLogIn, ctxLogOut}) => (
           <View style={styles.containerLogin}>
-            {/* <Text>{JSON.stringify(id)}</Text> */}
             <View
               style={{
                 height: 50,

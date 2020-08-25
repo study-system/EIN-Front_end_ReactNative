@@ -46,7 +46,11 @@ export default function AuthBoardStackScreen({route, navigation}) {
         component={DetailsScreen}
         options={{headerShown: false}}
       />
-      <AuthBoardStack.Screen name="Update" component={UpdateScreen} />
+      <AuthBoardStack.Screen
+        name="Update"
+        component={UpdateScreen}
+        options={{headerShown: false}}
+      />
     </AuthBoardStack.Navigator>
   );
 }

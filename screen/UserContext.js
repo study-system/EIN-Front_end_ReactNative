@@ -30,7 +30,10 @@ export class UserProvider extends React.Component {
     this.setState({
       ...this.state,
       userInfo: {
+        email: data.email,
+        isLogin: true,
         id: data.id,
+        role: data.role,
       },
     });
   };
