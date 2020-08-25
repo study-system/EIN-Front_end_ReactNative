@@ -39,11 +39,12 @@ export default function AuthBoardStackScreen({route, navigation}) {
         name="인증게시판"
         component={AuthBoardScreen}
         initialParams={{auth: 'yes', isLogin: route.params.isLogin}}
+        options={{headerShown: false}}
       />
       <AuthBoardStack.Screen
         name="Details"
         component={DetailsScreen}
-        options={{}}
+        options={{headerShown: false}}
       />
       <AuthBoardStack.Screen name="Update" component={UpdateScreen} />
     </AuthBoardStack.Navigator>

@@ -11,6 +11,8 @@ import {
   TouchableOpacity,
   TextInput,
   Alert,
+  Image,
+  PermissionsAndroid,
 } from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
@@ -28,12 +30,53 @@ import MypageStack from './screen/MypageStackScreen';
 import AuthBoardStackScreen from './screen/AuthBoardStackScreen';
 import config from './config';
 import {UserProvider} from './screen/UserContext';
+
+import ImagePicker from 'react-native-image-picker';
 // 자유게시판 스크린
 class BoardScreen extends Component {
+  state = {
+    photo: null,
+  };
+
   render() {
+    let options = {
+      title: 'Select Image',
+      customButtons: [
+        {name: 'customOptionKey', title: 'Choose Photo from Custom Option'},
+      ],
+      storageOptions: {
+        skipBackup: true,
+        path: 'images',
+      },
+    };
+    ImagePicker.showImagePicker(options, (response) => {
+      console.log('Response = ', response);
+
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+      } else if (response.customButton) {
+        console.log('User tapped custom button: ', response.customButton);
+      } else {
+        const source = {uri: response.uri};
+
+        // You can also display the image using data:
+        // const source = { uri: 'data:image/jpeg;base64,' + response.data };
+
+        this.setState({
+          filePath: response,
+          fileData: response.data,
+          fileUri: response.uri,
+        });
+      }
+    });
+
     return (
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
         <Text>자유게시판입니다.</Text>
+        <Image source={this.state.avatarSource} style={styles.uploadAvatar} />
+        <Button title="Choose Photo" onPress={this.handleChoosePhoto} />
       </View>
     );
   }
@@ -42,10 +85,65 @@ class BoardScreen extends Component {
 //스크롤뷰 + 플로팅버튼
 class PushAlarm extends Component {
   render() {
+    const requestCameraPermission = async () => {
+      try {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.CAMERA,
+          {
+            title: 'Cool Photo App Camera Permission',
+            message:
+              'Cool Photo App needs access to your camera ' +
+              'so you can take awesome pictures.',
+            buttonNeutral: 'Ask Me Later',
+            buttonNegative: 'Cancel',
+            buttonPositive: 'OK',
+          },
+        );
+        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+          console.log('You can use the camera');
+        } else {
+          console.log('Camera permission denied');
+        }
+      } catch (err) {
+        console.warn(err);
+      }
+    };
+    const requestStroragePermission = async () => {
+      try {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+          {
+            title: 'Cool Photo App Camera Permission',
+            message:
+              'Cool Photo App needs access to your camera ' +
+              'so you can take awesome pictures.',
+            buttonNeutral: 'Ask Me Later',
+            buttonNegative: 'Cancel',
+            buttonPositive: 'OK',
+          },
+        );
+        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+          console.log('You can use the camera');
+        } else {
+          console.log('Camera permission denied');
+        }
+      } catch (err) {
+        console.warn(err);
+      }
+    };
+
     return (
       <ScrollView>
         <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
           <Text>개발중입니다.</Text>
+          <Button
+            title="request permissions"
+            onPress={requestCameraPermission}
+          />
+          <Button
+            title="request permissions"
+            onPress={requestStroragePermission}
+          />
         </View>
       </ScrollView>
     );
@@ -63,8 +161,12 @@ class MyTabs extends Component {
   };
 
   onSubmit(params) {
-    if (params.isLogin) this.state.isLogin = params.isLogin;
-    if (params.id) this.state.id = params.id;
+    if (params.isLogin) {
+      this.state.isLogin = params.isLogin;
+    }
+    if (params.id) {
+      this.state.id = params.id;
+    }
     console.log('최상위params', params);
   }
   constructor(props) {

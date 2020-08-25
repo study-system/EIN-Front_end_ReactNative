@@ -93,15 +93,21 @@ export default class AuthBoardScreen extends Component {
     console.log('인증보드', this.props.route.params.isLogin);
     //포스트 하나 만드는 메서드
     let Item = ({title, writer}) => (
-      <View style={styles.item}>
-        <Text style={styles.postTitle}>{title} </Text>
-        <Text style={styles.postWriter}>{writer}</Text>
+      <View style={styles.postItem}>
+        <View style={styles.headerTitle5}>
+          <Text style={styles.postTitle}>{title} </Text>
+        </View>
+        <View style={styles.headerTitle2}>
+          <Text style={styles.postTitle}>0 </Text>
+        </View>
+        <View style={styles.headerTitle3}>
+          <Text style={styles.postWriter}>{writer}</Text>
+        </View>
       </View>
     );
     let renderItem = ({item}) => (
-      <View style={{flex: 1}}>
+      <View>
         <TouchableOpacity
-          style={{backgroundColor: '#fff'}}
           onPress={() => {
             this.props.navigation.navigate('Details', {
               boardId: item.id,
@@ -128,121 +134,112 @@ export default class AuthBoardScreen extends Component {
         this.getList();
       }
     };
-    //  url = config.server + '/board?auth=' + this.state.auth + '&page=1&pageSize=8';
 
     const n = 2;
     return (
-      <View
-        style={{
-          flex: 1,
-          flexDirection: 'column',
-          backgroundColor: '#fff',
-        }}>
-        {/* <Text style={styles.title}>인증게시판</Text> */}
-        {/* 필터링하는 부분 */}
-        <View
-          style={{
-            flex: 1,
-            flexDirection: 'row',
-            justifyContent: 'space-around',
-            backgroundColor: '#fff',
-            height: 200,
-            paddingBottom: 0,
-            marginBottom: 0,
-          }}>
-          <View
-            style={{
-              borderWidth: 1,
-              width: 120,
-              height: 50,
-              backgroundColor: '#fff',
-            }}>
-            <MkPicker
-              filterName={'sido'}
-              url={config.server + '/board/location'}
-              onSubmit={onSubmitPicker}
-            />
-          </View>
-          <View
-            style={{
-              borderBottomWidth: 2,
-              borderRightWidth: 1,
-              width: 120,
-              height: 50,
-              backgroundColor: '#fff',
-            }}>
-            <MkPicker
-              filterName={'major'}
-              url={config.server + '/board/major'}
-              onSubmit={onSubmitPicker}
-            />
-          </View>
+      <UserConsumer>
+        {({userInfo, ctxLogIn, ctxLogOut}) => (
+          <View style={styles.containerLogin}>
+            {/* 필터링하는 부분 */}
+            <View style={styles.containerPicker}>
+              <View style={styles.picker}>
+                <MkPicker
+                  filterName={'sido'}
+                  url={config.server + '/board/location'}
+                  onSubmit={onSubmitPicker}
+                />
+              </View>
+              <View style={styles.picker}>
+                <MkPicker
+                  filterName={'major'}
+                  url={config.server + '/board/major'}
+                  onSubmit={onSubmitPicker}
+                />
+              </View>
 
-          <View
-            style={{
-              borderBottomWidth: 1,
-              width: 120,
-              height: 50,
-              backgroundColor: '#fff',
-            }}>
-            <MkPicker
-              filterName={'target'}
-              url={config.server + '/board/target'}
-              onSubmit={onSubmitPicker}
-            />
-          </View>
-        </View>
+              <View style={styles.picker}>
+                <MkPicker
+                  filterName={'target'}
+                  url={config.server + '/board/target'}
+                  onSubmit={onSubmitPicker}
+                />
+              </View>
+            </View>
 
-        {/* 게시판글 목록 */}
-        <View
-          style={{flex: 7, flexDirection: 'column', backgroundColor: '#fff'}}>
-          <FlatList
-            style={{borderTopColor: '#000', borderTopWidth: 2}}
-            data={this.state.authBoard} //dumy.boardList
-            renderItem={renderItem}
-            keyExtractor={(item) => String(item.id)}
-          />
-        </View>
-        <View style={{flex: 1, flexDirection: 'column', alignSelf: 'center'}}>
-          <View style={{flex: 1}} />
-          <View style={{flex: 3, flexDirection: 'row', alignSelf: 'center'}}>
-            <View style={{flex: 1}} />
-            <Button
-              title="<"
+            {/* 게시판글 목록 */}
+            <View style={styles.containerHeader}>
+              <View style={styles.headerTitle5}>
+                <Text>제목</Text>
+              </View>
+              <View style={styles.headerTitle2}>
+                <Text>추천</Text>
+              </View>
+              <View style={styles.headerTitle3}>
+                <Text>작성자</Text>
+              </View>
+            </View>
+            <View
+              style={{
+                flex: 6,
+                borderBottomColor: '#888',
+                borderBottomWidth: 2,
+              }}>
+              <FlatList
+                data={this.state.authBoard} //dumy.boardList
+                renderItem={renderItem}
+                keyExtractor={(item) => String(item.id)}
+              />
+            </View>
+            <View
+              style={{flex: 1, flexDirection: 'column', alignSelf: 'center'}}>
+              <View style={{flex: 0.5}} />
+              <View
+                style={{flex: 4, flexDirection: 'row', alignSelf: 'center'}}>
+                <View style={{flex: 1}} />
+                <TouchableOpacity
+                  style={styles.submitButton}
+                  onPress={() => {
+                    if (this.state.page > 1) {
+                      var cnt = this.state.page - 1;
+                      this.state.page = cnt;
+                      this.setState({...this.state, page: cnt});
+                      console.log(cnt);
+                      this.getList();
+                    }
+                  }}>
+                  <Text style={styles.submitButtonText}> {' < '}</Text>
+                </TouchableOpacity>
+                <View style={{flex: 2}} />
+                <TouchableOpacity
+                  style={styles.submitButton}
+                  onPress={() => {
+                    if (this.state.page < 100) {
+                      var cnt = this.state.page + 1;
+                      this.state.page = cnt;
+                      this.setState({...this.state, page: cnt});
+                      console.log(cnt);
+                      this.getList();
+                    }
+                  }}>
+                  <Text style={styles.submitButtonText}> {' > '}</Text>
+                </TouchableOpacity>
+                <View style={{flex: 1}} />
+              </View>
+              <View style={{flex: 1}} />
+            </View>
+
+            <TouchableOpacity
+              style={styles.submitButton}
               onPress={() => {
                 this.props.navigation.navigate('Update', {
                   auth: this.state.auth,
                 });
-              }}
-            />
-            <View style={{flex: 2}} />
-            <Button
-              style={{}}
-              title=">"
-              onPress={() => {
-                this.props.navigation.navigate('Update', {
-                  auth: this.state.auth,
-                });
-              }}
-            />
-            <View style={{flex: 1}} />
+              }}>
+              <Text style={styles.submitButtonText}> 글쓰기 </Text>
+            </TouchableOpacity>
           </View>
-          <View style={{flex: 1}} />
-        </View>
-        <UserConsumer>
-          {({userInfo}) => (
-            <Button
-              style={{flex: 1}}
-              title="글쓰기"
-              onPress={() => {
-                this.props.navigation.navigate('Update', {
-                  auth: this.state.auth,
-                });
-              }}
-            />
-          )}
-        </UserConsumer>
-      </View>
+        )}
+      </UserConsumer>
     );
   }
 }

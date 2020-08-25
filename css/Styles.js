@@ -68,9 +68,8 @@ const styles = StyleSheet.create({
   },
   postTitle: {
     fontSize: 12,
-    flex: 8,
   },
-  postTitleWriter: {flex: 2, textAlign: 'center'},
+  postTitleWriter: {textAlign: 'center'},
 
   title: {
     fontSize: 32,
@@ -87,6 +86,49 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
+  },
+  picker: {
+    marginTop: 6,
+    width: 120,
+    height: 50,
+    backgroundColor: '#fff',
+  },
+  containerPicker: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    backgroundColor: '#000',
+  },
+  containerHeader: {
+    flex: 0.5,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+  },
+  headerTitle5: {
+    flexDirection: 'column',
+    justifyContent: 'space-around',
+    flex: 5,
+    alignItems: 'center',
+  },
+  headerTitle2: {
+    flexDirection: 'column',
+    justifyContent: 'space-around',
+    flex: 2,
+    alignItems: 'center',
+  },
+  headerTitle3: {
+    flexDirection: 'column',
+    justifyContent: 'space-around',
+    flex: 3,
+    alignItems: 'center',
+  },
+  postItem: {
+    height: 47,
+    borderTopColor: '#888',
+    borderTopWidth: 1,
+
+    flexDirection: 'row',
+    justifyContent: 'space-around',
   },
 });
 
