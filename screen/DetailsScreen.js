@@ -31,6 +31,7 @@ export default class DetailsScreen extends Component {
   }
   boardId = this.props.route.params.boardId;
   auth = this.props.route.params.auth;
+  boardName = this.props.route.params.boardName;
   state = {
     data: {
       title: '',
@@ -40,6 +41,7 @@ export default class DetailsScreen extends Component {
       end_date: '',
       location: '',
     },
+    boardName: '',
   };
 
   componentDidMount() {
@@ -103,6 +105,7 @@ export default class DetailsScreen extends Component {
                 <TouchableOpacity
                   onPress={() => {
                     this.props.navigation.navigate('인증게시판');
+                    console.log('인증게시판');
                   }}>
                   <Text style={{fontSize: 24, color: '#fff'}}>
                     {this.props.route.params.auth == 'yes'
@@ -116,9 +119,11 @@ export default class DetailsScreen extends Component {
                   <TouchableOpacity
                     style={stylesEm.submitButtonWhite}
                     onPress={() => {
-                      this.props.navigation.navigate('Update', {
+                      this.props.navigation.navigate('인증게시판' + 'Update', {
                         boardId: this.boardId,
                         auth: this.auth,
+                        boardName: '인증게시판',
+                        data: this.state.data,
                       });
                     }}>
                     <Text style={stylesEm.submitButtonTextWhite}>수정하기</Text>

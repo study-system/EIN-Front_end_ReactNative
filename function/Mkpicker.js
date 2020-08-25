@@ -51,8 +51,16 @@ class MkPicker extends Component {
       console.log(this.props.filterName);
       this.setState({name: this.nameFor[this.props.filterName]});
     });
+    console.log('피커로 넘어온 값', this.props.default);
+    // this.setState({...this.state, default_type: this.props.default});
   }
   render() {
+    console.log(
+      '피커로 넘어온 값',
+      this.props.default,
+      this.state.default_type,
+    );
+
     //major_code를 code로 통일하면 함수를 통일할 수 있음
     let pickerItems = this.state[this.props.filterName].map((item, i) => {
       return <Picker.Item key={i} label={item.name} value={String(item.id)} />;
@@ -61,7 +69,7 @@ class MkPicker extends Component {
     return (
       <View>
         <Picker
-          selectedValue={this.state.default_type}
+          selectedValue={this.props.default || this.state.default_type}
           onValueChange={(itemValue, itemIndex) => {
             this.setState({default_type: itemValue});
             this.onFormSubmit(itemValue, this.props.filterName);

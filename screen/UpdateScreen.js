@@ -35,7 +35,11 @@ export default function UpdateScreen({route, navigation}) {
   // if (boardId) {
   //   console.log('test성공');
   // }
+
   const {auth} = route.params;
+  const {boardName} = route.params;
+  const {data} = route.params;
+  let loadData = false;
   console.log('boardId', boardId, auth);
 
   //input과 입력받은값 유효성체크를 위한
@@ -53,14 +57,14 @@ export default function UpdateScreen({route, navigation}) {
     validate_content: true,
     //분류 분류의 id값으로 키값을 가짐
     //분류-지역 시도와 헷갈리니 바꾸는 것도 좋아보임
-    location: '0',
-    validate_location: true,
+    location_id: '0',
+    validate_location_id: true,
     //분류-분야
-    major: '0',
-    validate_major: true,
+    major_id: '0',
+    validate_major_id: true,
     //분류-대상
-    target: '0',
-    validate_target: true,
+    target_id: '0',
+    validate_target_id: true,
     //글작성자
     writer: userId,
     validate_writer: false,
@@ -68,6 +72,16 @@ export default function UpdateScreen({route, navigation}) {
     imgUrl: '',
     validate_imgUrl: false,
   });
+
+  // useEffect는 첫번째 인자로 callBack함수를 받습니다.
+  React.useEffect(() => {
+    // 컴포넌트가 마운트 되고 setTimeout함수를실행합니다.
+    if (data) {
+      axios.get(config.server + '/board/' + boardId).then((response) => {
+        setText({...text, ...response.data});
+      });
+    }
+  }, []);
   //input의 onChange에 쓸 메소드
   const onChange = (e) => {
     setText({
@@ -79,15 +93,14 @@ export default function UpdateScreen({route, navigation}) {
   //picker 데이터를 부모로 가져옴 메서드용
   const onSubmitPicker = (tmp) => {
     if (tmp.name == 'sido') {
-      // text.location = tmp.value;
-      text.location = tmp.value;
-      console.log(text.location);
+      text.location_id = tmp.value;
+      console.log(text.location_id);
     }
     if (tmp.name == 'major') {
-      text.major = tmp.value;
+      text.major_id = tmp.value;
     }
     if (tmp.name == 'target') {
-      text.target = tmp.value;
+      text.target_id = tmp.value;
     }
     validatePicker(tmp.name);
   };
@@ -147,49 +160,37 @@ export default function UpdateScreen({route, navigation}) {
     }
     onChange(e);
   };
-  const validateLocation = () => {
-    // const dateExp = /^[^\\]+[a-zA-Z0-9가-힣]+[^\\]+[a-zA-Z0-9가-힣]+[^\\]/;
-    if (text.location != '0' && text.location != null) {
-      console.log('포맷성공Location');
-      //버튼 disabled를 위한 거라 반대
 
-      text.validate_location = false;
-    } else {
-      console.log('포맷실패Location');
-
-      text.validate_location = true;
-    }
-  };
   const validatePicker = (name) => {
     // const dateExp = /^[^\\]+[a-zA-Z0-9가-힣]+[^\\]+[a-zA-Z0-9가-힣]+[^\\]/;
     if (name == 'sido') {
-      if (text.location != '0' && text.location != null) {
+      if (text.location_id != '0' && text.location_id != null) {
         console.log('포맷성공' + name);
         //버튼 disabled를 위한 거라 반대
-        text.validate_location = false;
-        console.log('포맷성공' + name + ' : ' + text.validate_location);
+        text.validate_location_id = false;
+        console.log('포맷성공' + name + ' : ' + text.validate_location_id);
       } else {
         console.log('포맷실패' + name);
-        text.validate_location = true;
+        text.validate_location_id = true;
       }
     } else if (name == 'major') {
-      if (text.major != '0' && text.major != null) {
+      if (text.major_id != '0' && text.major_id != null) {
         //버튼 disabled를 위한 거라 반대
-        text.validate_major = false;
-        console.log('포맷성공' + name + ' : ' + text.validate_major);
+        text.validate_major_id = false;
+        console.log('포맷성공' + name + ' : ' + text.validate_major_id);
       } else {
         console.log('포맷실패' + name);
-        text.validate_major = true;
+        text.validate_major_id = true;
       }
     } else if (name == 'target') {
-      if (text.target != '0' && text.target != null) {
+      if (text.target_id != '0' && text.target_id != null) {
         console.log('포맷성공' + name);
         //버튼 disabled를 위한 거라 반대
-        text.validate_target = false;
-        console.log('포맷성공' + name + ' : ' + text.validate_target);
+        text.validate_target_id = false;
+        console.log('포맷성공' + name + ' : ' + text.validate_target_id);
       } else {
         console.log('포맷실패' + name);
-        text.validate_target = true;
+        text.validate_target_id = true;
       }
     }
   };
@@ -211,9 +212,9 @@ export default function UpdateScreen({route, navigation}) {
     start_date: dateFormat(text.start_date),
     end_date: dateFormat(text.end_date),
     content: text.content,
-    location_id: Number(text.location),
-    major_id: Number(text.major),
-    target_id: Number(text.target),
+    location_id: Number(text.location_id),
+    major_id: Number(text.major_id),
+    target_id: Number(text.target_id),
   };
   const onSubmitUpdate = () => {
     console.log('글수정시도', jsonForUpdate);
@@ -237,9 +238,9 @@ export default function UpdateScreen({route, navigation}) {
     start_date: dateFormat(text.start_date),
     end_date: dateFormat(text.end_date),
     content: text.content,
-    location_id: Number(text.location),
-    major_id: Number(text.major),
-    target_id: Number(text.target),
+    location_id: Number(text.location_id),
+    major_id: Number(text.major_id),
+    target_id: Number(text.target_id),
     auth: auth,
   };
   console.log(jsonForCreate);
@@ -248,7 +249,7 @@ export default function UpdateScreen({route, navigation}) {
       .post('http://myks790.iptime.org:8082/board', jsonForCreate, {
         withCredentials: true,
       })
-      .then(function (response) {
+      .then((response) => {
         console.log('글쓰기 성공', response);
         navigation.navigate('인증게시판', {reset: true});
       })
@@ -298,9 +299,9 @@ export default function UpdateScreen({route, navigation}) {
             text.validate_end_date ||
             text.validate_title ||
             text.validate_content ||
-            text.validate_location ||
-            text.validate_major ||
-            text.validate_target ? (
+            text.validate_location_id ||
+            text.validate_major_id ||
+            text.validate_target_id ? (
               <View style={{marginTop: -10}}>
                 <TouchableOpacity
                   style={stylesEm.submitButtonGrey}
@@ -365,6 +366,7 @@ export default function UpdateScreen({route, navigation}) {
                       filterName={'sido'}
                       url={config.server + '/board/location'}
                       onSubmit={onSubmitPicker}
+                      default={text.location_id}
                     />
                   </View>
                   <View
@@ -380,6 +382,7 @@ export default function UpdateScreen({route, navigation}) {
                       filterName={'major'}
                       url={config.server + '/board/major'}
                       onSubmit={onSubmitPicker}
+                      default={text.major_id}
                     />
                   </View>
                   <View
@@ -395,6 +398,7 @@ export default function UpdateScreen({route, navigation}) {
                       filterName={'target'}
                       url={config.server + '/board/target'}
                       onSubmit={onSubmitPicker}
+                      default={text.target_id}
                     />
                   </View>
                 </View>

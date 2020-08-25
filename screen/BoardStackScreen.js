@@ -38,16 +38,20 @@ export default function BoardStackScreen({route, navigation}) {
       <BoardStack.Screen
         name="지유게시판"
         component={AuthBoardScreen}
-        initialParams={{auth: 'no', isLogin: route.params.isLogin}}
+        initialParams={{
+          auth: 'no',
+          isLogin: route.params.isLogin,
+          boardName: '자유게시판',
+        }}
         options={{headerShown: false}}
       />
       <BoardStack.Screen
-        name="Details"
+        name="자유게시판Details"
         component={DetailsScreen}
         options={{headerShown: false}}
       />
       <BoardStack.Screen
-        name="Update"
+        name="자유게시판Update"
         component={UpdateScreen}
         options={{headerShown: false}}
       />

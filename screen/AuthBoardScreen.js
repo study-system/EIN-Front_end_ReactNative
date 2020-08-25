@@ -53,6 +53,7 @@ export default class AuthBoardScreen extends Component {
     this.state.auth = props.route.params.auth;
     this.handleStatusChange = this.handleStatusChange.bind(this);
   }
+  boardName = this.props.route.params.boardName;
 
   // 실행한 결과가 오면 자동으로 리플래시 되면서 반영함. 1번
   componentDidMount() {
@@ -132,9 +133,10 @@ export default class AuthBoardScreen extends Component {
       <View>
         <TouchableOpacity
           onPress={() => {
-            this.props.navigation.navigate('Details', {
+            this.props.navigation.navigate(this.boardName + 'Details', {
               boardId: item.id,
               auth: this.state.auth,
+              boardName: this.boardName,
             });
           }}>
           <Item title={item.title} writer={item.nickname} />
@@ -339,7 +341,7 @@ export default class AuthBoardScreen extends Component {
               <TouchableOpacity
                 style={styles.submitButton}
                 onPress={() => {
-                  this.props.navigation.navigate('Update', {
+                  this.props.navigation.navigate(this.boardName + 'Update', {
                     auth: this.state.auth,
                   });
                 }}>
