@@ -70,10 +70,6 @@ export default function UpdateScreen({route, navigation}) {
   });
   //input의 onChange에 쓸 메소드
   const onChange = (e) => {
-    //input의 name
-    console.log(e._dispatchInstances.memoizedProps.name);
-    //input의 값
-    console.log(e.nativeEvent.text);
     setText({
       ...text, // 기존의 객체를 복사한 뒤
       [e._dispatchInstances.memoizedProps.name]: e.nativeEvent.text, // name 키를 가진 값을 value 로 설정
@@ -222,7 +218,9 @@ export default function UpdateScreen({route, navigation}) {
   const onSubmitUpdate = () => {
     console.log('글수정시도', jsonForUpdate);
     axios
-      .put('http://myks790.iptime.org:8082/board/' + boardId, jsonForUpdate)
+      .put('http://myks790.iptime.org:8082/board/' + boardId, jsonForUpdate, {
+        withCredentials: true,
+      })
       .then(function (response) {
         console.log(response);
         console.log('글수정성공');
@@ -247,7 +245,9 @@ export default function UpdateScreen({route, navigation}) {
   console.log(jsonForCreate);
   const onSubmitCreate = () => {
     axios
-      .post('http://myks790.iptime.org:8082/board', jsonForCreate)
+      .post('http://myks790.iptime.org:8082/board', jsonForCreate, {
+        withCredentials: true,
+      })
       .then(function (response) {
         console.log('글쓰기 성공', response);
         navigation.navigate('인증게시판', {reset: true});

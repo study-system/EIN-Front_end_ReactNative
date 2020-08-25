@@ -28,6 +28,7 @@ const GetDetail = require('./function/GetDetail');
 //스크린 import
 import MypageStack from './screen/MypageStackScreen';
 import AuthBoardStackScreen from './screen/AuthBoardStackScreen';
+import BoardStackScreen from './screen/BoardStackScreen';
 import config from './config';
 import {UserProvider} from './screen/UserContext';
 
@@ -193,10 +194,13 @@ class MyTabs extends Component {
         /> */}
         <Tab.Screen
           name="자유게시판"
-          component={BoardScreen}
+          component={BoardStackScreen}
           onSubmit={this.onSubmit}
-          isLogin={this.state.isLogin}
-          id={this.state.id}
+          initialParams={{
+            onSubmit: this.onSubmit,
+            isLogin: this.state.isLogin,
+            id: this.state.id,
+          }}
         />
         <Tab.Screen
           name="마이페이지"

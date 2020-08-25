@@ -112,6 +112,7 @@ export default class AuthBoardScreen extends Component {
   };
 
   render() {
+    console.log('게시판구분', this.state.auth);
     console.log('인증보드', this.props.route.params.isLogin);
     //포스트 하나 만드는 메서드
     let Item = ({title, writer}) => (
