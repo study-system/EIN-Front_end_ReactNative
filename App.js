@@ -177,7 +177,7 @@ class MyTabs extends Component {
     return (
       <Tab.Navigator>
         <Tab.Screen
-          name="Home"
+          name="인증게시판"
           component={AuthBoardStackScreen}
           initialParams={{
             onSubmit: this.onSubmit,

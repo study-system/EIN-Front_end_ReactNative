@@ -225,7 +225,7 @@ export default class LoginPage extends Component {
                       userInfo,
                     );
                   }}>
-                  <Text style={styles.submitButtonText}> Submit </Text>
+                  <Text style={styles.submitButtonText}> 로그인 </Text>
                 </TouchableOpacity>
                 {/* )}
               </UserConsumer> */}
