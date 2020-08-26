@@ -248,12 +248,11 @@ export default class AuthUserSignUp extends Component {
     // };
     const signInReq = () => {
       axios
-        .post('http://myks790.iptime.org:8082/user', jsonForSignIn)
-        .then(function (response) {
+        .post(config.server + '/authUser', jsonForSignIn)
+        .then((response) => {
           console.log('계정생성성공', response);
-          this.setState();
         })
-        .catch(function (error) {
+        .catch((error) => {
           console.log(error);
         });
     };
@@ -271,13 +270,13 @@ export default class AuthUserSignUp extends Component {
       nickname: this.state.nickName,
       phone: Number(this.state.phone),
       address: this.state.roadAddr,
-      detail_address: this.state.detail_address,
-      location_id: this.transSiNmToSido(this.state.siNm),
-      push_agree: 'yes',
-      company: '회~사',
-      companyNumber: 109394295,
-      position: '대리',
-      website: 'http://equalda.com',
+      detailAddress: this.state.detail_address,
+      locationId: this.transSiNmToSido(this.state.siNm),
+      pushAgree: 'yes',
+      company: this.state.company,
+      companyNumber: this.state.companyNumber,
+      position: this.state.position,
+      website: this.state.website,
     };
     const checkBoolForSignUp = () => {
       if (this.state.validate.email) {
@@ -297,6 +296,7 @@ export default class AuthUserSignUp extends Component {
       } else if (this.state.validate.location_id) {
         alert('주소찾기를 다시 해주십시오');
       } else {
+        console.log('인증회원가입정보', jsonForSignIn);
         signInReq();
         this.props.navigation.navigate('로그인');
       }
@@ -310,7 +310,7 @@ export default class AuthUserSignUp extends Component {
               name={'email'}
               style={this.state.validate.email ? styles.input : styles.inputO}
               underlineColorAndroid="transparent"
-              placeholder="Email"
+              placeholder="example@site.com"
               placeholderTextColor="black"
               autoCapitalize="none"
               onChange={this.varidateEmail}
@@ -378,7 +378,7 @@ export default class AuthUserSignUp extends Component {
               name={'phone'}
               style={this.state.validate.phone ? styles.input : styles.inputO}
               underlineColorAndroid="transparent"
-              placeholder="전화번호"
+              placeholder="-없이 입력해주세요"
               placeholderTextColor="black"
               autoCapitalize="none"
               onChange={this.varidatePhone}
