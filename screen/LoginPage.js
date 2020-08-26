@@ -80,9 +80,9 @@ export default class LoginPage extends Component {
       });
   }
 
-  updateLogin() {
-    this.props.route.params.onSubmit({isLogIn: true});
-  }
+  // updateLogin() {
+  //   this.props.route.params.onSubmit({isLogIn: true});
+  // }
   //   onSubmit = (cookie) => {
   //     this.props.route.params.onSubmit('쿠키');
   //   };
@@ -102,6 +102,9 @@ export default class LoginPage extends Component {
           console.log(
             '마이페이지!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!',
             response,
+            {
+              withCredentials: true,
+            },
           );
           this.setState({
             ...this.state,
@@ -134,7 +137,7 @@ export default class LoginPage extends Component {
   logOut = (func) => {
     console.log('로그아웃');
     axios
-      .get('http://myks790.iptime.org:8082/logout', {
+      .get(config.server + '/logout', {
         withCredentials: true,
       })
       .then((response) => {
@@ -167,7 +170,6 @@ export default class LoginPage extends Component {
   };
   render() {
     console.log(this.props.route.params);
-    this.props.route.params.onSubmit({isLogIn: true});
     return (
       <UserConsumer>
         {({userInfo, ctxLogIn, ctxLogOut, ctxGetUser}) => (

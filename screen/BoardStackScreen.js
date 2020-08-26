@@ -36,7 +36,7 @@ export default function BoardStackScreen({route, navigation}) {
   return (
     <BoardStack.Navigator>
       <BoardStack.Screen
-        name="지유게시판"
+        name="자유게시판"
         component={AuthBoardScreen}
         initialParams={{
           auth: 'no',

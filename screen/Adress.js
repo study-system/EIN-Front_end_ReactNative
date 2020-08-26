@@ -55,7 +55,7 @@ export default class Adress extends Component {
   getList = () => {
     //resultType=json
     let url =
-      'http://www.juso.go.kr/addrlink/addrLinkApi.do?confmKey=devU01TX0FVVEgyMDIwMDgyMDIwMDYyODExMDA4NDk=&keyword=' +
+      'http://www.juso.go.kr/addrlink/addrLinkApi.do?confmKey=devU01TX0FVVEgyMDIwMDgyNjIwMTAzNzExMDExMDQ=&keyword=' +
       this.state.value +
       '&resultType=json';
     axios

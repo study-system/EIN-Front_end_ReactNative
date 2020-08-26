@@ -86,65 +86,10 @@ class BoardScreen extends Component {
 //스크롤뷰 + 플로팅버튼
 class PushAlarm extends Component {
   render() {
-    const requestCameraPermission = async () => {
-      try {
-        const granted = await PermissionsAndroid.request(
-          PermissionsAndroid.PERMISSIONS.CAMERA,
-          {
-            title: 'Cool Photo App Camera Permission',
-            message:
-              'Cool Photo App needs access to your camera ' +
-              'so you can take awesome pictures.',
-            buttonNeutral: 'Ask Me Later',
-            buttonNegative: 'Cancel',
-            buttonPositive: 'OK',
-          },
-        );
-        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-          console.log('You can use the camera');
-        } else {
-          console.log('Camera permission denied');
-        }
-      } catch (err) {
-        console.warn(err);
-      }
-    };
-    const requestStroragePermission = async () => {
-      try {
-        const granted = await PermissionsAndroid.request(
-          PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
-          {
-            title: 'Cool Photo App Camera Permission',
-            message:
-              'Cool Photo App needs access to your camera ' +
-              'so you can take awesome pictures.',
-            buttonNeutral: 'Ask Me Later',
-            buttonNegative: 'Cancel',
-            buttonPositive: 'OK',
-          },
-        );
-        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-          console.log('You can use the camera');
-        } else {
-          console.log('Camera permission denied');
-        }
-      } catch (err) {
-        console.warn(err);
-      }
-    };
-
     return (
       <ScrollView>
         <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
           <Text>개발중입니다.</Text>
-          <Button
-            title="request permissions"
-            onPress={requestCameraPermission}
-          />
-          <Button
-            title="request permissions"
-            onPress={requestStroragePermission}
-          />
         </View>
       </ScrollView>
     );
@@ -180,22 +125,16 @@ class MyTabs extends Component {
           name="인증게시판"
           component={AuthBoardStackScreen}
           initialParams={{
-            onSubmit: this.onSubmit,
             isLogin: this.state.isLogin,
             id: this.state.id,
           }}
         />
-        {/* <Tab.Screen
-          name="인증게시판"
-          component={AuthBoardScreen}
-          data2={this.props.data}
-        /> */}
+
         <Tab.Screen
           name="자유게시판"
           component={BoardStackScreen}
           onSubmit={this.onSubmit}
           initialParams={{
-            onSubmit: this.onSubmit,
             isLogin: this.state.isLogin,
             id: this.state.id,
           }}
@@ -204,7 +143,6 @@ class MyTabs extends Component {
           name="마이페이지"
           component={MypageStack}
           initialParams={{
-            onSubmit: this.onSubmit,
             isLogin: this.state.isLogin,
             id: this.state.id,
           }}

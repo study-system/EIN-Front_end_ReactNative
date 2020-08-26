@@ -58,7 +58,9 @@ export default class AuthBoardScreen extends Component {
   // 실행한 결과가 오면 자동으로 리플래시 되면서 반영함. 1번
   componentDidMount() {
     this.getList();
-    if (this.state.popupSetting) this.getPopUp();
+    if (this.state.popupSetting) {
+      this.getPopUp();
+    }
   }
 
   componentWillUnmount() {
@@ -95,6 +97,10 @@ export default class AuthBoardScreen extends Component {
       var objForSettingFilter = {};
       objForSettingFilter.authBoard = response.data.contents;
       this.setState(objForSettingFilter);
+      this.setState({
+        ...this.state,
+        totalPages: response.data.pageInfo.totalPages,
+      });
       console.log(response.data.contents);
     });
   };
@@ -192,7 +198,8 @@ export default class AuthBoardScreen extends Component {
                       style={{flex: 1, borderRadius: 10}}
                       source={{
                         uri: this.state.popupImg,
-                      }}></Image>
+                      }}
+                    />
                   </View>
                   <View
                     style={{
@@ -323,7 +330,8 @@ export default class AuthBoardScreen extends Component {
                 <TouchableOpacity
                   style={styles.submitButton}
                   onPress={() => {
-                    if (this.state.page < 100) {
+                    if (this.state.page < this.state.totalPages) {
+                      console.log(this.state.totalPages);
                       var cnt = this.state.page + 1;
                       this.state.page = cnt;
                       this.setState({...this.state, page: cnt});
@@ -341,8 +349,9 @@ export default class AuthBoardScreen extends Component {
               <TouchableOpacity
                 style={styles.submitButton}
                 onPress={() => {
-                  this.props.navigation.navigate(this.boardName + 'Update', {
+                  this.props.navigation.navigate('인증게시판' + 'Update', {
                     auth: this.state.auth,
+                    boardName: this.boardName,
                   });
                 }}>
                 <Text style={styles.submitButtonText}> 글쓰기 </Text>

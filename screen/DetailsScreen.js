@@ -71,13 +71,13 @@ export default class DetailsScreen extends Component {
 
   onSubmitDelete = () => {
     axios
-      .delete('http://myks790.iptime.org:8082/board/' + this.boardId, {
+      .delete(config.server + '/board/' + this.boardId, {
         withCredentials: true,
       })
       .then((response) => {
         console.log(response);
 
-        this.props.navigation.navigate('인증게시판');
+        this.props.navigation.navigate(this.boardName);
         console.log('글삭제성공');
       })
       .catch((error) => {
@@ -104,8 +104,8 @@ export default class DetailsScreen extends Component {
                 }}>
                 <TouchableOpacity
                   onPress={() => {
-                    this.props.navigation.navigate('인증게시판');
-                    console.log('인증게시판');
+                    this.props.navigation.navigate(this.boardName);
+                    console.log(this.boardName);
                   }}>
                   <Text style={{fontSize: 24, color: '#fff'}}>
                     {this.props.route.params.auth == 'yes'
@@ -119,12 +119,15 @@ export default class DetailsScreen extends Component {
                   <TouchableOpacity
                     style={stylesEm.submitButtonWhite}
                     onPress={() => {
-                      this.props.navigation.navigate('인증게시판' + 'Update', {
-                        boardId: this.boardId,
-                        auth: this.auth,
-                        boardName: '인증게시판',
-                        data: this.state.data,
-                      });
+                      this.props.navigation.navigate(
+                        this.boardName + 'Update',
+                        {
+                          boardId: this.boardId,
+                          auth: this.auth,
+                          boardName: this.boardName,
+                          data: this.state.data,
+                        },
+                      );
                     }}>
                     <Text style={stylesEm.submitButtonTextWhite}>수정하기</Text>
                   </TouchableOpacity>

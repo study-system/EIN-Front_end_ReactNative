@@ -40,6 +40,7 @@ export default class SignUp extends Component {
               </View>
               <View>
                 <Text style={stylesEm.submitButtonText}> 일반회원가입 </Text>
+                <Text style={{textAlign: 'center'}}>개인</Text>
               </View>
             </View>
           </TouchableOpacity>
@@ -59,6 +60,7 @@ export default class SignUp extends Component {
               </View>
               <View>
                 <Text style={stylesEm.submitButtonText}> 인증회원가입 </Text>
+                <Text style={{textAlign: 'center'}}>법인</Text>
               </View>
             </View>
           </TouchableOpacity>

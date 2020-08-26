@@ -184,7 +184,7 @@ export default class UserSignUp extends Component {
     // };
     const signInReq = () => {
       axios
-        .post('http://myks790.iptime.org:8082/user', jsonForSignIn)
+        .post(config.server + '/user', jsonForSignIn)
         .then(function (response) {
           console.log('계정생성성공', response);
           this.setState();

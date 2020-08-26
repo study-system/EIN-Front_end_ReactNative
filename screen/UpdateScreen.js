@@ -11,6 +11,7 @@ import {
   TouchableOpacity,
   TextInput,
   Alert,
+  Image,
 } from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
@@ -25,7 +26,7 @@ const moment = require('moment');
 //기능 import
 const MkPicker = require('../function/Mkpicker');
 const GetDetail = require('../function/GetDetail');
-
+import ImagePicker from 'react-native-image-picker';
 export default function UpdateScreen({route, navigation}) {
   //임시변수 로그인 만든 후에는 쿠키에서 가져오자
   const userId = 1;
@@ -230,12 +231,12 @@ export default function UpdateScreen({route, navigation}) {
   const onSubmitUpdate = () => {
     console.log('글수정시도', jsonForUpdate);
     axios
-      .put('http://myks790.iptime.org:8082/board/' + boardId, jsonForUpdate, {
+      .put(config.server + '/board/' + boardId, jsonForUpdate, {
         withCredentials: true,
       })
       .then(function (response) {
         console.log('글수정성공', response);
-        navigation.navigate('인증게시판', {reset: true});
+        navigation.navigate(boardName, {reset: true});
       })
       .catch(function (error) {
         console.log(error);
@@ -257,12 +258,12 @@ export default function UpdateScreen({route, navigation}) {
   console.log(jsonForCreate);
   const onSubmitCreate = () => {
     axios
-      .post('http://myks790.iptime.org:8082/board', jsonForCreate, {
+      .post(config.server + '/board', jsonForCreate, {
         withCredentials: true,
       })
       .then((response) => {
         console.log('글쓰기 성공', response);
-        navigation.navigate('인증게시판', {reset: true});
+        navigation.navigate(boardName, {reset: true});
       })
       .catch(function (error) {
         console.log(error);
@@ -275,6 +276,60 @@ export default function UpdateScreen({route, navigation}) {
     } else {
       return 'False';
     }
+  };
+
+  const onClickTakePhoto = () => {
+    // More info on all the options is below in the API Reference... just some common use cases shown here
+    const options = {
+      title: 'Select Avatar',
+      customButtons: [{name: 'fb', title: 'Choose Photo from Facebook'}],
+      storageOptions: {
+        skipBackup: true,
+        path: 'images',
+      },
+    };
+
+    /**
+     * The first arg is the options object for customization (it can also be null or omitted for default options),
+     * The second arg is the callback which sends object: response (more info in the API Reference)
+     */
+    ImagePicker.showImagePicker(options, (response) => {
+      // console.log('Response = ', response);
+
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+      } else if (response.customButton) {
+        console.log('User tapped custom button: ', response.customButton);
+      } else {
+        const source = {uri: response.uri};
+
+        setText({avatarSource: source});
+        const file = {
+          originalname: response.fileName,
+          type: response.type,
+          uri: response.uri,
+          buffer: response.data,
+        };
+
+        axios
+          .post(
+            'http://myks790.iptime.org:8082/file',
+            {...file},
+            {
+              withCredentials: true,
+            },
+          )
+          .then((respone) => {
+            const imgUrl = respone.data.imgUrl;
+            console.log('====== imgUrl  : ' + imgUrl);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+    });
   };
 
   return (
@@ -296,7 +351,7 @@ export default function UpdateScreen({route, navigation}) {
               }}>
               <TouchableOpacity
                 onPress={() => {
-                  navigation.navigate('인증게시판');
+                  navigation.navigate(boardName);
                 }}>
                 <Text style={{fontSize: 24, color: '#fff'}}>
                   {route.params.auth == 'yes'
@@ -453,6 +508,17 @@ export default function UpdateScreen({route, navigation}) {
                 value={text.content}
                 editable
                 maxLength={300}
+              />
+              <TouchableOpacity
+                style={styles.submitButton}
+                onPress={() => {
+                  onClickTakePhoto();
+                }}>
+                <Text style={styles.submitButtonText}>이미지찾기</Text>
+              </TouchableOpacity>
+              <Image
+                source={text.avatarSource}
+                style={{width: 150, height: 150}}
               />
             </ScrollView>
           </SafeAreaView>
