@@ -70,7 +70,7 @@ export default function UpdateScreen({route, navigation}) {
     writer: userId,
     validate_writer: false,
     //추후추가
-    imgUrl: '',
+    imageurl: '',
     validate_imgUrl: false,
   });
 
@@ -100,6 +100,7 @@ export default function UpdateScreen({route, navigation}) {
       ...text, // 기존의 객체를 복사한 뒤
       [e._dispatchInstances.memoizedProps.name]: e.nativeEvent.text, // name 키를 가진 값을 value 로 설정
     });
+    console.log('스테이트확인', JSON.stringify(text));
   };
 
   //picker 데이터를 부모로 가져옴 메서드용
@@ -250,6 +251,7 @@ export default function UpdateScreen({route, navigation}) {
     start_date: dateFormat(text.start_date),
     end_date: dateFormat(text.end_date),
     content: text.content,
+    imageurl: text.iamgeurl,
     location_id: Number(text.location_id),
     major_id: Number(text.major_id),
     target_id: Number(text.target_id),
@@ -305,7 +307,7 @@ export default function UpdateScreen({route, navigation}) {
       } else {
         const source = {uri: response.uri};
 
-        setText({avatarSource: source});
+        setText({...text, avatarSource: source});
         const file = {
           originalname: response.fileName,
           type: response.type,
@@ -323,7 +325,10 @@ export default function UpdateScreen({route, navigation}) {
           )
           .then((respone) => {
             const imgUrl = respone.data.imgUrl;
+            setText({...text, iamgeurl: imgUrl});
+
             console.log('====== imgUrl  : ' + imgUrl);
+            console.log(JSON.stringify(text));
           })
           .catch((error) => {
             console.log(error);
@@ -517,8 +522,8 @@ export default function UpdateScreen({route, navigation}) {
                 <Text style={styles.submitButtonText}>이미지찾기</Text>
               </TouchableOpacity>
               <Image
-                source={text.avatarSource}
                 style={{width: 150, height: 150}}
+                source={{uri: text.imageurl}}
               />
             </ScrollView>
           </SafeAreaView>
