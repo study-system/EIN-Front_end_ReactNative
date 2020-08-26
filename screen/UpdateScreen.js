@@ -77,8 +77,19 @@ export default function UpdateScreen({route, navigation}) {
   React.useEffect(() => {
     // 컴포넌트가 마운트 되고 setTimeout함수를실행합니다.
     if (data) {
+      //id값으로 게시글 정보를 가져와 text에 넣어줌
       axios.get(config.server + '/board/' + boardId).then((response) => {
-        setText({...text, ...response.data});
+        setText({
+          ...text,
+          validate_content: false,
+          validate_end_date: false,
+          validate_location_id: false,
+          validate_major_id: false,
+          validate_start_date: false,
+          validate_target_id: false,
+          validate_title: false,
+          ...response.data,
+        });
       });
     }
   }, []);
@@ -223,8 +234,8 @@ export default function UpdateScreen({route, navigation}) {
         withCredentials: true,
       })
       .then(function (response) {
-        console.log(response);
-        console.log('글수정성공');
+        console.log('글수정성공', response);
+        navigation.navigate('인증게시판', {reset: true});
       })
       .catch(function (error) {
         console.log(error);
