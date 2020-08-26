@@ -157,7 +157,9 @@ export default class AgreePage extends Component {
           <TouchableOpacity
             style={styles.submitButton}
             onPress={() =>
-              this.props.navigation.navigate(this.props.route.params.nextPage)
+              this.props.navigation.navigate(this.props.route.params.nextPage, {
+                nextPage: this.props.route.params.nextPage,
+              })
             }>
             <Text style={styles.submitButtonText}> 동의합니다 </Text>
           </TouchableOpacity>

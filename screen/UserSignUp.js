@@ -235,71 +235,96 @@ export default class UserSignUp extends Component {
     return (
       <ScrollView>
         <View style={styles.containerLogin}>
-          <Text>유저회원가입</Text>
-          <TextInput
-            name={'email'}
-            style={this.state.validate.email ? styles.input : styles.inputO}
-            underlineColorAndroid="transparent"
-            placeholder="Email"
-            placeholderTextColor="black"
-            autoCapitalize="none"
-            onChange={this.varidateEmail}
-          />
-          <TextInput
-            name={'password'}
-            style={this.state.validate.password ? styles.input : styles.inputO}
-            underlineColorAndroid="transparent"
-            placeholder="Password"
-            placeholderTextColor="black"
-            autoCapitalize="none"
-            secureTextEntry={true}
-            onChange={this.onChange}
-          />
-          <TextInput
-            name={'rePassword'}
-            style={this.state.validate.password ? styles.input : styles.inputO}
-            underlineColorAndroid="transparent"
-            placeholder="Password확인"
-            placeholderTextColor="black"
-            autoCapitalize="none"
-            secureTextEntry={true}
-            onChange={this.varidatePassword}
-          />
-          <TextInput
-            name={'name'}
-            style={this.state.validate.name ? styles.input : styles.inputO}
-            underlineColorAndroid="transparent"
-            placeholder="이름"
-            placeholderTextColor="black"
-            autoCapitalize="none"
-            onChange={this.varidateName}
-          />
-          <TextInput
-            name={'nickName'}
-            style={this.state.validate.nickName ? styles.input : styles.inputO}
-            underlineColorAndroid="transparent"
-            placeholder="닉네임"
-            placeholderTextColor="black"
-            autoCapitalize="none"
-            onChange={this.varidateNickName}
-          />
-          <TextInput
-            name={'phone'}
-            style={this.state.validate.phone ? styles.input : styles.inputO}
-            underlineColorAndroid="transparent"
-            placeholder="전화번호"
-            placeholderTextColor="black"
-            autoCapitalize="none"
-            onChange={this.varidatePhone}
-            dataDetectorTypes={'phoneNumber'}
-          />
-
+          <View style={{marginTop: 20}}>
+            <Text style={styles.inputNameTag}>이메일</Text>
+            <TextInput
+              name={'email'}
+              style={this.state.validate.email ? styles.input : styles.inputO}
+              underlineColorAndroid="transparent"
+              placeholder="Email"
+              placeholderTextColor="black"
+              autoCapitalize="none"
+              onChange={this.varidateEmail}
+            />
+          </View>
+          <View>
+            <Text style={styles.inputNameTag}>비밀번호</Text>
+            <TextInput
+              name={'password'}
+              style={
+                this.state.validate.password ? styles.input : styles.inputO
+              }
+              underlineColorAndroid="transparent"
+              placeholder="Password"
+              placeholderTextColor="black"
+              autoCapitalize="none"
+              secureTextEntry={true}
+              onChange={this.onChange}
+            />
+          </View>
+          <View>
+            <Text style={styles.inputNameTag}>비밀번호확인</Text>
+            <TextInput
+              name={'rePassword'}
+              style={
+                this.state.validate.password ? styles.input : styles.inputO
+              }
+              underlineColorAndroid="transparent"
+              placeholder="Password확인"
+              placeholderTextColor="black"
+              autoCapitalize="none"
+              secureTextEntry={true}
+              onChange={this.varidatePassword}
+            />
+          </View>
+          <View>
+            <Text style={styles.inputNameTag}>이름</Text>
+            <TextInput
+              name={'name'}
+              style={this.state.validate.name ? styles.input : styles.inputO}
+              underlineColorAndroid="transparent"
+              placeholder="이름"
+              placeholderTextColor="black"
+              autoCapitalize="none"
+              onChange={this.varidateName}
+            />
+          </View>
+          <View>
+            <Text style={styles.inputNameTag}>닉네임</Text>
+            <TextInput
+              name={'nickName'}
+              style={
+                this.state.validate.nickName ? styles.input : styles.inputO
+              }
+              underlineColorAndroid="transparent"
+              placeholder="닉네임"
+              placeholderTextColor="black"
+              autoCapitalize="none"
+              onChange={this.varidateNickName}
+            />
+          </View>
+          <View>
+            <Text style={styles.inputNameTag}>전화번호</Text>
+            <TextInput
+              name={'phone'}
+              style={this.state.validate.phone ? styles.input : styles.inputO}
+              underlineColorAndroid="transparent"
+              placeholder="전화번호"
+              placeholderTextColor="black"
+              autoCapitalize="none"
+              onChange={this.varidatePhone}
+              dataDetectorTypes={'phoneNumber'}
+            />
+          </View>
+          <View>
+            <Text style={styles.inputNameTag}>주소</Text>
+          </View>
           <TouchableOpacity
             style={styles.submitButton}
             onPress={() =>
               this.props.navigation.navigate('Adress', {
                 onSubmit: onSubmit,
-                reqPage: 'UserSignUp',
+                reqPage: this.props.route.params.nextPage,
               })
             }>
             <Text style={styles.submitButtonText}> 주소찾기 </Text>
