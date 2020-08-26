@@ -168,14 +168,12 @@ class MyTabs extends Component {
     if (params.id) {
       this.state.id = params.id;
     }
-    console.log('최상위params', params);
   }
   constructor(props) {
     super(props);
     console.log('MyTabs', this.props.data);
   }
   render() {
-    console.log('최상위', this.state.isLogin);
     return (
       <Tab.Navigator>
         <Tab.Screen

@@ -26,6 +26,7 @@ export default class Mypage extends Component {
     validate: {
       email: true,
       password: true,
+      newPassword: true,
       curPassword: true,
       nickName: true,
       phone: true,
@@ -49,14 +50,33 @@ export default class Mypage extends Component {
   };
   constructor(props) {
     super(props);
-    this.state.userInfo = props.route.params.userInfo;
-    console.log('params!!!!!!!!!!!!!!!!!', props.route.params.userInfo);
-    console.log('state!!!!!!!!!!!!!!!!!!!', this.state);
   }
   componentDidMount() {
+    this.setState(
+      {
+        ...this.state,
+        validate: {
+          ...this.state.validate,
+          email: false,
+          password: false,
+          newPassword: false,
+          nickName: false,
+          phone: false,
+          roadAddr: false,
+          siNm: false,
+          detail_address: false,
+        },
+        userInfo: this.props.route.params.userInfo,
+      },
+      () => {
+        console.log('userInfo들어오는지', JSON.stringify(this.state));
+      },
+    );
     axios.get(config.server + '/board/location').then((response) => {
       //state.data에 response로 받은 json 값을 넣어줌
-      this.setState({sido: response.data});
+      this.setState({...this.state, sido: response.data}, () => {
+        console.log('시도업데이트 확인용', JSON.stringify(this.state));
+      });
     });
   }
 
@@ -67,7 +87,7 @@ export default class Mypage extends Component {
         placeholderTextColor="black"
         autoCapitalize="none"
         secureTextEntry={true}
-        style={this.state.validate.password ? styles.input : styles.inputO}
+        style={this.state.validate.curPassword ? styles.input : styles.inputO}
         placeholder={props.placeholder}
         name={props.name}
         onChange={props.onChange}
@@ -126,6 +146,16 @@ export default class Mypage extends Component {
       booleanPR = true;
     }
     this.state.validate.password = booleanPL || booleanPR;
+
+    this.onChange(e);
+  };
+  varidateNewPassword = (e) => {
+    if (e.nativeEvent.text.length > 2) {
+      //버튼 disabled를 위한 거라 반대
+      this.state.validate.newPassword = false;
+    } else {
+      this.state.validate.newPassword = true;
+    }
 
     this.onChange(e);
   };
@@ -214,8 +244,11 @@ export default class Mypage extends Component {
     });
   };
   transBoolToYesNo = (bool) => {
-    if (bool) return 'yes';
-    else return 'no';
+    if (bool) {
+      return 'yes';
+    } else {
+      return 'no';
+    }
   };
   render() {
     const userInfoUpdate = () => {
@@ -227,7 +260,9 @@ export default class Mypage extends Component {
         newPassword: this.state.userInfo.newPassword,
         nickname: this.state.userInfo.nickname,
         phone: this.state.userInfo.phone,
-        location_id: this.transSiNmToSido(this.state.userInfo.siNm),
+        location_id:
+          this.transSiNmToSido(this.state.userInfo.siNm) ||
+          this.state.userInfo.location_id,
         address: this.state.userInfo.address,
         addressDetail: this.state.userInfo.detail_address,
         pushAgree: this.transBoolToYesNo(this.state.userInfo.pushAgree),
@@ -243,7 +278,7 @@ export default class Mypage extends Component {
         .catch((error) => {
           console.log(error);
           console.log('업데이트실패');
-          alert('비밀번호가 맞지 않습니다.');
+          alert('비밀번호가 맞지 않습니다.', error);
         });
     };
 
@@ -293,14 +328,14 @@ export default class Mypage extends Component {
             <TextInput
               name={'newPassword'}
               style={
-                this.state.validate.password ? styles.input : styles.inputO
+                this.state.validate.newPassword ? styles.input : styles.inputO
               }
               underlineColorAndroid="transparent"
               placeholder="새로운비밀번호"
               placeholderTextColor="black"
               autoCapitalize="none"
               secureTextEntry={true}
-              onChange={this.onChange}
+              onChange={this.varidateNewPassword}
             />
           </View>
           <View>

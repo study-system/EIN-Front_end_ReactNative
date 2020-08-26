@@ -39,10 +39,6 @@ export default class LoginPage extends Component {
     super(props);
   }
   onChange = (e) => {
-    //input의 name
-    console.log(e._dispatchInstances.memoizedProps.name);
-    //input의 값
-    console.log(e.nativeEvent.text);
     this.setState({
       ...this.state, // 기존의 객체를 복사한 뒤
       [e._dispatchInstances.memoizedProps.name]: e.nativeEvent.text, // name 키를 가진 값을 value 로 설정
@@ -130,6 +126,7 @@ export default class LoginPage extends Component {
         <Text>거주지: {this.state.userInfo.address}</Text>
         <Text> {this.state.userInfo.detail_address}</Text>
         <Text>전화번호: {this.state.userInfo.phone}</Text>
+        <Text>{this.state.userInfo.push_agree}</Text>
       </View>
     );
   };
