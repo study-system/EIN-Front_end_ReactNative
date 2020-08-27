@@ -216,8 +216,8 @@ export default class DetailsScreen extends Component {
               ) : (
                 <Text />
               )}
+              <Comments boardId={this.boardId} />
             </ScrollView>
-            <Comments boardId={this.boardId} />
           </View>
         )}
       </UserConsumer>
