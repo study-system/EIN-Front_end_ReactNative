@@ -23,6 +23,8 @@ const styles = require('../css/Styles');
 const axios = require('axios');
 const moment = require('moment');
 import {UserConsumer} from './UserContext';
+import Comments from './comments';
+
 //기능 import
 const GetDetail = require('../function/GetDetail');
 
@@ -215,6 +217,7 @@ export default class DetailsScreen extends Component {
                 <Text />
               )}
             </ScrollView>
+            <Comments boardId={this.boardId} />
           </View>
         )}
       </UserConsumer>
