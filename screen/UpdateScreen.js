@@ -229,6 +229,7 @@ export default function UpdateScreen({route, navigation}) {
     start_date: dateFormat(text.start_date),
     end_date: dateFormat(text.end_date),
     content: text.content,
+    imageurl: text.imageurl,
     location_id: Number(text.location_id),
     major_id: Number(text.major_id),
     target_id: Number(text.target_id),
@@ -255,7 +256,7 @@ export default function UpdateScreen({route, navigation}) {
     start_date: dateFormat(text.start_date),
     end_date: dateFormat(text.end_date),
     content: text.content,
-    imageurl: text.iamgeurl,
+    imageurl: text.imageurl,
     location_id: Number(text.location_id),
     major_id: Number(text.major_id),
     target_id: Number(text.target_id),
@@ -330,7 +331,10 @@ export default function UpdateScreen({route, navigation}) {
           )
           .then((respone) => {
             const imgUrl = respone.data.imgUrl;
-            setText({...text, iamgeurl: imgUrl});
+
+            setTimeout(() => {
+              setText({...text, imageurl: imgUrl});
+            }, 800);
 
             console.log('====== imgUrl  : ' + imgUrl);
             console.log(JSON.stringify(text));
@@ -519,22 +523,15 @@ export default function UpdateScreen({route, navigation}) {
                 maxLength={300}
               />
 
-              <View
-                style={{
-                  flex: 1,
-                  width: 150,
-                  height: 150,
-                  backgroundColor: '#000',
-                }}>
-                {text.imageurl ? (
-                  <Image
-                    style={{width: 300, height: 300}}
-                    source={{uri: text.imageurl}}
-                  />
-                ) : (
-                  <></>
-                )}
-              </View>
+              {text.imageurl ? (
+                <Image
+                  style={{alignSelf: 'center', width: 300, height: 300}}
+                  source={{uri: text.imageurl}}
+                />
+              ) : (
+                <></>
+              )}
+
               <TouchableOpacity
                 style={styles.submitButton}
                 onPress={() => {

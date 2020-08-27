@@ -345,11 +345,13 @@ export default class AuthBoardScreen extends Component {
               </View>
               <View style={{flex: 1}} />
             </View>
-            {userInfo.role == '인증' ? (
+            {userInfo.isLogin ? <></> : <></>}
+            {(userInfo.role == '인증' && this.state.auth == 'yes') ||
+            (userInfo.isLogin && this.state.auth == 'no') ? (
               <TouchableOpacity
                 style={styles.submitButton}
                 onPress={() => {
-                  this.props.navigation.navigate('인증게시판' + 'Update', {
+                  this.props.navigation.navigate(this.boardName + 'Update', {
                     auth: this.state.auth,
                     boardName: this.boardName,
                   });
@@ -360,7 +362,12 @@ export default class AuthBoardScreen extends Component {
               <TouchableOpacity
                 style={styles.submitButton}
                 onPress={() => {
-                  alert('인증회원만 글을 쓸 수 있습니다.');
+                  if (this.state.auth == 'yes') {
+                    alert('인증회원만 글을 쓸 수 있습니다.');
+                  } else {
+                    alert('회원만 글을 쓸 수 있습니다.');
+                  }
+
                   console.log('버튼을 누르고 있네요');
                 }}>
                 <Text style={styles.submitButtonText}> 글쓰기 </Text>

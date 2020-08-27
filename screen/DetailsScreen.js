@@ -168,10 +168,13 @@ export default class DetailsScreen extends Component {
                     <Text>{this.state.data.content}</Text>
                   </View>
                   <View style={stylesEm.contentBox}>
-                    <Text>{this.state.data.imageurl}</Text>
                     {this.state.data.imageurl ? (
                       <Image
-                        style={{width: 300, height: 300}}
+                        style={{
+                          alignSelf: 'center',
+                          width: 300,
+                          height: 300,
+                        }}
                         source={{uri: this.state.data.imageurl}}
                       />
                     ) : (
