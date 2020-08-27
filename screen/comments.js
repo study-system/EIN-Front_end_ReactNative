@@ -22,7 +22,7 @@ import {UserConsumer} from './UserContext';
 export default function Comments(props) {
   const [state, setState] = React.useState({
     //댓글 불러오기용
-    coments: [{content: 'null'}],
+    comments: [{content: 'null'}],
     //댓글쓰기용
     contentWrite: '',
     validate_contentWrite: true,
@@ -40,7 +40,7 @@ export default function Comments(props) {
         //     popupActive: response.data.active,
         //     popupImg: response.data.image,
         //   });
-        setState({...state, coments: response.data.contents});
+        setState({...state, comments: response.data.contents});
         console.log('axios정보확인', response.data);
       })
       .catch(function (error) {
@@ -50,8 +50,8 @@ export default function Comments(props) {
   }, [state.refresh]);
 
   React.useEffect(() => {
-    console.log('코멘트가 잘 들어왔나?', state.coments);
-  }, [state.coments]);
+    console.log('코멘트가 잘 들어왔나?', state.comments);
+  }, [state.comments]);
 
   React.useEffect(() => {
     console.log('코멘트쓰기', state.contentWrite);
@@ -66,11 +66,11 @@ export default function Comments(props) {
 
   let Result = () => {
     let result = <></>;
-    if (state.coments) {
-      result = state.coments.map((item) => (
-        <View>
-          <View>
-            <Text style={stylesEm.postTitle}>{item.content} </Text>
+    if (state.comments) {
+      result = state.comments.map((item) => (
+        <View style={stylesEm.commentItem}>
+          <View style={stylesEm.headerTitle5}>
+            <Text style={styles.postTitle}>{item.content} </Text>
           </View>
         </View>
       ));
@@ -256,8 +256,16 @@ const stylesEm = StyleSheet.create({
     height: 40,
     borderRadius: 10,
   },
-  postTitle: {
-    fontSize: 12,
-    textAlign: 'left',
+  commentItem: {
+    height: 47,
+    borderTopColor: '#888',
+    borderTopWidth: 1,
+    justifyContent: 'flex-start',
+  },
+  headerTitle5: {
+    flexDirection: 'column',
+    justifyContent: 'space-around',
+    flex: 5,
+    marginLeft: 20,
   },
 });

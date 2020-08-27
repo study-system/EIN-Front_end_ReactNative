@@ -173,7 +173,9 @@ export default class AuthBoardScreen extends Component {
         {({userInfo, ctxLogIn, ctxLogOut}) => (
           <View style={styles.containerLogin}>
             {/* 팝업 */}
-            {this.state.popupStatus && this.state.popupActive == 'yes' ? (
+            {this.state.popupStatus &&
+            this.state.popupActive == 'yes' &&
+            this.state.auth == 'yes' ? (
               <View
                 style={{
                   backgroundColor: '#2228',

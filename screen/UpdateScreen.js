@@ -334,7 +334,7 @@ export default function UpdateScreen({route, navigation}) {
 
             setTimeout(() => {
               setText({...text, imageurl: imgUrl});
-            }, 800);
+            }, 1000);
 
             console.log('====== imgUrl  : ' + imgUrl);
             console.log(JSON.stringify(text));
