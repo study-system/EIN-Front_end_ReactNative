@@ -94,6 +94,10 @@ export default function UpdateScreen({route, navigation}) {
       });
     }
   }, []);
+  React.useEffect(() => {
+    console.log('이미지 받아지나?', text.imageurl, text);
+  }, [text.imageurl]);
+
   //input의 onChange에 쓸 메소드
   const onChange = (e) => {
     setText({
@@ -259,6 +263,7 @@ export default function UpdateScreen({route, navigation}) {
   };
   console.log(jsonForCreate);
   const onSubmitCreate = () => {
+    console.log('넘기기 직전', jsonForCreate);
     axios
       .post(config.server + '/board', jsonForCreate, {
         withCredentials: true,
@@ -305,9 +310,9 @@ export default function UpdateScreen({route, navigation}) {
       } else if (response.customButton) {
         console.log('User tapped custom button: ', response.customButton);
       } else {
-        const source = {uri: response.uri};
+        // const source = {uri: response.uri};
 
-        setText({...text, avatarSource: source});
+        // setText({...text, avatarSource: source});
         const file = {
           originalname: response.fileName,
           type: response.type,
@@ -473,9 +478,8 @@ export default function UpdateScreen({route, navigation}) {
                     />
                   </View>
                 </View>
-
-                {/* <Text>{JSON.stringify(id)}</Text> */}
               </View>
+
               <View
                 style={{
                   flex: 1,
@@ -514,6 +518,23 @@ export default function UpdateScreen({route, navigation}) {
                 editable
                 maxLength={300}
               />
+
+              <View
+                style={{
+                  flex: 1,
+                  width: 150,
+                  height: 150,
+                  backgroundColor: '#000',
+                }}>
+                {text.imageurl ? (
+                  <Image
+                    style={{width: 300, height: 300}}
+                    source={{uri: text.imageurl}}
+                  />
+                ) : (
+                  <></>
+                )}
+              </View>
               <TouchableOpacity
                 style={styles.submitButton}
                 onPress={() => {
@@ -521,10 +542,6 @@ export default function UpdateScreen({route, navigation}) {
                 }}>
                 <Text style={styles.submitButtonText}>이미지찾기</Text>
               </TouchableOpacity>
-              <Image
-                style={{width: 150, height: 150}}
-                source={{uri: text.imageurl}}
-              />
             </ScrollView>
           </SafeAreaView>
         </View>

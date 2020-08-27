@@ -11,6 +11,7 @@ import {
   TouchableOpacity,
   TextInput,
   Alert,
+  Image,
 } from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
@@ -40,16 +41,18 @@ export default class DetailsScreen extends Component {
       start_date: '',
       end_date: '',
       location: '',
+      imageurl: '',
     },
     boardName: '',
   };
 
   componentDidMount() {
     console.log('스테이트확인', this.state);
+    console.log(this.boardId);
     // 시도 필터정보
     axios.get(config.server + '/board/' + this.boardId).then((response) => {
       //state.data에 response로 받은 json 값을 넣어줌
-      this.setState({data: response.data});
+      this.setState({...this.state, data: response.data});
       console.log('정보확인\n ', response.data);
     });
   }
@@ -166,6 +169,15 @@ export default class DetailsScreen extends Component {
                   </View>
                   <View style={stylesEm.contentBox}>
                     <Text>{this.state.data.imageurl}</Text>
+                    {this.state.data.imageurl ? (
+                      <Image
+                        style={{width: 300, height: 300}}
+                        source={{uri: this.state.data.imageurl}}
+                      />
+                    ) : (
+                      <></>
+                    )}
+                    {/* <Image source={{uri: this.state.data.imageurl}} /> */}
                   </View>
                 </View>
                 <View style={stylesEm.writerBox}>
