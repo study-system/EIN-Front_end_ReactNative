@@ -32,7 +32,6 @@ import UpdateScreen from '../screen/UpdateScreen';
 
 const AuthBoardStack = createStackNavigator();
 export default function AuthBoardStackScreen({route, navigation}) {
-  console.log('인보스택', route.params.isLogin);
   return (
     <AuthBoardStack.Navigator>
       <AuthBoardStack.Screen

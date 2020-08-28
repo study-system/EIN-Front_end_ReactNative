@@ -50,37 +50,26 @@ export default class Mypage extends Component {
   };
   constructor(props) {
     super(props);
-    console.log(
-      '라우트==================================================',
-      props.route,
-    );
   }
   componentDidMount() {
-    this.setState(
-      {
-        ...this.state,
-        validate: {
-          ...this.state.validate,
-          email: false,
-          password: false,
-          newPassword: false,
-          nickName: false,
-          phone: false,
-          roadAddr: false,
-          siNm: false,
-          detail_address: false,
-        },
-        userInfo: this.props.route.params.userInfo,
+    this.setState({
+      ...this.state,
+      validate: {
+        ...this.state.validate,
+        email: false,
+        password: false,
+        newPassword: false,
+        nickName: false,
+        phone: false,
+        roadAddr: false,
+        siNm: false,
+        detail_address: false,
       },
-      () => {
-        console.log('userInfo들어오는지', JSON.stringify(this.state));
-      },
-    );
+      userInfo: this.props.route.params.userInfo,
+    });
     axios.get(config.server + '/board/location').then((response) => {
       //state.data에 response로 받은 json 값을 넣어줌
-      this.setState({...this.state, sido: response.data}, () => {
-        console.log('시도업데이트 확인용', JSON.stringify(this.state));
-      });
+      this.setState({...this.state, sido: response.data});
     });
   }
 
@@ -99,10 +88,6 @@ export default class Mypage extends Component {
     );
   };
   onChange = (e) => {
-    //input의 name
-    console.log(e._dispatchInstances.memoizedProps.name);
-    //input의 값
-    console.log(e.nativeEvent.text);
     this.setState({
       ...this.state, // 기존의 객체를 복사한 뒤
       userInfo: {
@@ -123,11 +108,9 @@ export default class Mypage extends Component {
     let emailExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
     // 출처:https://for1123.tistory.com/30
     if (e.nativeEvent.text.match(emailExp)) {
-      console.log('포맷성공');
       //버튼 disabled를 위한 거라 반대
       this.state.validate.email = false;
     } else {
-      console.log('포맷실패');
       this.state.validate.email = true;
     }
 
@@ -137,11 +120,9 @@ export default class Mypage extends Component {
     var booleanPR = true;
     var booleanPL = true;
     if (e.nativeEvent.text.length > 3) {
-      console.log('포맷성공');
       //버튼 disabled를 위한 거라 반대
       booleanPL = false;
     } else {
-      console.log('포맷실패');
       booleanPL = true;
     }
     if (e.nativeEvent.text == this.state.userInfo.newPassword) {
@@ -175,11 +156,9 @@ export default class Mypage extends Component {
   };
   varidateName = (e) => {
     if (e.nativeEvent.text.length > 1) {
-      console.log('포맷성공');
       //버튼 disabled를 위한 거라 반대
       this.state.validate.name = false;
     } else {
-      console.log('포맷실패');
       this.state.validate.name = true;
     }
 
@@ -187,11 +166,9 @@ export default class Mypage extends Component {
   };
   varidateNickName = (e) => {
     if (e.nativeEvent.text.length > 1) {
-      console.log('포맷성공');
       //버튼 disabled를 위한 거라 반대
       this.state.validate.nickName = false;
     } else {
-      console.log('포맷실패');
       this.state.validate.nickName = true;
     }
 
@@ -202,11 +179,9 @@ export default class Mypage extends Component {
     let emailExp = /^[0-9]{10,11}$/i;
     // 출처:https://for1123.tistory.com/30
     if (e.nativeEvent.text.match(emailExp)) {
-      console.log('포맷성공');
       //버튼 disabled를 위한 거라 반대
       this.state.validate.phone = false;
     } else {
-      console.log('포맷실패');
       this.state.validate.phone = true;
     }
 
@@ -215,11 +190,9 @@ export default class Mypage extends Component {
 
   varidateRoadAddr = (e) => {
     if (e.nativeEvent.text) {
-      console.log('포맷성공');
       //버튼 disabled를 위한 거라 반대
       this.state.validate.roadAddr = false;
     } else {
-      console.log('포맷실패');
       this.state.validate.roadAddr = true;
     }
 
@@ -227,18 +200,15 @@ export default class Mypage extends Component {
   };
   varidateDetail = (e) => {
     if (e.nativeEvent.text) {
-      console.log('포맷성공');
       //버튼 disabled를 위한 거라 반대
       this.state.validate.detail_address = false;
     } else {
-      console.log('포맷실패');
       this.state.validate.detail_address = true;
     }
 
     this.onChange(e);
   };
   setToggleCheckBox = (e) => {
-    console.log('처크박스', e);
     this.setState({
       ...this.state,
       userInfo: {
@@ -260,7 +230,7 @@ export default class Mypage extends Component {
   userInfoUpdate = () => {
     //'http://myks790.iptime.org:8082/user/myks790%40gmail.com'
     var url = config.server + '/user/' + this.state.userInfo.email;
-    console.log('url', url);
+
     var jsonForUpdate = {
       password: this.state.userInfo.password,
       newPassword: this.state.userInfo.newPassword,
@@ -273,18 +243,15 @@ export default class Mypage extends Component {
       addressDetail: this.state.userInfo.detail_address,
       pushAgree: this.transBoolToYesNo(this.state.userInfo.pushAgree),
     };
-    console.log(JSON.stringify(jsonForUpdate));
     axios
       .put(url, jsonForUpdate, {withCredentials: true})
       .then((response) => {
-        console.log('응답!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!', response);
-        // console.log(this.props);
         this.props.navigation.navigate('로그인');
         this.onSubmitCallback(this.state.userInfo);
       })
       .catch((error) => {
         console.log(error);
-        console.log('업데이트실패');
+
         alert('비밀번호가 맞지 않습니다.', error);
       });
   };
@@ -309,11 +276,9 @@ export default class Mypage extends Component {
   };
   render() {
     const onSubmit = (tmp) => {
-      console.log('넘어온 주소 값', tmp);
       this.state.userInfo.address = tmp.roadAddr;
       this.state.userInfo.siNm = tmp.siNm;
     };
-    console.log(JSON.stringify('==========================파람즈', this.props));
 
     return (
       <ScrollView>
@@ -443,7 +408,6 @@ export default class Mypage extends Component {
             style={styles.submitButton}
             onPress={() => {
               // checkBoolForSignUp();
-              console.log(JSON.stringify(this.state));
               this.checkBoolForSignUp();
             }}>
             <Text style={styles.submitButtonText}> 수정 </Text>

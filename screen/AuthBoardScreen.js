@@ -48,8 +48,7 @@ export default class AuthBoardScreen extends Component {
   };
   constructor(props) {
     super(props);
-    // console.log('Auth', this.props.data2);
-    console.log(props);
+
     this.state.auth = props.route.params.auth;
   }
   boardName = this.props.route.params.boardName;
@@ -76,12 +75,9 @@ export default class AuthBoardScreen extends Component {
     });
   };
   onLoad = () => {
-    this.props.navigation.addListener('willFocus', () => {
-      console.log('focus');
-    });
+    this.props.navigation.addListener('willFocus', () => {});
   };
   getList = () => {
-    console.log('컨피그', config);
     let url =
       config.server +
       '/board?auth=' +
@@ -107,7 +103,6 @@ export default class AuthBoardScreen extends Component {
         ...this.state,
         totalPages: response.data.pageInfo.totalPages,
       });
-      console.log(response.data.contents);
     });
   };
   getPopUp = () => {
@@ -120,13 +115,10 @@ export default class AuthBoardScreen extends Component {
         popupActive: response.data.active,
         popupImg: response.data.image,
       });
-      console.log('팝업팝업팝ㅇ버', this.state.popupImg, response.data);
     });
   };
 
   render() {
-    console.log('게시판구분', this.state.auth);
-    console.log('인증보드', this.props.route.params.isLogin);
     //포스트 하나 만드는 메서드
     let Item = ({title, writer}) => (
       <View style={styles.postItem}>
@@ -160,7 +152,7 @@ export default class AuthBoardScreen extends Component {
       if (tmp.name == 'sido') {
         // text.location = tmp.value;
         this.state.location = tmp.value;
-        console.log(this.state.location);
+
         this.getList();
       }
       if (tmp.name == 'major') {
@@ -245,16 +237,11 @@ export default class AuthBoardScreen extends Component {
                       <TouchableOpacity
                         style={styles.submitButtonPopup}
                         onPress={() => {
-                          this.setState(
-                            {
-                              ...this.state,
+                          this.setState({
+                            ...this.state,
 
-                              popupStatus: false,
-                            },
-                            () => {
-                              console.log('닫기', this.state.popupSetting);
-                            },
-                          );
+                            popupStatus: false,
+                          });
                         }}>
                         <Text style={styles.submitButtonText}>닫기</Text>
                       </TouchableOpacity>
@@ -329,7 +316,7 @@ export default class AuthBoardScreen extends Component {
                       var cnt = this.state.page - 1;
                       this.state.page = cnt;
                       this.setState({...this.state, page: cnt});
-                      console.log(cnt);
+
                       this.getList();
                     }
                   }}>
@@ -340,11 +327,10 @@ export default class AuthBoardScreen extends Component {
                   style={styles.submitButton}
                   onPress={() => {
                     if (this.state.page < this.state.totalPages) {
-                      console.log(this.state.totalPages);
                       var cnt = this.state.page + 1;
                       this.state.page = cnt;
                       this.setState({...this.state, page: cnt});
-                      console.log(cnt);
+
                       this.getList();
                     }
                   }}>

@@ -52,9 +52,7 @@ export default class LoginPage extends Component {
       },
     });
   };
-  componentDidUpdate = () => {
-    console.log('================================업데이트');
-  };
+
   onChange = (e) => {
     this.setState({
       ...this.state, // 기존의 객체를 복사한 뒤
@@ -83,7 +81,7 @@ export default class LoginPage extends Component {
     axios
       .post(url, json, {withCredentials: true})
       .then((response) => {
-        console.log('요청성공', response);
+        console.log('요청성공');
         this.props.navigation.navigate('인증게시판');
         // this.props.navigation.navigate('로그인', {isLogIn: true});
         // this.setState({isLogIn: true});
@@ -109,35 +107,24 @@ export default class LoginPage extends Component {
 
   //마이페이지용
   ShowUserInfo = (props) => {
-    console.log('유저인포', props);
     if (!this.state.isLoad) {
       var url = config.server + '/user/' + props.email;
 
       axios
-        .get(url)
+        .get(url, {withCredentials: true})
         .then((response) => {
-          console.log(
-            '마이페이지!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!',
-            response,
-            {
-              withCredentials: true,
-            },
-          );
           this.setState({
             ...this.state,
             userInfo: response.data,
             isLoad: true,
           });
           props.func(response.data);
-          console.log('스테이트', this.state);
         })
         .catch((error) => {
-          console.log('유저인포겟요청', error);
+          console.log('유저정보', error);
         });
     }
-    // var a = this.state.userInfo.email;
-    // var a = this.state.userInfo.email;
-    console.log('쇼부근', this.state);
+
     return (
       <View style={styles.containerLogin}>
         <View>
@@ -198,7 +185,7 @@ export default class LoginPage extends Component {
           },
           isLoad: false,
         });
-        console.log('로그아웃후 정보 ', this.state.userInfo);
+
         func();
       })
       .catch(function (error) {
@@ -207,14 +194,12 @@ export default class LoginPage extends Component {
       });
   };
   updateProfile = () => {
-    console.log('정보수정');
     this.props.navigation.navigate('정보수정', {
       onSubmitCallback: this.onSubmitCallback,
       userInfo: this.state.userInfo,
     });
   };
   render() {
-    console.log(this.props.route.params);
     return (
       <UserConsumer>
         {({userInfo, ctxLogIn, ctxLogOut, ctxGetUser}) => (
@@ -261,10 +246,6 @@ export default class LoginPage extends Component {
                   onPress={() => {
                     this.login(this.state.email, this.state.password, ctxLogIn);
                     // ctxLogIn({email: this.state.email, isLogin: true});
-                    console.log(
-                      '유저정보컨텍스트!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!',
-                      userInfo,
-                    );
                   }}>
                   <Text style={styles.submitButtonText}> 로그인 </Text>
                 </TouchableOpacity>

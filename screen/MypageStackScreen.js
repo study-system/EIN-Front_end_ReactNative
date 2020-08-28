@@ -23,15 +23,11 @@ import UserSignUp from './UserSignUp';
 import Adress from './Adress';
 import AgreePage from './AgreePage';
 
-const onSubmit = (cookie) => {
-  console.log('쿠키', console);
-};
 const getLoginToken = (cookie) => {
   console.log('쿠키', console);
 };
 const MypageStack = createStackNavigator();
 export default function MypageStackScreen2({route, navigation}) {
-  console.log(route.params.isLogin);
   return (
     <MypageStack.Navigator>
       <MypageStack.Screen

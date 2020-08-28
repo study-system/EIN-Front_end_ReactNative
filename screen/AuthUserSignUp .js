@@ -60,15 +60,10 @@ export default class AuthUserSignUp extends Component {
     });
   }
   onChange = (e) => {
-    //input의 name
-    console.log(e._dispatchInstances.memoizedProps.name);
-    //input의 값
-    console.log(e.nativeEvent.text);
     this.setState({
       ...this.state, // 기존의 객체를 복사한 뒤
       [e._dispatchInstances.memoizedProps.name]: e.nativeEvent.text, // name 키를 가진 값을 value 로 설정
     });
-    console.log(this.state.email);
   };
   transSiNmToSido = (siNm) => {
     if (siNm) {
@@ -82,11 +77,9 @@ export default class AuthUserSignUp extends Component {
     let emailExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
     // 출처:https://for1123.tistory.com/30
     if (e.nativeEvent.text.match(emailExp)) {
-      console.log('포맷성공');
       //버튼 disabled를 위한 거라 반대
       this.state.validate.email = false;
     } else {
-      console.log('포맷실패');
       this.state.validate.email = true;
     }
 
@@ -96,11 +89,9 @@ export default class AuthUserSignUp extends Component {
     var booleanPR = true;
     var booleanPL = true;
     if (e.nativeEvent.text.length > 3) {
-      console.log('포맷성공');
       //버튼 disabled를 위한 거라 반대
       booleanPL = false;
     } else {
-      console.log('포맷실패');
       booleanPL = true;
     }
     if (e.nativeEvent.text == this.state.password) {
@@ -114,11 +105,9 @@ export default class AuthUserSignUp extends Component {
   };
   varidateName = (e) => {
     if (e.nativeEvent.text.length > 1) {
-      console.log('포맷성공');
       //버튼 disabled를 위한 거라 반대
       this.state.validate.name = false;
     } else {
-      console.log('포맷실패');
       this.state.validate.name = true;
     }
 
@@ -126,11 +115,9 @@ export default class AuthUserSignUp extends Component {
   };
   varidateNickName = (e) => {
     if (e.nativeEvent.text.length > 1) {
-      console.log('포맷성공');
       //버튼 disabled를 위한 거라 반대
       this.state.validate.nickName = false;
     } else {
-      console.log('포맷실패');
       this.state.validate.nickName = true;
     }
 
@@ -141,11 +128,9 @@ export default class AuthUserSignUp extends Component {
     let emailExp = /^[0-9]{10,11}$/i;
     // 출처:https://for1123.tistory.com/30
     if (e.nativeEvent.text.match(emailExp)) {
-      console.log('포맷성공');
       //버튼 disabled를 위한 거라 반대
       this.state.validate.phone = false;
     } else {
-      console.log('포맷실패');
       this.state.validate.phone = true;
     }
 
@@ -154,11 +139,9 @@ export default class AuthUserSignUp extends Component {
 
   varidateRoadAddr = (e) => {
     if (e.nativeEvent.text) {
-      console.log('포맷성공');
       //버튼 disabled를 위한 거라 반대
       this.state.validate.roadAddr = false;
     } else {
-      console.log('포맷실패');
       this.state.validate.roadAddr = true;
     }
 
@@ -166,11 +149,9 @@ export default class AuthUserSignUp extends Component {
   };
   varidateDetail = (e) => {
     if (e.nativeEvent.text) {
-      console.log('포맷성공');
       //버튼 disabled를 위한 거라 반대
       this.state.validate.detail_address = false;
     } else {
-      console.log('포맷실패');
       this.state.validate.detail_address = true;
     }
 
@@ -179,11 +160,9 @@ export default class AuthUserSignUp extends Component {
 
   varidateCompany = (e) => {
     if (e.nativeEvent.text.length > 1) {
-      console.log('포맷성공');
       //버튼 disabled를 위한 거라 반대
       this.state.validate.company = false;
     } else {
-      console.log('포맷실패');
       this.state.validate.company = true;
     }
 
@@ -194,11 +173,9 @@ export default class AuthUserSignUp extends Component {
     let emailExp = /^[0-9]{10}$/i;
     // 출처:https://for1123.tistory.com/30
     if (e.nativeEvent.text.match(emailExp)) {
-      console.log('포맷성공');
       //버튼 disabled를 위한 거라 반대
       this.state.validate.companyNumber = false;
     } else {
-      console.log('포맷실패');
       this.state.validate.companyNumber = true;
     }
 
@@ -207,11 +184,9 @@ export default class AuthUserSignUp extends Component {
 
   varidatePosition = (e) => {
     if (e.nativeEvent.text.length > 1) {
-      console.log('포맷성공');
       //버튼 disabled를 위한 거라 반대
       this.state.validate.position = false;
     } else {
-      console.log('포맷실패');
       this.state.validate.position = true;
     }
 
@@ -221,11 +196,9 @@ export default class AuthUserSignUp extends Component {
     var valid = /^(ftp|http|https):\/\/[^ "]+$/;
     //출처 https://www.it-swarm.dev/ko/javascript/url-%EC%9C%A0%ED%9A%A8%EC%84%B1-%EA%B2%80%EC%82%AC%EB%A5%BC%EC%9C%84%ED%95%9C-%EC%A0%95%EA%B7%9C%EC%8B%9D-javascript/967108519/
     if (e.nativeEvent.text.length > 10) {
-      console.log('포맷성공');
       //버튼 disabled를 위한 거라 반대
       this.state.validate.website = false;
     } else {
-      console.log('포맷실패');
       this.state.validate.website = true;
     }
 
@@ -257,7 +230,6 @@ export default class AuthUserSignUp extends Component {
         });
     };
     const onSubmit = (tmp) => {
-      console.log('넘어온 주소 값', tmp);
       this.state.roadAddr = tmp.roadAddr;
       this.state.siNm = tmp.siNm;
       this.transSiNmToSido(this.state.siNm);
@@ -296,7 +268,6 @@ export default class AuthUserSignUp extends Component {
       } else if (this.state.validate.location_id) {
         alert('주소찾기를 다시 해주십시오');
       } else {
-        console.log('인증회원가입정보', jsonForSignIn);
         signInReq();
         this.props.navigation.navigate('로그인');
       }
@@ -476,7 +447,6 @@ export default class AuthUserSignUp extends Component {
           <TouchableOpacity
             style={styles.submitButton}
             onPress={() => {
-              console.log(jsonForSignIn);
               checkBoolForSignUp();
             }}>
             <Text style={styles.submitButtonText}> 회원가입 </Text>

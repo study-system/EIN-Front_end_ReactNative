@@ -40,27 +40,20 @@ class MkPicker extends Component {
 
   // 변경되는 것을 자동으로 리플래시 되면서 반영함.
   componentDidMount() {
-    console.log(this.state.default_type);
     //시도 필터정보
     axios.get(this.props.url).then((response) => {
       //state.data에 response로 받은 json 값을 넣어줌
       var objForSettingFilter = {};
       objForSettingFilter[this.props.filterName] = response.data;
-      console.log(response.data);
+
       this.setState(objForSettingFilter);
-      console.log(this.props.filterName);
+
       this.setState({name: this.nameFor[this.props.filterName]});
     });
-    console.log('피커로 넘어온 값', this.props.default);
+
     // this.setState({...this.state, default_type: this.props.default});
   }
   render() {
-    console.log(
-      '피커로 넘어온 값',
-      this.props.default,
-      this.state.default_type,
-    );
-
     //major_code를 code로 통일하면 함수를 통일할 수 있음
     let pickerItems = this.state[this.props.filterName].map((item, i) => {
       return <Picker.Item key={i} label={item.name} value={item.id} />;
@@ -73,7 +66,6 @@ class MkPicker extends Component {
           onValueChange={(itemValue, itemIndex) => {
             this.setState({default_type: itemValue});
             this.onFormSubmit(itemValue, this.props.filterName);
-            console.log(this.state.default_type);
           }}>
           <Picker.Item label={this.state.name} value="" />
           {pickerItems}

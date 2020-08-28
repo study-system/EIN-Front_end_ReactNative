@@ -49,13 +49,10 @@ export default class DetailsScreen extends Component {
   };
 
   componentDidMount() {
-    console.log('스테이트확인', this.state);
-    console.log(this.boardId);
     // 시도 필터정보
     axios.get(config.server + '/board/' + this.boardId).then((response) => {
       //state.data에 response로 받은 json 값을 넣어줌
       this.setState({...this.state, data: response.data});
-      console.log('정보확인\n ', response.data);
     });
   }
   deleteCreateAlert = () =>
@@ -80,7 +77,6 @@ export default class DetailsScreen extends Component {
         withCredentials: true,
       })
       .then((response) => {
-        console.log(response);
         this.props.route.params.onSubmitRefresh();
         this.props.navigation.navigate(this.boardName);
         console.log('글삭제성공');
@@ -110,7 +106,6 @@ export default class DetailsScreen extends Component {
                 <TouchableOpacity
                   onPress={() => {
                     this.props.navigation.navigate(this.boardName);
-                    console.log(this.boardName);
                   }}>
                   <Text style={{fontSize: 24, color: '#fff'}}>
                     {this.props.route.params.auth == 'yes'

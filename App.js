@@ -32,56 +32,6 @@ import BoardStackScreen from './screen/BoardStackScreen';
 import config from './config';
 import {UserProvider} from './screen/UserContext';
 
-import ImagePicker from 'react-native-image-picker';
-// 자유게시판 스크린
-class BoardScreen extends Component {
-  state = {
-    photo: null,
-  };
-
-  render() {
-    let options = {
-      title: 'Select Image',
-      customButtons: [
-        {name: 'customOptionKey', title: 'Choose Photo from Custom Option'},
-      ],
-      storageOptions: {
-        skipBackup: true,
-        path: 'images',
-      },
-    };
-    ImagePicker.showImagePicker(options, (response) => {
-      console.log('Response = ', response);
-
-      if (response.didCancel) {
-        console.log('User cancelled image picker');
-      } else if (response.error) {
-        console.log('ImagePicker Error: ', response.error);
-      } else if (response.customButton) {
-        console.log('User tapped custom button: ', response.customButton);
-      } else {
-        const source = {uri: response.uri};
-
-        // You can also display the image using data:
-        // const source = { uri: 'data:image/jpeg;base64,' + response.data };
-
-        this.setState({
-          filePath: response,
-          fileData: response.data,
-          fileUri: response.uri,
-        });
-      }
-    });
-
-    return (
-      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-        <Text>자유게시판입니다.</Text>
-        <Image source={this.state.avatarSource} style={styles.uploadAvatar} />
-        <Button title="Choose Photo" onPress={this.handleChoosePhoto} />
-      </View>
-    );
-  }
-}
 //푸쉬알람 스크린
 //스크롤뷰 + 플로팅버튼
 class PushAlarm extends Component {
@@ -116,7 +66,6 @@ class MyTabs extends Component {
   }
   constructor(props) {
     super(props);
-    console.log('MyTabs', this.props.data);
   }
   render() {
     return (
@@ -167,15 +116,12 @@ export default class App extends Component {
   componentDidMount() {
     axios.get(config.server + '/board/major').then((response) => {
       this.setState({data: response.data});
-      // this.setState({data: '인증게시판'});
-      // console.log(response.data);
     });
   }
   render() {
     return (
       <UserProvider>
         <NavigationContainer>
-          {/* <Text>{this.state.data[0].name}</Text> */}
           <MyTabs data={this.state.data} />
         </NavigationContainer>
       </UserProvider>

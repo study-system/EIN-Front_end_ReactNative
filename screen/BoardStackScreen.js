@@ -32,7 +32,6 @@ import UpdateScreen from '../screen/UpdateScreen';
 
 const BoardStack = createStackNavigator();
 export default function BoardStackScreen({route, navigation}) {
-  console.log('인보스택', route.params.isLogin);
   return (
     <BoardStack.Navigator>
       <BoardStack.Screen

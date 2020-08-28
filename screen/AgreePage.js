@@ -25,9 +25,9 @@ export default class AgreePage extends Component {
 
   onChange = (e) => {
     //input의 name
-    console.log(e._dispatchInstances.memoizedProps.name);
+
     //input의 값
-    console.log(e.nativeEvent.text);
+
     this.setState({
       ...this.state, // 기존의 객체를 복사한 뒤
       [e._dispatchInstances.memoizedProps.name]: e.nativeEvent.text, // name 키를 가진 값을 value 로 설정

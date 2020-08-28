@@ -41,21 +41,15 @@ export default function Comments(props) {
         //     popupImg: response.data.image,
         //   });
         setState({...state, comments: response.data.contents});
-        console.log('axios정보확인', response.data);
       })
       .catch(function (error) {
         console.log(error);
-        console.log('엑시오스실패');
+        console.log('코멘트실패');
       });
   }, [state.refresh]);
 
-  React.useEffect(() => {
-    console.log('코멘트가 잘 들어왔나?', state.comments);
-  }, [state.comments]);
+  React.useEffect(() => {}, [state.comments]);
 
-  React.useEffect(() => {
-    console.log('코멘트쓰기', state.contentWrite);
-  }, [state.contentWrite]);
   const GetComments = () => {
     return (
       <View>
@@ -106,7 +100,7 @@ export default function Comments(props) {
           axios
             .post(url, {content: state.contentWrite})
             .then((respone) => {
-              console.log(respone);
+              console.log('코멘트작성요청성공');
               setState({
                 ...state,
                 refresh: state.refresh + 1,
@@ -124,7 +118,6 @@ export default function Comments(props) {
       alert('로그인을 해주세요');
     }
   };
-  console.log('코멘트보드아이디', props.boardId);
   return (
     <View style={{margin: 20, borderBottomWidth: 2}}>
       <Text style={{marginLeft: 30, fontSize: 24, fontWeight: 'bold'}}>
@@ -150,7 +143,6 @@ export default function Comments(props) {
                 style={stylesEm.submitButtonComment}
                 onPress={() => {
                   submitContent(userInfo.isLogin);
-                  console.log(state.contentWrite);
                 }}>
                 <Text style={styles.submitButtonText}> {' 입력 '}</Text>
               </TouchableOpacity>

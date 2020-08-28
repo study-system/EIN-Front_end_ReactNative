@@ -52,15 +52,10 @@ export default class UserSignUp extends Component {
     });
   }
   onChange = (e) => {
-    //input의 name
-    console.log(e._dispatchInstances.memoizedProps.name);
-    //input의 값
-    console.log(e.nativeEvent.text);
     this.setState({
       ...this.state, // 기존의 객체를 복사한 뒤
       [e._dispatchInstances.memoizedProps.name]: e.nativeEvent.text, // name 키를 가진 값을 value 로 설정
     });
-    console.log(this.state.email);
   };
   transSiNmToSido = (siNm) => {
     if (siNm) {
@@ -74,11 +69,9 @@ export default class UserSignUp extends Component {
     let emailExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
     // 출처:https://for1123.tistory.com/30
     if (e.nativeEvent.text.match(emailExp)) {
-      console.log('포맷성공');
       //버튼 disabled를 위한 거라 반대
       this.state.validate.email = false;
     } else {
-      console.log('포맷실패');
       this.state.validate.email = true;
     }
 
@@ -88,11 +81,9 @@ export default class UserSignUp extends Component {
     var booleanPR = true;
     var booleanPL = true;
     if (e.nativeEvent.text.length > 3) {
-      console.log('포맷성공');
       //버튼 disabled를 위한 거라 반대
       booleanPL = false;
     } else {
-      console.log('포맷실패');
       booleanPL = true;
     }
     if (e.nativeEvent.text == this.state.password) {
@@ -106,11 +97,9 @@ export default class UserSignUp extends Component {
   };
   varidateName = (e) => {
     if (e.nativeEvent.text.length > 1) {
-      console.log('포맷성공');
       //버튼 disabled를 위한 거라 반대
       this.state.validate.name = false;
     } else {
-      console.log('포맷실패');
       this.state.validate.name = true;
     }
 
@@ -118,11 +107,9 @@ export default class UserSignUp extends Component {
   };
   varidateNickName = (e) => {
     if (e.nativeEvent.text.length > 1) {
-      console.log('포맷성공');
       //버튼 disabled를 위한 거라 반대
       this.state.validate.nickName = false;
     } else {
-      console.log('포맷실패');
       this.state.validate.nickName = true;
     }
 
@@ -133,11 +120,9 @@ export default class UserSignUp extends Component {
     let emailExp = /^[0-9]{10,11}$/i;
     // 출처:https://for1123.tistory.com/30
     if (e.nativeEvent.text.match(emailExp)) {
-      console.log('포맷성공');
       //버튼 disabled를 위한 거라 반대
       this.state.validate.phone = false;
     } else {
-      console.log('포맷실패');
       this.state.validate.phone = true;
     }
 
@@ -146,11 +131,9 @@ export default class UserSignUp extends Component {
 
   varidateRoadAddr = (e) => {
     if (e.nativeEvent.text) {
-      console.log('포맷성공');
       //버튼 disabled를 위한 거라 반대
       this.state.validate.roadAddr = false;
     } else {
-      console.log('포맷실패');
       this.state.validate.roadAddr = true;
     }
 
@@ -158,35 +141,20 @@ export default class UserSignUp extends Component {
   };
   varidateDetail = (e) => {
     if (e.nativeEvent.text) {
-      console.log('포맷성공');
       //버튼 disabled를 위한 거라 반대
       this.state.validate.detail_address = false;
     } else {
-      console.log('포맷실패');
       this.state.validate.detail_address = true;
     }
 
     this.onChange(e);
   };
-  //http://myks790.iptime.org:8082/user
-  //post
+
   render() {
-    // let json = {
-    //   email: 'myks790@gmail.com',
-    //   password: 1234,
-    //   name: '강상훈',
-    //   nickname: '닉네임',
-    //   phone: '01012345678',
-    //   address: '제주도 특별자치도 제주시 진남로 99길 10',
-    //   detail_address: '101호',
-    //   location_id: 17,
-    //   push_agree: 'yes',
-    // };
     const signInReq = () => {
       axios
         .post(config.server + '/user', jsonForSignIn)
         .then(function (response) {
-          console.log('계정생성성공', response);
           this.setState();
         })
         .catch(function (error) {
@@ -194,7 +162,6 @@ export default class UserSignUp extends Component {
         });
     };
     const onSubmit = (tmp) => {
-      console.log('넘어온 주소 값', tmp);
       this.state.roadAddr = tmp.roadAddr;
       this.state.siNm = tmp.siNm;
       this.transSiNmToSido(this.state.siNm);
@@ -352,7 +319,6 @@ export default class UserSignUp extends Component {
           <TouchableOpacity
             style={styles.submitButton}
             onPress={() => {
-              console.log(jsonForSignIn);
               checkBoolForSignUp();
             }}>
             <Text style={styles.submitButtonText}> 회원가입 </Text>

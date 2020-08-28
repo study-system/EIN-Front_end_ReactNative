@@ -31,17 +31,13 @@ export default function UpdateScreen({route, navigation}) {
   //임시변수 로그인 만든 후에는 쿠키에서 가져오자
   const userId = 1;
   //게시글의 id
-  console.log(route);
+
   const {boardId} = route.params;
-  // if (boardId) {
-  //   console.log('test성공');
-  // }
 
   const {auth} = route.params;
   const {boardName} = route.params;
   const {data} = route.params;
   let loadData = false;
-  console.log('boardId', boardId, auth);
 
   //input과 입력받은값 유효성체크를 위한
   const [text, setText] = React.useState({
@@ -104,14 +100,12 @@ export default function UpdateScreen({route, navigation}) {
       ...text, // 기존의 객체를 복사한 뒤
       [e._dispatchInstances.memoizedProps.name]: e.nativeEvent.text, // name 키를 가진 값을 value 로 설정
     });
-    console.log('스테이트확인', JSON.stringify(text));
   };
 
   //picker 데이터를 부모로 가져옴 메서드용
   const onSubmitPicker = (tmp) => {
     if (tmp.name == 'sido') {
       text.location_id = tmp.value;
-      console.log(text.location_id);
     }
     if (tmp.name == 'major') {
       text.major_id = tmp.value;
@@ -124,23 +118,17 @@ export default function UpdateScreen({route, navigation}) {
   const validateDate = (e) => {
     const dateExp = /^\d{4}\-\d{2}\-\d{2}\ \d{2}\:\d{2}\:\d{2}/;
     if (e.nativeEvent.text.match(dateExp)) {
-      console.log('포맷성공');
       //버튼 disabled를 위한 거라 반대
       if (e._dispatchInstances.memoizedProps.name == 'start_date') {
         text.validate_start_date = false;
-        console.log('start');
       } else {
         text.validate_end_date = false;
-        console.log('end');
       }
     } else {
-      console.log('포맷실패');
       if (e._dispatchInstances.memoizedProps.name == 'start_date') {
         text.validate_start_date = true;
-        console.log('start');
       } else {
         text.validate_end_date = true;
-        console.log('end');
       }
     }
     onChange(e);
@@ -148,32 +136,22 @@ export default function UpdateScreen({route, navigation}) {
   const validateTitle = (e) => {
     // const dateExp = /^[^\\]+[a-zA-Z0-9가-힣]+[^\\]+[a-zA-Z0-9가-힣]+[^\\]/;
     if (e.nativeEvent.text.length > 0 && text.title != null) {
-      console.log('포맷성공title');
       //버튼 disabled를 위한 거라 반대
 
       text.validate_title = false;
-      console.log('title');
     } else {
-      console.log('포맷실패');
-
       text.validate_title = true;
-      console.log('title');
     }
     onChange(e);
   };
   const validateContent = (e) => {
     // const dateExp = /^[^\\]+[a-zA-Z0-9가-힣]+[^\\]+[a-zA-Z0-9가-힣]+[^\\]/;
     if (e.nativeEvent.text.length > 1) {
-      console.log('포맷성공title');
       //버튼 disabled를 위한 거라 반대
 
       text.validate_content = false;
-      console.log('title');
     } else {
-      console.log('포맷실패');
-
       text.validate_content = true;
-      console.log('title');
     }
     onChange(e);
   };
@@ -182,31 +160,23 @@ export default function UpdateScreen({route, navigation}) {
     // const dateExp = /^[^\\]+[a-zA-Z0-9가-힣]+[^\\]+[a-zA-Z0-9가-힣]+[^\\]/;
     if (name == 'sido') {
       if (text.location_id != '0' && text.location_id != null) {
-        console.log('포맷성공' + name);
         //버튼 disabled를 위한 거라 반대
         text.validate_location_id = false;
-        console.log('포맷성공' + name + ' : ' + text.validate_location_id);
       } else {
-        console.log('포맷실패' + name);
         text.validate_location_id = true;
       }
     } else if (name == 'major') {
       if (text.major_id != '0' && text.major_id != null) {
         //버튼 disabled를 위한 거라 반대
         text.validate_major_id = false;
-        console.log('포맷성공' + name + ' : ' + text.validate_major_id);
       } else {
-        console.log('포맷실패' + name);
         text.validate_major_id = true;
       }
     } else if (name == 'target') {
       if (text.target_id != '0' && text.target_id != null) {
-        console.log('포맷성공' + name);
         //버튼 disabled를 위한 거라 반대
         text.validate_target_id = false;
-        console.log('포맷성공' + name + ' : ' + text.validate_target_id);
       } else {
-        console.log('포맷실패' + name);
         text.validate_target_id = true;
       }
     }
@@ -214,7 +184,6 @@ export default function UpdateScreen({route, navigation}) {
   const dateFormat = (date) => {
     //나중에 요청보내는 곳으로
 
-    console.log(moment(date).utcOffset(0).toISOString());
     return moment(date).utcOffset(0).toISOString();
   };
   const toggleButton = () => {
@@ -247,9 +216,7 @@ export default function UpdateScreen({route, navigation}) {
       })
       .catch(function (error) {
         console.log(error);
-        console.log('글수정실패');
       });
-    console.log('글수정파트끝');
   };
   var jsonForCreate = {
     user_id: text.writer,
@@ -263,15 +230,13 @@ export default function UpdateScreen({route, navigation}) {
     target_id: Number(text.target_id),
     auth: auth,
   };
-  console.log(jsonForCreate);
+
   const onSubmitCreate = () => {
-    console.log('넘기기 직전', jsonForCreate);
     axios
       .post(config.server + '/board', jsonForCreate, {
         withCredentials: true,
       })
       .then((response) => {
-        console.log('글쓰기 성공', response);
         route.params.onSubmitRefresh();
         navigation.navigate(boardName, {reset: true});
       })
@@ -304,8 +269,6 @@ export default function UpdateScreen({route, navigation}) {
      * The second arg is the callback which sends object: response (more info in the API Reference)
      */
     ImagePicker.showImagePicker(options, (response) => {
-      // console.log('Response = ', response);
-
       if (response.didCancel) {
         console.log('User cancelled image picker');
       } else if (response.error) {
@@ -337,9 +300,6 @@ export default function UpdateScreen({route, navigation}) {
             setTimeout(() => {
               setText({...text, imageurl: imgUrl});
             }, 1000);
-
-            console.log('====== imgUrl  : ' + imgUrl);
-            console.log(JSON.stringify(text));
           })
           .catch((error) => {
             console.log(error);

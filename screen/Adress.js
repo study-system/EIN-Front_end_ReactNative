@@ -28,7 +28,7 @@ export default class Adress extends Component {
   };
   constructor(props) {
     super(props);
-    console.log(props);
+
     this.state.value = this.props.route.params.addrName;
   }
   //http://www.juso.go.kr/addrlink/addrLinkApi.do?confmKey=devU01TX0FVVEgyMDIwMDgyMDIwMDYyODExMDA4NDk=&keyword=%EC%9A%B0%ED%8F%89%EB%A1%9C&resultType=json
@@ -41,15 +41,12 @@ export default class Adress extends Component {
     this.getList();
   }
   handleValue = (text) => {
-    console.log(text);
     //개선할 곳 setState만을 사용시 느려서 글자하나씩 빠짐 this.state.value만 사용시 글자가 입력이 제대로 되지 않음
     this.setState({value: text});
     this.state.value = text;
     this.getList();
   };
   onFormSubmit = (siNm, roadAddr) => {
-    console.log('onSubmit 메서드 진입');
-    console.log(siNm, roadAddr);
     this.props.route.params.onSubmit({siNm: siNm, roadAddr: roadAddr});
   };
   getList = () => {
