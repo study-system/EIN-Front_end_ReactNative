@@ -34,10 +34,27 @@ export default class LoginPage extends Component {
       detail_address: '',
       phone: '',
     },
+    refresh: false,
   };
   constructor(props) {
     super(props);
   }
+  onSubmitCallback = (data) => {
+    this.setState({
+      ...this.state,
+      userInfo: {
+        email: data.email,
+        name: data.name,
+        nickname: data.nickname,
+        address: data.address,
+        detail_address: data.detail_address,
+        phone: data.phone,
+      },
+    });
+  };
+  componentDidUpdate = () => {
+    console.log('================================업데이트');
+  };
   onChange = (e) => {
     this.setState({
       ...this.state, // 기존의 객체를 복사한 뒤
@@ -122,14 +139,39 @@ export default class LoginPage extends Component {
     // var a = this.state.userInfo.email;
     console.log('쇼부근', this.state);
     return (
-      <View>
-        <Text>Email: {this.state.userInfo.email}</Text>
-        <Text>이름: {this.state.userInfo.name}</Text>
-        <Text>닉네임: {this.state.userInfo.nickname}</Text>
-        <Text>거주지: {this.state.userInfo.address}</Text>
-        <Text> {this.state.userInfo.detail_address}</Text>
-        <Text>전화번호: {this.state.userInfo.phone}</Text>
-        <Text>{this.state.userInfo.push_agree}</Text>
+      <View style={styles.containerLogin}>
+        <View>
+          <Text style={styles.inputNameTag}>이메일</Text>
+          <Text style={styles.informationText}>
+            {this.state.userInfo.email}
+          </Text>
+        </View>
+
+        <View>
+          <Text style={styles.inputNameTag}>이름</Text>
+          <Text style={styles.informationText}>{this.state.userInfo.name}</Text>
+        </View>
+        <View>
+          <Text style={styles.inputNameTag}>닉네임</Text>
+          <Text style={styles.informationText}>
+            {this.state.userInfo.nickname}
+          </Text>
+        </View>
+        <View>
+          <Text style={styles.inputNameTag}>전화번호</Text>
+          <Text style={styles.informationText}>
+            {this.state.userInfo.phone}
+          </Text>
+        </View>
+        <View>
+          <Text style={styles.inputNameTag}>거주지</Text>
+          <Text style={styles.informationText}>
+            {this.state.userInfo.address}
+          </Text>
+          <Text style={styles.informationText}>
+            {this.state.userInfo.detail_address}
+          </Text>
+        </View>
       </View>
     );
   };
@@ -166,7 +208,10 @@ export default class LoginPage extends Component {
   };
   updateProfile = () => {
     console.log('정보수정');
-    this.props.navigation.navigate('정보수정', {userInfo: this.state.userInfo});
+    this.props.navigation.navigate('정보수정', {
+      onSubmitCallback: this.onSubmitCallback,
+      userInfo: this.state.userInfo,
+    });
   };
   render() {
     console.log(this.props.route.params);
@@ -175,13 +220,7 @@ export default class LoginPage extends Component {
         {({userInfo, ctxLogIn, ctxLogOut, ctxGetUser}) => (
           <View style={styles.containerLogin}>
             {this.state.isLogIn ? (
-              <View
-                style={{
-                  flex: 1,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}>
-                <Text>마이페이지</Text>
+              <View style={styles.containerLogin}>
                 <this.ShowUserInfo email={userInfo.email} func={ctxGetUser} />
                 <TouchableOpacity
                   style={styles.submitButton}

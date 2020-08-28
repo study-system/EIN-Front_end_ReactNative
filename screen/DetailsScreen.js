@@ -81,7 +81,7 @@ export default class DetailsScreen extends Component {
       })
       .then((response) => {
         console.log(response);
-
+        this.props.route.params.onSubmitRefresh();
         this.props.navigation.navigate(this.boardName);
         console.log('글삭제성공');
       })
@@ -131,6 +131,8 @@ export default class DetailsScreen extends Component {
                           auth: this.auth,
                           boardName: this.boardName,
                           data: this.state.data,
+                          onSubmitRefresh: this.props.route.params
+                            .onSubmitRefresh,
                         },
                       );
                     }}>

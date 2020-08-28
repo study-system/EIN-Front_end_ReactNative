@@ -38,7 +38,7 @@ export default function MypageStackScreen2({route, navigation}) {
         name="로그인"
         component={LoginPage}
         options={{
-          title: '로그인',
+          title: '마이페이지',
           headerStyle: {
             backgroundColor: '#000',
           },
@@ -50,7 +50,20 @@ export default function MypageStackScreen2({route, navigation}) {
         initialParams={route.params}
         getLoginToken={getLoginToken}
       />
-      <MypageStack.Screen name="정보수정" component={UserUpdate} />
+      <MypageStack.Screen
+        name="정보수정"
+        component={UserUpdate}
+        options={{
+          title: '정보수정',
+          headerStyle: {
+            backgroundColor: '#000',
+          },
+          headerTintColor: '#eee',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
       <MypageStack.Screen
         name="SignUp"
         component={SignUp}
@@ -93,7 +106,20 @@ export default function MypageStackScreen2({route, navigation}) {
           },
         }}
       />
-      <MypageStack.Screen name="Adress" component={Adress} />
+      <MypageStack.Screen
+        name="Adress"
+        component={Adress}
+        options={{
+          title: '주소찾기',
+          headerStyle: {
+            backgroundColor: '#000',
+          },
+          headerTintColor: '#eee',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+      />
       <MypageStack.Screen
         name="AgreePage"
         component={AgreePage}

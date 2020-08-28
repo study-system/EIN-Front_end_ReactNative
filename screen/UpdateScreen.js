@@ -240,8 +240,9 @@ export default function UpdateScreen({route, navigation}) {
       .put(config.server + '/board/' + boardId, jsonForUpdate, {
         withCredentials: true,
       })
-      .then(function (response) {
+      .then((response) => {
         console.log('글수정성공', response);
+        route.params.onSubmitRefresh();
         navigation.navigate(boardName, {reset: true});
       })
       .catch(function (error) {
@@ -271,6 +272,7 @@ export default function UpdateScreen({route, navigation}) {
       })
       .then((response) => {
         console.log('글쓰기 성공', response);
+        route.params.onSubmitRefresh();
         navigation.navigate(boardName, {reset: true});
       })
       .catch(function (error) {

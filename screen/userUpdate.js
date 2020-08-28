@@ -50,6 +50,10 @@ export default class Mypage extends Component {
   };
   constructor(props) {
     super(props);
+    console.log(
+      '라우트==================================================',
+      props.route,
+    );
   }
   componentDidMount() {
     this.setState(
@@ -250,62 +254,67 @@ export default class Mypage extends Component {
       return 'no';
     }
   };
-  render() {
-    const userInfoUpdate = () => {
-      //'http://myks790.iptime.org:8082/user/myks790%40gmail.com'
-      var url = config.server + '/user/' + this.state.userInfo.email;
-      console.log('url', url);
-      var jsonForUpdate = {
-        password: this.state.userInfo.password,
-        newPassword: this.state.userInfo.newPassword,
-        nickname: this.state.userInfo.nickname,
-        phone: this.state.userInfo.phone,
-        location_id:
-          this.transSiNmToSido(this.state.userInfo.siNm) ||
-          this.state.userInfo.location_id,
-        address: this.state.userInfo.address,
-        addressDetail: this.state.userInfo.detail_address,
-        pushAgree: this.transBoolToYesNo(this.state.userInfo.pushAgree),
-      };
-      console.log(JSON.stringify(jsonForUpdate));
-      axios
-        .put(url, jsonForUpdate, {withCredentials: true})
-        .then((response) => {
-          console.log('응답!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!', response);
-          // console.log(this.props);
-          this.props.navigation.navigate('로그인');
-        })
-        .catch((error) => {
-          console.log(error);
-          console.log('업데이트실패');
-          alert('비밀번호가 맞지 않습니다.', error);
-        });
+  onSubmitCallback = (data) => {
+    this.props.route.params.onSubmitCallback(data);
+  };
+  userInfoUpdate = () => {
+    //'http://myks790.iptime.org:8082/user/myks790%40gmail.com'
+    var url = config.server + '/user/' + this.state.userInfo.email;
+    console.log('url', url);
+    var jsonForUpdate = {
+      password: this.state.userInfo.password,
+      newPassword: this.state.userInfo.newPassword,
+      nickname: this.state.userInfo.nickname,
+      phone: this.state.userInfo.phone,
+      location_id:
+        this.transSiNmToSido(this.state.userInfo.siNm) ||
+        this.state.userInfo.location_id,
+      address: this.state.userInfo.address,
+      addressDetail: this.state.userInfo.detail_address,
+      pushAgree: this.transBoolToYesNo(this.state.userInfo.pushAgree),
     };
-
+    console.log(JSON.stringify(jsonForUpdate));
+    axios
+      .put(url, jsonForUpdate, {withCredentials: true})
+      .then((response) => {
+        console.log('응답!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!', response);
+        // console.log(this.props);
+        this.props.navigation.navigate('로그인');
+        this.onSubmitCallback(this.state.userInfo);
+      })
+      .catch((error) => {
+        console.log(error);
+        console.log('업데이트실패');
+        alert('비밀번호가 맞지 않습니다.', error);
+      });
+  };
+  checkBoolForSignUp = () => {
+    if (this.state.validate.curPassword) {
+      alert('비밀번호의 길이가 너무 짧습니다.');
+    } else if (this.state.validate.password) {
+      alert('비밀번호 길이가 짧거나 비밀번호확인과 같지 않습니다. ');
+    } else if (this.state.validate.nickName) {
+      alert('별명을 입력해주십시오');
+    } else if (this.state.validate.phone) {
+      alert('전화번호 형식이 올바르지 않습니다.');
+    } else if (this.state.validate.address) {
+      alert('주소찾기를 해주십시오');
+    } else if (this.state.validate.detail_address) {
+      alert('상세주소를 입력해주십시오');
+    } else if (this.state.validate.location_id) {
+      alert('주소찾기를 다시 해주십시오');
+    } else {
+      this.userInfoUpdate();
+    }
+  };
+  render() {
     const onSubmit = (tmp) => {
       console.log('넘어온 주소 값', tmp);
       this.state.userInfo.address = tmp.roadAddr;
       this.state.userInfo.siNm = tmp.siNm;
     };
-    const checkBoolForSignUp = () => {
-      if (this.state.validate.curPassword) {
-        alert('비밀번호의 길이가 너무 짧습니다.');
-      } else if (this.state.validate.password) {
-        alert('비밀번호 길이가 짧거나 비밀번호확인과 같지 않습니다. ');
-      } else if (this.state.validate.nickName) {
-        alert('별명을 입력해주십시오');
-      } else if (this.state.validate.phone) {
-        alert('전화번호 형식이 올바르지 않습니다.');
-      } else if (this.state.validate.address) {
-        alert('주소찾기를 해주십시오');
-      } else if (this.state.validate.detail_address) {
-        alert('상세주소를 입력해주십시오');
-      } else if (this.state.validate.location_id) {
-        alert('주소찾기를 다시 해주십시오');
-      } else {
-        userInfoUpdate();
-      }
-    };
+    console.log(JSON.stringify('==========================파람즈', this.props));
+
     return (
       <ScrollView>
         <View style={styles.containerLogin}>
@@ -435,7 +444,7 @@ export default class Mypage extends Component {
             onPress={() => {
               // checkBoolForSignUp();
               console.log(JSON.stringify(this.state));
-              checkBoolForSignUp();
+              this.checkBoolForSignUp();
             }}>
             <Text style={styles.submitButtonText}> 수정 </Text>
           </TouchableOpacity>

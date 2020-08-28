@@ -51,7 +51,6 @@ export default class AuthBoardScreen extends Component {
     // console.log('Auth', this.props.data2);
     console.log(props);
     this.state.auth = props.route.params.auth;
-    this.handleStatusChange = this.handleStatusChange.bind(this);
   }
   boardName = this.props.route.params.boardName;
 
@@ -62,13 +61,20 @@ export default class AuthBoardScreen extends Component {
       this.getPopUp();
     }
   }
-
-  componentWillUnmount() {
-    console.log('will마운트');
+  componentDidUpdate() {
+    if (this.state.reset) {
+      this.getList();
+      this.setState({...this.state, reset: false});
+    }
   }
-  handleStatusChange(status) {
-    console.log('state체인지');
-  }
+  onSubmitRefresh = () => {
+    this.setState({...this.state, reset: true}, () => {
+      console.log(
+        '리프레쉬!!!!!!!!===========================================',
+        JSON.stringify(this.state),
+      );
+    });
+  };
   onLoad = () => {
     this.props.navigation.addListener('willFocus', () => {
       console.log('focus');
@@ -143,6 +149,7 @@ export default class AuthBoardScreen extends Component {
               boardId: item.id,
               auth: this.state.auth,
               boardName: this.boardName,
+              onSubmitRefresh: this.onSubmitRefresh,
             });
           }}>
           <Item title={item.title} writer={item.nickname} />
@@ -356,6 +363,7 @@ export default class AuthBoardScreen extends Component {
                   this.props.navigation.navigate(this.boardName + 'Update', {
                     auth: this.state.auth,
                     boardName: this.boardName,
+                    onSubmitRefresh: this.onSubmitRefresh,
                   });
                 }}>
                 <Text style={styles.submitButtonText}> 글쓰기 </Text>

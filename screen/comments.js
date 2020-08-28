@@ -68,7 +68,12 @@ export default function Comments(props) {
     let result = <></>;
     if (state.comments) {
       result = state.comments.map((item) => (
-        <View style={stylesEm.commentItem}>
+        <View
+          style={
+            item.writerflag == 1
+              ? stylesEm.commentItemWriter
+              : stylesEm.commentItem
+          }>
           <View style={stylesEm.headerTitle5}>
             <Text style={styles.postTitle}>{item.content} </Text>
           </View>
@@ -259,6 +264,13 @@ const stylesEm = StyleSheet.create({
   commentItem: {
     height: 47,
     borderTopColor: '#888',
+    borderTopWidth: 1,
+    justifyContent: 'flex-start',
+  },
+  commentItemWriter: {
+    height: 47,
+    borderTopColor: '#888',
+    backgroundColor: '#26db',
     borderTopWidth: 1,
     justifyContent: 'flex-start',
   },
